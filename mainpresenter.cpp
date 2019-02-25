@@ -16,10 +16,12 @@ void MainPresenter::setDatabaseConnector(const DatabaseConnector &value)
     auto methods = databaseConnector.getHandbook("methods");
     auto repairers = databaseConnector.getHandbook("repairers");
     auto states = databaseConnector.getHandbook("states");
+    auto clients = databaseConnector.getClients();
     if (mainView != nullptr)
     {
         mainView->setMethods(methods);
         mainView->setStates(states);
         mainView->setRepairers(repairers);
+        mainView->setClients(clients);
     }
 }

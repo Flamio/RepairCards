@@ -15,19 +15,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::setMethods(QVector<Handbook>& methods)
 {
-    ui->comboBox_4->addItem("", -1);
-    ui->comboBox_6->addItem("", -1);
-    ui->comboBox_7->addItem("", -1);
-    ui->comboBox_8->addItem("", -1);
-    ui->comboBox_9->addItem("", -1);
-
-    foreach (auto method, methods) {
-        ui->comboBox_4->addItem(method.name, method.id);
-        ui->comboBox_6->addItem(method.name, method.id);
-        ui->comboBox_7->addItem(method.name, method.id);
-        ui->comboBox_8->addItem(method.name, method.id);
-        ui->comboBox_9->addItem(method.name, method.id);
-    }
+    this->methods = methods;
 }
 
 void MainWindow::setStates(QVector<Handbook> &states)
@@ -44,5 +32,61 @@ void MainWindow::setRepairers(QVector<Handbook> &repairers)
 
     foreach (auto state, repairers)
         ui->comboBox_3->addItem(state.name, state.id);
+}
 
+void MainWindow::setClients(QHash<int,Client> &clients)
+{
+    ui->comboBox->addItem("", -1);
+
+    foreach (auto state, clients)
+        ui->comboBox->addItem(state.name, state.id);
+
+    this->clients = clients;
+}
+
+void MainWindow::on_comboBox_currentIndexChanged(int index)
+{
+
+}
+
+void MainWindow::on_comboBox_activated(int index)
+{
+    auto hashIndex  = ui->comboBox->itemData(index);
+    auto address = clients[hashIndex.toInt()].address;
+    ui->lineEdit->setText(address);
+}
+
+void MainWindow::on_pushButton_4_clicked()
+{
+    QHBoxLayout* layout = new QHBoxLayout(this);
+    QComboBox* combo = new QComboBox(this);
+    combo->setMinimumWidth(510);
+    combo->addItem("", -1);
+
+    foreach (auto method, methods) {
+       combo->addItem(method.name, method.id);
+    }
+
+    auto lineEdit = new QLineEdit(this);
+    layout->addWidget(combo);
+    layout->addWidget(lineEdit);
+    ui->verticalLayout_3->addLayout(layout);
+
+    MethodGui mgui;
+    mgui.combo = combo;
+    mgui.edit = lineEdit;
+    mgui.layout = layout;
+    combos.push_back(mgui);
+}
+
+void MainWindow::on_pushButton_5_clicked()
+{
+    if (combos.count() == 0)
+        return;
+
+    MethodGui item = combos.last();
+    delete item.combo;
+    delete item.edit;
+    delete item.layout;
+    combos.pop_back();
 }

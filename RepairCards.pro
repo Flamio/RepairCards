@@ -32,6 +32,7 @@ HEADERS  += mainwindow.h \
     databaseconnector.h \
     handbook.h \
     mainpresenter.h \
-    imainview.h
+    imainview.h \
+    client.h
 
 FORMS    += mainwindow.ui

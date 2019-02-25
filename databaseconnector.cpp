@@ -25,6 +25,25 @@ QVector<Handbook> DatabaseConnector::getHandbook(const QString& handbookName)
     return methods;
 }
 
+QHash<int,Client> DatabaseConnector::getClients()
+{
+    QSqlQuery query;
+    query.exec("SELECT id, name, address FROM clients");
+    QHash<int,Client> clients;
+
+    while (query.next())
+    {
+        Client hb;
+        int id = query.value(0).toInt();
+        hb.id = id;
+        hb.name = query.value(1).toString();
+        hb.address = query.value(2).toString();
+        clients[id] = hb;
+    }
+    return clients;
+}
+
+
 DatabaseConnector::DatabaseConnector()
 {
 
