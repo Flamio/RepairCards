@@ -13,6 +13,11 @@ void MainPresenter::setMainView(IMainView *value)
 void MainPresenter::setDatabaseConnector(const DatabaseConnector &value)
 {
     databaseConnector = value;
+
+}
+
+void MainPresenter::start()
+{
     auto methods = databaseConnector.getHandbook("methods");
     auto repairers = databaseConnector.getHandbook("repairers");
     auto states = databaseConnector.getHandbook("states");

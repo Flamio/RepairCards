@@ -22,5 +22,7 @@ int main(int argc, char *argv[])
     mainPresenter.setDatabaseConnector(dbConnector);
     w.show();
 
+    mainPresenter.start();
+
     return a.exec();
 }

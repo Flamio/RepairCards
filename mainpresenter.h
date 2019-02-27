@@ -15,6 +15,8 @@ public:
 
     void setDatabaseConnector(const DatabaseConnector &value);
 
+    void start();
+
 signals:
 
 public slots:

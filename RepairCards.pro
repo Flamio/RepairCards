@@ -33,6 +33,7 @@ HEADERS  += mainwindow.h \
     handbook.h \
     mainpresenter.h \
     imainview.h \
-    client.h
+    client.h \
+    mainviewmode.h
 
 FORMS    += mainwindow.ui

@@ -12,7 +12,7 @@ bool DatabaseConnector::open()
 QVector<Handbook> DatabaseConnector::getHandbook(const QString& handbookName)
 {
     QSqlQuery query;
-    query.exec("SELECT id, name FROM "+handbookName);
+    query.exec(QString("SELECT id, name FROM %1 ORDER BY name").arg(handbookName));
     QVector<Handbook> methods;
 
     while (query.next())

@@ -29,16 +29,19 @@ public:
     virtual void setStates(QVector<Handbook>&);
     virtual void setRepairers(QVector<Handbook>&);
     virtual void setClients(QHash<int,Client>&);
+    virtual void setMode(MainViewMode);
 
 private slots:
-
-    void on_comboBox_currentIndexChanged(int index);
 
     void on_comboBox_activated(int index);
 
     void on_pushButton_4_clicked();
 
     void on_pushButton_5_clicked();
+
+    void on_pushButton_10_clicked();
+
+    void on_pushButton_11_clicked();
 
 private:
     Ui::MainWindow *ui;

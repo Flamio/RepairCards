@@ -6,6 +6,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    setMode(Reading);
 }
 
 MainWindow::~MainWindow()
@@ -38,15 +39,31 @@ void MainWindow::setClients(QHash<int,Client> &clients)
 {
     ui->comboBox->addItem("", -1);
 
-    foreach (auto state, clients)
-        ui->comboBox->addItem(state.name, state.id);
+    QVector<Client> vector;
+
+    foreach (auto client, clients)
+        vector.push_back(client);
+
+    qSort(vector.begin(), vector.end(), [] (const Client& one, const Client& two) { return one.name < two.name;});
+
+    foreach (auto client, vector)
+        ui->comboBox->addItem(client.name, client.id);
 
     this->clients = clients;
 }
 
-void MainWindow::on_comboBox_currentIndexChanged(int index)
+void MainWindow::setMode(MainViewMode mode)
 {
-
+    if (mode == MainViewMode::Reading)
+    {
+        ui->frame_2->setVisible(true);
+        ui->frame->setVisible(false);
+    }
+    else
+    {
+        ui->frame_2->setVisible(false);
+        ui->frame->setVisible(true);
+    }
 }
 
 void MainWindow::on_comboBox_activated(int index)
@@ -89,4 +106,13 @@ void MainWindow::on_pushButton_5_clicked()
     delete item.edit;
     delete item.layout;
     combos.pop_back();
+}
+
+void MainWindow::on_pushButton_10_clicked()
+{
+    setMode(Adding);
+}
+
+void MainWindow::on_pushButton_11_clicked()
+{
 }
