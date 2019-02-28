@@ -34,6 +34,8 @@ HEADERS  += mainwindow.h \
     mainpresenter.h \
     imainview.h \
     client.h \
-    mainviewmode.h
+    mainviewmode.h \
+    repaircard.h \
+    cardmethod.h
 
 FORMS    += mainwindow.ui

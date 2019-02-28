@@ -5,6 +5,7 @@
 #include <QComboBox>
 #include <QHBoxLayout>
 #include "imainview.h"
+#include "cardmethod.h"
 
 namespace Ui {
 class MainWindow;
@@ -30,10 +31,19 @@ public:
     virtual void setRepairers(QVector<Handbook>&);
     virtual void setClients(QHash<int,Client>&);
     virtual void setMode(MainViewMode);
+    virtual void showInfo(QString);
+    virtual void setCard(const RepairCard&, const QVector<CardMethod>&);
+    virtual void setProduct(const Handbook& product);
+
+signals:
+    void barCodeFinish(QString barcode);
+    void addSignal(const RepairCard& card, const QVector<CardMethod>& methods);
+    void newCard();
+    void cancelAdding();
 
 private slots:
 
-    void on_comboBox_activated(int index);
+    void on_client_activated(int index);
 
     void on_pushButton_4_clicked();
 
@@ -43,12 +53,19 @@ private slots:
 
     void on_pushButton_11_clicked();
 
-private:
-    Ui::MainWindow *ui;
+    void on_barCode_textChanged(const QString &arg1);
 
+    void on_pushButton_12_clicked();
+
+private:
+    const int barCodeLenght = 17;
+    Ui::MainWindow *ui;
     QHash<int,Client> clients;
     QVector<MethodGui> combos;
     QVector<Handbook> methods;
+    RepairCard creatingCard;
+    MainViewMode mode;
+    void addGuiMethodsItem();
 };
 
 #endif // MAINWINDOW_H

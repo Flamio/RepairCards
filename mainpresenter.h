@@ -4,6 +4,7 @@
 #include <QObject>
 #include "imainview.h"
 #include "databaseconnector.h"
+#include "cardmethod.h"
 
 class MainPresenter : public QObject
 {
@@ -21,9 +22,17 @@ signals:
 
 public slots:
 
+private slots:
+    void onBarCodeFinish(QString);
+    void onAdd(const RepairCard&, const QVector<CardMethod>&);
+    void onNewCard();
+    void onCancelAdding();
+
 private:
     IMainView* mainView;
     DatabaseConnector databaseConnector;
+    RepairCard repairCard;
+
 };
 
 #endif // MAINPRESENTER_H

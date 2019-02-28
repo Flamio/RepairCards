@@ -6,6 +6,8 @@
 #include <QVector>
 #include "handbook.h"
 #include "client.h"
+#include "repaircard.h"
+#include "cardmethod.h"
 
 class DatabaseConnector
 {
@@ -17,6 +19,12 @@ public:
 
     QVector<Handbook> getHandbook(const QString& handbookName);
     QHash<int,Client> getClients();
+
+    RepairCard getLastCard();
+    Handbook getProductByCode(const QString& code);
+    bool addCard(const RepairCard& card);
+    bool addMethods(const QVector<CardMethod> cardMethods);
+    QVector<CardMethod> getMethods(int cardId);
 
 private:
     QSqlDatabase db;

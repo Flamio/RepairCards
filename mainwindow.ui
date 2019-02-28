@@ -27,7 +27,7 @@
          </widget>
         </item>
         <item row="1" column="5" colspan="3">
-         <widget class="QLineEdit" name="lineEdit">
+         <widget class="QLineEdit" name="clientAddress">
           <property name="maximumSize">
            <size>
             <width>500</width>
@@ -57,7 +57,7 @@
          </widget>
         </item>
         <item row="13" column="0">
-         <widget class="QComboBox" name="comboBox_3"/>
+         <widget class="QComboBox" name="repairer"/>
         </item>
         <item row="5" column="0">
          <widget class="QLabel" name="label_8">
@@ -74,7 +74,7 @@
          </widget>
         </item>
         <item row="1" column="0" colspan="5">
-         <widget class="QComboBox" name="comboBox">
+         <widget class="QComboBox" name="client">
           <property name="editable">
            <bool>true</bool>
           </property>
@@ -88,7 +88,11 @@
          </widget>
         </item>
         <item row="6" column="0">
-         <widget class="QLineEdit" name="lineEdit_6"/>
+         <widget class="QLineEdit" name="product">
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+         </widget>
         </item>
         <item row="0" column="5" colspan="3">
          <widget class="QLabel" name="label_2">
@@ -111,12 +115,15 @@
          </spacer>
         </item>
         <item row="3" column="0">
-         <widget class="QLineEdit" name="lineEdit_5">
+         <widget class="QLineEdit" name="cardNumber">
           <property name="maximumSize">
            <size>
             <width>100</width>
             <height>16777215</height>
            </size>
+          </property>
+          <property name="readOnly">
+           <bool>true</bool>
           </property>
          </widget>
         </item>
@@ -141,7 +148,7 @@
          </widget>
         </item>
         <item row="9" column="0" colspan="9">
-         <widget class="QTextEdit" name="textEdit">
+         <widget class="QTextEdit" name="complains">
           <property name="maximumSize">
            <size>
             <width>16777215</width>
@@ -165,7 +172,7 @@
          </widget>
         </item>
         <item row="11" column="0" colspan="9">
-         <widget class="QTextEdit" name="textEdit_2">
+         <widget class="QTextEdit" name="reason">
           <property name="maximumSize">
            <size>
             <width>16777215</width>
@@ -175,7 +182,7 @@
          </widget>
         </item>
         <item row="21" column="0" colspan="9">
-         <widget class="QTextEdit" name="textEdit_3">
+         <widget class="QTextEdit" name="note">
           <property name="maximumSize">
            <size>
             <width>16777215</width>
@@ -218,7 +225,7 @@
          </spacer>
         </item>
         <item row="13" column="7">
-         <widget class="QLineEdit" name="lineEdit_12">
+         <widget class="QLineEdit" name="repairCost">
           <property name="maximumSize">
            <size>
             <width>100</width>
@@ -242,12 +249,15 @@
          </widget>
         </item>
         <item row="6" column="7">
-         <widget class="QLineEdit" name="lineEdit_10">
+         <widget class="QLineEdit" name="createMonth">
           <property name="maximumSize">
            <size>
             <width>100</width>
             <height>16777215</height>
            </size>
+          </property>
+          <property name="readOnly">
+           <bool>true</bool>
           </property>
          </widget>
         </item>
@@ -309,17 +319,20 @@
          </layout>
         </item>
         <item row="6" column="6">
-         <widget class="QLineEdit" name="lineEdit_9">
+         <widget class="QLineEdit" name="createYear">
           <property name="maximumSize">
            <size>
             <width>100</width>
             <height>16777215</height>
            </size>
           </property>
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
          </widget>
         </item>
         <item row="3" column="1">
-         <widget class="QDateEdit" name="dateEdit">
+         <widget class="QDateEdit" name="receiveDate">
           <property name="maximumSize">
            <size>
             <width>100</width>
@@ -345,7 +358,7 @@
          </widget>
         </item>
         <item row="3" column="2">
-         <widget class="QDateEdit" name="dateEdit_2">
+         <widget class="QDateEdit" name="readyDate">
           <property name="maximumSize">
            <size>
             <width>100</width>
@@ -372,7 +385,7 @@
          </widget>
         </item>
         <item row="3" column="7">
-         <widget class="QComboBox" name="comboBox_2"/>
+         <widget class="QComboBox" name="state"/>
         </item>
         <item row="2" column="7">
          <widget class="QLabel" name="label_7">
@@ -382,9 +395,12 @@
          </widget>
         </item>
         <item row="6" column="2">
-         <widget class="QLineEdit" name="lineEdit_7">
+         <widget class="QLineEdit" name="barCode">
           <property name="inputMask">
-           <string>99999999999999999</string>
+           <string notr="true"/>
+          </property>
+          <property name="maxLength">
+           <number>17</number>
           </property>
          </widget>
         </item>
@@ -396,7 +412,7 @@
          </widget>
         </item>
         <item row="13" column="5">
-         <widget class="QLineEdit" name="lineEdit_11">
+         <widget class="QLineEdit" name="clientCost">
           <property name="maximumSize">
            <size>
             <width>100</width>
@@ -426,7 +442,7 @@
          </widget>
         </item>
         <item row="3" column="5">
-         <widget class="QDateEdit" name="dateEdit_3">
+         <widget class="QDateEdit" name="returnDate">
           <property name="displayFormat">
            <string>dd.MM.yyyy</string>
           </property>
@@ -455,16 +471,16 @@
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_6">
          <item>
-          <widget class="QPushButton" name="pushButton_8">
+          <widget class="QPushButton" name="pushButton_7">
            <property name="text">
-            <string>Вперед</string>
+            <string>Назад</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="pushButton_7">
+          <widget class="QPushButton" name="pushButton_8">
            <property name="text">
-            <string>Назад</string>
+            <string>Вперед</string>
            </property>
           </widget>
          </item>
@@ -562,6 +578,13 @@
             </size>
            </property>
           </spacer>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButton_12">
+           <property name="text">
+            <string>Отмена</string>
+           </property>
+          </widget>
          </item>
          <item>
           <widget class="QPushButton" name="pushButton_11">
