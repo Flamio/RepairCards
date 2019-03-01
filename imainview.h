@@ -23,6 +23,7 @@ public:
     virtual void addSignal(const RepairCard& card, const QVector<CardMethod>& methods) = 0;
     virtual void newCard() = 0;
     virtual void cancelAdding() = 0;
+    virtual void navigation(bool forward) = 0;
 
 signals:
 };

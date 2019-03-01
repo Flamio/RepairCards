@@ -10,6 +10,8 @@ struct RepairCard
     int productId = 0;
     int clientId = 0;
     int stateId = 0;
+    int costForClient = 0;
+    int costRepair = 0;
     QDate receiveDate = QDate::currentDate();
     QDate readyDate = QDate::currentDate();
     QDate returnDate = QDate::currentDate();
@@ -18,6 +20,8 @@ struct RepairCard
     QString note = "";
     QString productName = "";
     QString barCode = "";
+    int currentIndex = 0;
+    int allIndexes = 0;
 };
 
 #endif // REPAIRCARD_H

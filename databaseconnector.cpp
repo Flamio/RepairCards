@@ -6,7 +6,21 @@ bool DatabaseConnector::open()
 {
     db = QSqlDatabase::addDatabase("QSQLITE");
     db.setDatabaseName("repair_cards.db3");
-    return db.open();
+    auto result = db.open();
+
+    if (!result)
+        return false;
+
+    QSqlQuery query;
+    if (!query.exec(QString("select id from repair_cards ORDER BY id")))
+        return false;
+
+    ids.clear();
+    while (query.next())
+        ids.push_back(query.value(0).toInt());
+
+    currentIndex = ids.count()-1;
+    return true;
 }
 
 QVector<Handbook> DatabaseConnector::getHandbook(const QString& handbookName)
@@ -49,21 +63,8 @@ RepairCard DatabaseConnector::getLastCard()
     QSqlQuery query;
     query.exec("SELECT c.*, p.name FROM repair_cards c left join products p on c.product_id=p.id ORDER BY id DESC LIMIT 1");
     if (query.first())
-    {
-        card.id = query.value(0).toInt();
-        card.repairerId = query.value(1).toInt();
-        card.productId  = query.value(2).toInt();
-        card.clientId = query.value(3).toInt();
-        card.receiveDate = QDate::fromString(query.value(4).toString(),"dd.MM.yyyy");
-        card.readyDate= QDate::fromString(query.value(5).toString(),"dd.MM.yyyy");;
-        card.returnDate= QDate::fromString(query.value(6).toString(),"dd.MM.yyyy");
-        card.stateId = query.value(7).toInt();
-        card.complaints = query.value(8).toString();
-        card.reason = query.value(9).toString();
-        card.note = query.value(10).toString();
-        card.barCode = query.value(11).toString();
-        card.productName = query.value(12).toString();
-    }
+        fillCard(card, query);
+    currentIndex = ids.count() - 1;
     return card;
 }
 
@@ -85,13 +86,19 @@ bool DatabaseConnector::addCard(const RepairCard &card)
 {
     QSqlQuery query;
     auto queryString = QString("insert into repair_cards values"
-                               " (%1,%2,%3,%4,'%5','%6','%7',%8,'%9','%10','%11','%12')")
+                               " (%1,%2,%3,%4,'%5','%6','%7',%8,'%9','%10','%11','%12',%13,%14)")
             .arg(card.id).arg(card.repairerId).arg(card.productId).arg(card.clientId)
             .arg(card.receiveDate.toString("dd.MM.yyyy")).arg(card.readyDate.toString("dd.MM.yyyy")).arg(card.returnDate.toString("dd.MM.yyyy"))
             .arg(card.stateId)
-            .arg(card.complaints).arg(card.reason).arg(card.note).arg(card.barCode);
+            .arg(card.complaints).arg(card.reason).arg(card.note).arg(card.barCode)
+            .arg(card.costForClient).arg(card.costRepair);
 
     auto result = query.exec(queryString);
+    if (result)
+    {
+        ids.push_back(card.id);
+        currentIndex = ids.count() - 1;
+    }
     return result;
 }
 
@@ -129,6 +136,53 @@ QVector<CardMethod> DatabaseConnector::getMethods(int cardId)
     }
 
     return methods;
+}
+
+RepairCard DatabaseConnector::getPreviousCard()
+{
+    if (currentIndex != 0)
+        currentIndex--;
+
+    return getCardById(ids[currentIndex]);
+}
+
+RepairCard DatabaseConnector::getNextCard()
+{
+    if (currentIndex != ids.count() - 1)
+        currentIndex++;
+
+    return getCardById(ids[currentIndex]);
+}
+
+void DatabaseConnector::fillCard(RepairCard& card, QSqlQuery& query)
+{
+    card.id = query.value(0).toInt();
+    card.repairerId = query.value(1).toInt();
+    card.productId  = query.value(2).toInt();
+    card.clientId = query.value(3).toInt();
+    card.receiveDate = QDate::fromString(query.value(4).toString(),"dd.MM.yyyy");
+    card.readyDate= QDate::fromString(query.value(5).toString(),"dd.MM.yyyy");;
+    card.returnDate= QDate::fromString(query.value(6).toString(),"dd.MM.yyyy");
+    card.stateId = query.value(7).toInt();
+    card.complaints = query.value(8).toString();
+    card.reason = query.value(9).toString();
+    card.note = query.value(10).toString();
+    card.barCode = query.value(11).toString();
+    card.costForClient = query.value(12).toInt();
+    card.costRepair = query.value(13).toInt();
+    card.productName = query.value(14).toString();
+    card.allIndexes = ids.count();
+    card.currentIndex = currentIndex+1;
+}
+
+RepairCard DatabaseConnector::getCardById(int id)
+{
+    RepairCard card;
+    QSqlQuery query;
+    query.exec(QString("SELECT c.*, p.name FROM repair_cards c left join products p on c.product_id=p.id where c.id=%1").arg(id));
+    if (query.first())
+        fillCard(card, query);
+    return card;
 }
 
 DatabaseConnector::DatabaseConnector()

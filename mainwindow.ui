@@ -224,16 +224,6 @@
           </property>
          </spacer>
         </item>
-        <item row="13" column="7">
-         <widget class="QLineEdit" name="repairCost">
-          <property name="maximumSize">
-           <size>
-            <width>100</width>
-            <height>16777215</height>
-           </size>
-          </property>
-         </widget>
-        </item>
         <item row="18" column="7">
          <widget class="QPushButton" name="pushButton_5">
           <property name="text">
@@ -411,16 +401,6 @@
           </property>
          </widget>
         </item>
-        <item row="13" column="5">
-         <widget class="QLineEdit" name="clientCost">
-          <property name="maximumSize">
-           <size>
-            <width>100</width>
-            <height>16777215</height>
-           </size>
-          </property>
-         </widget>
-        </item>
         <item row="12" column="5">
          <widget class="QLabel" name="label_16">
           <property name="text">
@@ -455,6 +435,26 @@
           </property>
          </widget>
         </item>
+        <item row="13" column="5">
+         <widget class="QSpinBox" name="clientCost">
+          <property name="maximum">
+           <number>1000000000</number>
+          </property>
+          <property name="displayIntegerBase">
+           <number>10</number>
+          </property>
+         </widget>
+        </item>
+        <item row="13" column="7">
+         <widget class="QSpinBox" name="repairCost">
+          <property name="maximum">
+           <number>1000000000</number>
+          </property>
+          <property name="displayIntegerBase">
+           <number>10</number>
+          </property>
+         </widget>
+        </item>
        </layout>
       </item>
      </layout>
@@ -485,15 +485,18 @@
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="lineEdit_4">
+          <widget class="QLineEdit" name="navigation">
            <property name="maximumSize">
             <size>
-             <width>50</width>
+             <width>100</width>
              <height>16777215</height>
             </size>
            </property>
            <property name="inputMask">
             <string/>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
            </property>
            <property name="readOnly">
             <bool>true</bool>

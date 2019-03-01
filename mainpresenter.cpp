@@ -12,6 +12,7 @@ void MainPresenter::setMainView(IMainView *value)
     connect(dynamic_cast<QObject*>(mainView), SIGNAL(addSignal(const RepairCard&, const QVector<CardMethod>&)), this, SLOT(onAdd(const RepairCard&, const QVector<CardMethod>&)));
     connect(dynamic_cast<QObject*>(mainView), SIGNAL(newCard()), this, SLOT(onNewCard()));
     connect(dynamic_cast<QObject*>(mainView), SIGNAL(cancelAdding()), this, SLOT(onCancelAdding()));
+    connect(dynamic_cast<QObject*>(mainView), SIGNAL(navigation(bool)), this, SLOT(onNavigation(bool)));
 }
 
 void MainPresenter::setDatabaseConnector(const DatabaseConnector &value)
@@ -90,4 +91,17 @@ void MainPresenter::onCancelAdding()
 
     mainView->setMode(Reading);
     mainView->setCard(lastCard, methods);
+}
+
+void MainPresenter::onNavigation(bool forward)
+{
+    RepairCard card;
+    if (forward)
+        card = databaseConnector.getNextCard();
+    else
+        card = databaseConnector.getPreviousCard();
+
+    auto methods = databaseConnector.getMethods(card.id);
+
+    mainView->setCard(card, methods);
 }

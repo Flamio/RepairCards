@@ -25,9 +25,15 @@ public:
     bool addCard(const RepairCard& card);
     bool addMethods(const QVector<CardMethod> cardMethods);
     QVector<CardMethod> getMethods(int cardId);
+    RepairCard getPreviousCard();
+    RepairCard getNextCard();
 
 private:
     QSqlDatabase db;
+    QVector<int> ids;
+    RepairCard getCardById(int id);
+    int currentIndex = 0;
+    void fillCard(RepairCard& card, QSqlQuery& query);
 };
 
 #endif // DATABASECONNECTOR_H

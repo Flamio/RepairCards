@@ -97,6 +97,9 @@ void MainWindow::setCard(const RepairCard &card, const QVector<CardMethod>& meth
     ui->repairer->setCurrentIndex(ui->repairer->findData(card.repairerId));
     ui->state->setCurrentIndex(ui->state->findData(card.stateId));
     ui->readyDate->setDate(card.readyDate);
+    ui->repairCost->setValue(card.costRepair);
+    ui->clientCost->setValue(card.costForClient);
+    ui->navigation->setText(QString("%1/%2").arg(card.currentIndex).arg(card.allIndexes));
 
     foreach (MethodGui item, combos) {
         delete item.combo;
@@ -223,6 +226,12 @@ void MainWindow::on_pushButton_11_clicked()
         showInfo("Не выбрано состояние!");
         return;
     }
+    if (ui->clientCost->value() != 0 && ui->repairCost->value() != 0 ||
+            ui->clientCost->value() == 0 && ui->repairCost->value() == 0 )
+    {
+        showInfo("Должно быть заполнена цена для клиента или цена ремонта!");
+        return;
+    }
 
     creatingCard.barCode = ui->barCode->text();
     creatingCard.clientId = ui->client->currentData().toInt();
@@ -235,6 +244,8 @@ void MainWindow::on_pushButton_11_clicked()
     creatingCard.repairerId = ui->repairer->currentData().toInt();
     creatingCard.returnDate = ui->returnDate->date();
     creatingCard.stateId = ui->state->currentData().toInt();
+    creatingCard.costForClient = ui->clientCost->value();
+    creatingCard.costRepair = ui->repairCost->value();
 
     QVector<CardMethod> cardMethods;
     foreach (MethodGui element, combos)
@@ -269,4 +280,14 @@ void MainWindow::on_barCode_textChanged(const QString &arg1)
 void MainWindow::on_pushButton_12_clicked()
 {
     cancelAdding();
+}
+
+void MainWindow::on_pushButton_8_clicked()
+{
+    navigation(true);
+}
+
+void MainWindow::on_pushButton_7_clicked()
+{
+    navigation(false);
 }

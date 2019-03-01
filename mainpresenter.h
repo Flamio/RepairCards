@@ -27,6 +27,7 @@ private slots:
     void onAdd(const RepairCard&, const QVector<CardMethod>&);
     void onNewCard();
     void onCancelAdding();
+    void onNavigation(bool);
 
 private:
     IMainView* mainView;

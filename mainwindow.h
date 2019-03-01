@@ -40,6 +40,7 @@ signals:
     void addSignal(const RepairCard& card, const QVector<CardMethod>& methods);
     void newCard();
     void cancelAdding();
+    void navigation(bool forward);
 
 private slots:
 
@@ -56,6 +57,10 @@ private slots:
     void on_barCode_textChanged(const QString &arg1);
 
     void on_pushButton_12_clicked();
+
+    void on_pushButton_8_clicked();
+
+    void on_pushButton_7_clicked();
 
 private:
     const int barCodeLenght = 17;
