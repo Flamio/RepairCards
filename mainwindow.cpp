@@ -149,6 +149,7 @@ void MainWindow::setCard(const RepairCard &card, const QVector<CardMethod>& meth
 
         MethodGui mgui;
         mgui.combo = combo;
+        mgui.combo->setEditable(true);
         mgui.edit = lineEdit;
         mgui.layout = layout;
         combos.push_back(mgui);
@@ -186,6 +187,7 @@ void MainWindow::on_pushButton_4_clicked()
 
     MethodGui mgui;
     mgui.combo = combo;
+    mgui.combo->setEditable(true);
     mgui.edit = lineEdit;
     mgui.layout = layout;
     combos.push_back(mgui);
