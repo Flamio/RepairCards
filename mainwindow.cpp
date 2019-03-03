@@ -62,6 +62,17 @@ void MainWindow::setMode(MainViewMode mode)
         ui->frame->setVisible(false);
         ui->pushButton_4->setVisible(false);
         ui->pushButton_5->setVisible(false);
+
+        ui->barCode->setReadOnly(true);
+        ui->complains->setReadOnly(true);
+        ui->note->setReadOnly(true);
+        ui->reason->setReadOnly(true);
+        ui->receiveDate->setReadOnly(true);
+        ui->returnDate->setReadOnly(true);
+        ui->readyDate->setReadOnly(true);
+        ui->repairCost->setReadOnly(true);
+        ui->clientCost->setReadOnly(true);
+
     }
     else
     {
@@ -69,6 +80,16 @@ void MainWindow::setMode(MainViewMode mode)
         ui->frame->setVisible(true);
         ui->pushButton_4->setVisible(true);
         ui->pushButton_5->setVisible(true);
+
+        ui->barCode->setReadOnly(false);
+        ui->complains->setReadOnly(false);
+        ui->note->setReadOnly(false);
+        ui->reason->setReadOnly(false);
+        ui->receiveDate->setReadOnly(false);
+        ui->returnDate->setReadOnly(false);
+        ui->readyDate->setReadOnly(false);
+        ui->repairCost->setReadOnly(false);
+        ui->clientCost->setReadOnly(false);
     }
 }
 

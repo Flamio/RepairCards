@@ -104,6 +104,7 @@ bool DatabaseConnector::addCard(const RepairCard &card)
 
 bool DatabaseConnector::addMethods(const QVector<CardMethod> cardMethods)
 {
+    db.transaction();
     foreach (CardMethod method, cardMethods) {
 
         QSqlQuery query;
@@ -114,8 +115,12 @@ bool DatabaseConnector::addMethods(const QVector<CardMethod> cardMethods)
 
         auto result = query.exec(queryString);
         if (!result)
+        {
+            db.rollback();
             return false;
+        }
     }
+     db.commit();
 
     return true;
 }
