@@ -15,7 +15,6 @@ struct MethodGui
 {
     QComboBox* combo;
     QLineEdit* edit;
-    QHBoxLayout* layout;
 };
 
 class AddForm : public QMainWindow, public IAddView

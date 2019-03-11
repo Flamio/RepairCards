@@ -90,7 +90,6 @@ void AddForm::setCard(const RepairCard &card)
     foreach (MethodGui item, combos) {
         delete item.combo;
         delete item.edit;
-        delete item.layout;
         combos.pop_back();
     }
 }
@@ -120,9 +119,7 @@ void AddForm::on_client_activated(int index)
 
 void AddForm::on_pushButton_4_clicked()
 {
-    QHBoxLayout* layout = new QHBoxLayout(this);
     QComboBox* combo = new QComboBox(this);
-    combo->setMinimumWidth(510);
     combo->addItem("", 0);
 
     foreach (auto method, methods) {
@@ -130,15 +127,14 @@ void AddForm::on_pushButton_4_clicked()
     }
 
     auto lineEdit = new QLineEdit(this);
-    layout->addWidget(combo);
-    layout->addWidget(lineEdit);
-    ui->verticalLayout_3->addLayout(layout);
+
+    ui->verticalLayout_8->addWidget(combo);
+    ui->verticalLayout_9->addWidget(lineEdit);
 
     MethodGui mgui;
     mgui.combo = combo;
     mgui.combo->setEditable(true);
     mgui.edit = lineEdit;
-    mgui.layout = layout;
     combos.push_back(mgui);
 }
 
@@ -150,7 +146,6 @@ void AddForm::on_pushButton_5_clicked()
     MethodGui item = combos.last();
     delete item.combo;
     delete item.edit;
-    delete item.layout;
     combos.pop_back();
 }
 
