@@ -79,7 +79,7 @@ void AddForm::setCard(const RepairCard &card)
     ui->note->setText(creatingCard.note);
     ui->reason->setText(creatingCard.reason);
     ui->product->setText(creatingCard.productName);
-    ui->receiveDate->setDate(creatingCard.receiveDate);
+    ui->receiveDate->setDate(creatingCard.receiveFromClientDate);
     ui->returnDate->setDate(creatingCard.returnDate);
     ui->repairer->setCurrentIndex(ui->repairer->findData(creatingCard.repairerId));
     ui->state->setCurrentIndex(ui->state->findData(creatingCard.stateId));
@@ -204,7 +204,7 @@ void AddForm::on_pushButton_11_clicked()
     creatingCard.note = ui->note->toPlainText();
     creatingCard.readyDate = ui->readyDate->date();
     creatingCard.reason = ui->reason->toPlainText();
-    creatingCard.receiveDate = ui->receiveDate->date();
+    creatingCard.receiveFromClientDate = ui->receiveDate->date();
     creatingCard.repairerId = ui->repairer->currentData().toInt();
     creatingCard.returnDate = ui->returnDate->date();
     creatingCard.stateId = ui->state->currentData().toInt();

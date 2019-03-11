@@ -88,7 +88,7 @@ bool DatabaseConnector::addCard(const RepairCard &card)
     auto queryString = QString("insert into repair_cards values"
                                " (%1,%2,%3,%4,'%5','%6','%7',%8,'%9','%10','%11','%12',%13,%14)")
             .arg(card.id).arg(card.repairerId).arg(card.productId).arg(card.clientId)
-            .arg(card.receiveDate.toString("dd.MM.yyyy")).arg(card.readyDate.toString("dd.MM.yyyy")).arg(card.returnDate.toString("dd.MM.yyyy"))
+            .arg(card.receiveFromClientDate.toString("dd.MM.yyyy")).arg(card.readyDate.toString("dd.MM.yyyy")).arg(card.returnDate.toString("dd.MM.yyyy"))
             .arg(card.stateId)
             .arg(card.complaints).arg(card.reason).arg(card.note).arg(card.barCode)
             .arg(card.costForClient).arg(card.costRepair);
@@ -166,7 +166,7 @@ void DatabaseConnector::fillCard(RepairCard& card, QSqlQuery& query)
     card.repairerId = query.value(1).toInt();
     card.productId  = query.value(2).toInt();
     card.clientId = query.value(3).toInt();
-    card.receiveDate = QDate::fromString(query.value(4).toString(),"dd.MM.yyyy");
+    card.receiveFromClientDate = QDate::fromString(query.value(4).toString(),"dd.MM.yyyy");
     card.readyDate= QDate::fromString(query.value(5).toString(),"dd.MM.yyyy");;
     card.returnDate= QDate::fromString(query.value(6).toString(),"dd.MM.yyyy");
     card.stateId = query.value(7).toInt();

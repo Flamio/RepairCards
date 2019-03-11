@@ -13,9 +13,9 @@ struct RepairCard
     int stateId = 0;
     int costForClient = 0;
     int costRepair = 0;
-    QDate receiveDate = QDate::currentDate();
-    QDate readyDate = QDate::currentDate();
-    QDate returnDate = QDate::currentDate();
+    QDate receiveFromClientDate = QDate::currentDate();
+    QDate readyDate;
+    QDate returnDate;
     QString complaints = "";
     QString reason = "";
     QString note = "";

@@ -6,7 +6,7 @@ MainForm::MainForm(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::MainForm)
 {
-    ui->setupUi(this);
+    ui->setupUi(this);    
 }
 
 MainForm::~MainForm()
@@ -29,7 +29,7 @@ void MainForm::setCard(const RepairCard &card, const QVector<CardMethod> &method
     ui->product->setText(card.productName);
     ui->ready->setText(card.readyDate.toString("dd.MM.yyyy"));
     ui->returnDate->setText(card.returnDate.toString("dd.MM.yyyy"));
-    ui->receive->setText(card.receiveDate.toString("dd.MM.yyyy"));
+    ui->receive->setText(card.receiveFromClientDate.toString("dd.MM.yyyy"));
     ui->state->setText(card.state);
     ui->reason->setPlainText(card.reason);
     ui->repairCost->setText(QString::number(card.costRepair));
