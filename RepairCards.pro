@@ -24,18 +24,28 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp \
     databaseconnector.cpp \
-    mainpresenter.cpp
+    addform.cpp \
+    mainform.cpp \
+    addpresenter.cpp \
+    mainpresenter.cpp \
+    helper.cpp
 
-HEADERS  += mainwindow.h \
+HEADERS  += \
     databaseconnector.h \
     handbook.h \
-    mainpresenter.h \
-    imainview.h \
     client.h \
     mainviewmode.h \
     repaircard.h \
-    cardmethod.h
+    cardmethod.h \
+    addform.h \
+    mainform.h \
+    addpresenter.h \
+    mainpresenter.h \
+    iaddview.h \
+    imainview.h \
+    helper.h
 
-FORMS    += mainwindow.ui
+FORMS    += \
+    addform.ui \
+    mainform.ui

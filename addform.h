@@ -4,11 +4,11 @@
 #include <QMainWindow>
 #include <QComboBox>
 #include <QHBoxLayout>
-#include "imainview.h"
+#include "iaddview.h"
 #include "cardmethod.h"
 
 namespace Ui {
-class MainWindow;
+class AddForm;
 }
 
 struct MethodGui
@@ -18,29 +18,28 @@ struct MethodGui
     QHBoxLayout* layout;
 };
 
-class MainWindow : public QMainWindow, public IMainView
+class AddForm : public QMainWindow, public IAddView
 {
     Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget *parent = 0);
-    ~MainWindow();
+    explicit AddForm(QWidget *parent = 0);
+    ~AddForm();
 
     void setMethods(QVector<Handbook>&);
     virtual void setStates(QVector<Handbook>&);
     virtual void setRepairers(QVector<Handbook>&);
-    virtual void setClients(QHash<int,Client>&);
-    virtual void setMode(MainViewMode);
+    virtual void setClients(QHash<int,Client>&);    
     virtual void showInfo(QString);
-    virtual void setCard(const RepairCard&, const QVector<CardMethod>&);
     virtual void setProduct(const Handbook& product);
+    virtual void showWindow();
+    virtual void setCard(const RepairCard &card);
+    virtual void closeWindow();
 
 signals:
     void barCodeFinish(QString barcode);
-    void addSignal(const RepairCard& card, const QVector<CardMethod>& methods);
-    void newCard();
     void cancelAdding();
-    void navigation(bool forward);
+    void addSignal(const RepairCard& card, const QVector<CardMethod>& methods);
 
 private slots:
 
@@ -58,18 +57,13 @@ private slots:
 
     void on_pushButton_12_clicked();
 
-    void on_pushButton_8_clicked();
-
-    void on_pushButton_7_clicked();
-
 private:
     const int barCodeLenght = 17;
-    Ui::MainWindow *ui;
+    Ui::AddForm *ui;
     QHash<int,Client> clients;
     QVector<MethodGui> combos;
     QVector<Handbook> methods;
     RepairCard creatingCard;
-    MainViewMode mode;
     void addGuiMethodsItem();
 };
 

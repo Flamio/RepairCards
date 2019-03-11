@@ -1,7 +1,9 @@
-#include "mainwindow.h"
+#include "addform.h"
 #include <QApplication>
 #include <QMessageBox>
 #include "databaseconnector.h"
+#include "addpresenter.h"
+#include "mainform.h"
 #include "mainpresenter.h"
 
 int main(int argc, char *argv[])
@@ -16,13 +18,23 @@ int main(int argc, char *argv[])
         return 0;
     }
 
-    MainPresenter mainPresenter(&a);
-    MainWindow w;
-    mainPresenter.setMainView(&w);
-    mainPresenter.setDatabaseConnector(dbConnector);
-    w.show();
+    AddPresenter addPresenter(&a);
+    AddForm w;
+    addPresenter.setAddView(&w);
+    addPresenter.setDatabaseConnector(dbConnector);
 
+    addPresenter.start();
+
+
+    MainForm mainForm;
+    mainForm.show();
+
+    MainPresenter mainPresenter;
+    mainPresenter.setAddPresenter(&addPresenter);
+    mainPresenter.setDbConnector(dbConnector);
+    mainPresenter.setMainView(&mainForm);
     mainPresenter.start();
+
 
     return a.exec();
 }

@@ -1,26 +1,26 @@
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
+#include "addform.h"
+#include "ui_addform.h"
 #include <QMessageBox>
+#include "helper.h"
 
-MainWindow::MainWindow(QWidget *parent) :
+AddForm::AddForm(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow)
+    ui(new Ui::AddForm)
 {
     ui->setupUi(this);
-    setMode(Reading);
 }
 
-MainWindow::~MainWindow()
+AddForm::~AddForm()
 {
     delete ui;
 }
 
-void MainWindow::setMethods(QVector<Handbook>& methods)
+void AddForm::setMethods(QVector<Handbook>& methods)
 {
     this->methods = methods;
 }
 
-void MainWindow::setStates(QVector<Handbook> &states)
+void AddForm::setStates(QVector<Handbook> &states)
 {
     ui->state->addItem("", 0);
 
@@ -28,7 +28,7 @@ void MainWindow::setStates(QVector<Handbook> &states)
         ui->state->addItem(state.name, state.id);
 }
 
-void MainWindow::setRepairers(QVector<Handbook> &repairers)
+void AddForm::setRepairers(QVector<Handbook> &repairers)
 {
     ui->repairer->addItem("", 0);
 
@@ -36,7 +36,7 @@ void MainWindow::setRepairers(QVector<Handbook> &repairers)
         ui->repairer->addItem(state.name, state.id);
 }
 
-void MainWindow::setClients(QHash<int,Client> &clients)
+void AddForm::setClients(QHash<int,Client> &clients)
 {
     ui->client->addItem("", 0);
 
@@ -53,74 +53,39 @@ void MainWindow::setClients(QHash<int,Client> &clients)
     this->clients = clients;
 }
 
-void MainWindow::setMode(MainViewMode mode)
-{
-    this->mode = mode;
-    if (mode == MainViewMode::Reading)
-    {
-        ui->frame_2->setVisible(true);
-        ui->frame->setVisible(false);
-        ui->pushButton_4->setVisible(false);
-        ui->pushButton_5->setVisible(false);
-
-        ui->barCode->setReadOnly(true);
-        ui->complains->setReadOnly(true);
-        ui->note->setReadOnly(true);
-        ui->reason->setReadOnly(true);
-        ui->receiveDate->setReadOnly(true);
-        ui->returnDate->setReadOnly(true);
-        ui->readyDate->setReadOnly(true);
-        ui->repairCost->setReadOnly(true);
-        ui->clientCost->setReadOnly(true);
-
-    }
-    else
-    {
-        ui->frame_2->setVisible(false);
-        ui->frame->setVisible(true);
-        ui->pushButton_4->setVisible(true);
-        ui->pushButton_5->setVisible(true);
-
-        ui->barCode->setReadOnly(false);
-        ui->complains->setReadOnly(false);
-        ui->note->setReadOnly(false);
-        ui->reason->setReadOnly(false);
-        ui->receiveDate->setReadOnly(false);
-        ui->returnDate->setReadOnly(false);
-        ui->readyDate->setReadOnly(false);
-        ui->repairCost->setReadOnly(false);
-        ui->clientCost->setReadOnly(false);
-    }
-}
-
-void MainWindow::showInfo(QString info)
+void AddForm::showInfo(QString info)
 {
     QMessageBox msg;
     msg.setText(info);
     msg.exec();
 }
 
-void MainWindow::setCard(const RepairCard &card, const QVector<CardMethod>& methods)
-{    
-    ui->cardNumber->setText(QString::number(card.id));
-    ui->barCode->setText(card.barCode);
-    ui->client->setCurrentIndex(ui->client->findData(card.clientId));
+void AddForm::setCard(const RepairCard &card)
+{
+    RepairCard card_;
+    creatingCard = card_;
+    creatingCard.id = card.id;
+    ui->createMonth->clear();
+    ui->createYear->clear();
+
+    ui->cardNumber->setText(QString::number(creatingCard.id));
+    ui->barCode->setText(creatingCard.barCode);
+    ui->client->setCurrentIndex(ui->client->findData(creatingCard.clientId));
     auto hashIndex  = ui->client->currentData();
     auto address = clients[hashIndex.toInt()].address;
     ui->clientAddress->setText(address);
 
-    ui->complains->setText(card.complaints);
-    ui->note->setText(card.note);
-    ui->reason->setText(card.reason);
-    ui->product->setText(card.productName);
-    ui->receiveDate->setDate(card.receiveDate);
-    ui->returnDate->setDate(card.returnDate);
-    ui->repairer->setCurrentIndex(ui->repairer->findData(card.repairerId));
-    ui->state->setCurrentIndex(ui->state->findData(card.stateId));
-    ui->readyDate->setDate(card.readyDate);
-    ui->repairCost->setValue(card.costRepair);
-    ui->clientCost->setValue(card.costForClient);
-    ui->navigation->setText(QString("%1/%2").arg(card.currentIndex).arg(card.allIndexes));
+    ui->complains->setText(creatingCard.complaints);
+    ui->note->setText(creatingCard.note);
+    ui->reason->setText(creatingCard.reason);
+    ui->product->setText(creatingCard.productName);
+    ui->receiveDate->setDate(creatingCard.receiveDate);
+    ui->returnDate->setDate(creatingCard.returnDate);
+    ui->repairer->setCurrentIndex(ui->repairer->findData(creatingCard.repairerId));
+    ui->state->setCurrentIndex(ui->state->findData(creatingCard.stateId));
+    ui->readyDate->setDate(creatingCard.readyDate);
+    ui->repairCost->setValue(creatingCard.costRepair);
+    ui->clientCost->setValue(creatingCard.costForClient);
 
     foreach (MethodGui item, combos) {
         delete item.combo;
@@ -128,48 +93,32 @@ void MainWindow::setCard(const RepairCard &card, const QVector<CardMethod>& meth
         delete item.layout;
         combos.pop_back();
     }
-
-    foreach (CardMethod m, methods) {
-        QHBoxLayout* layout = new QHBoxLayout(this);
-        QComboBox* combo = new QComboBox(this);
-        combo->setMinimumWidth(510);
-        combo->addItem("", 0);
-
-        foreach (auto method, this->methods) {
-           combo->addItem(method.name, method.id);
-        }
-
-        combo->setCurrentIndex(combo->findData(m.methodId));
-
-        auto lineEdit = new QLineEdit(this);
-        lineEdit->setText(m.description);
-        layout->addWidget(combo);
-        layout->addWidget(lineEdit);
-        ui->verticalLayout_3->addLayout(layout);
-
-        MethodGui mgui;
-        mgui.combo = combo;
-        mgui.combo->setEditable(true);
-        mgui.edit = lineEdit;
-        mgui.layout = layout;
-        combos.push_back(mgui);
-    }
 }
 
-void MainWindow::setProduct(const Handbook& product)
+void AddForm::closeWindow()
+{
+    close();
+}
+
+void AddForm::showWindow()
+{
+    show();
+}
+
+void AddForm::setProduct(const Handbook& product)
 {
     ui->product->setText(product.name);
     creatingCard.productId = product.id;
 }
 
-void MainWindow::on_client_activated(int index)
+void AddForm::on_client_activated(int index)
 {
     auto hashIndex  = ui->client->itemData(index);
     auto address = clients[hashIndex.toInt()].address;
     ui->clientAddress->setText(address);
 }
 
-void MainWindow::on_pushButton_4_clicked()
+void AddForm::on_pushButton_4_clicked()
 {
     QHBoxLayout* layout = new QHBoxLayout(this);
     QComboBox* combo = new QComboBox(this);
@@ -177,7 +126,7 @@ void MainWindow::on_pushButton_4_clicked()
     combo->addItem("", 0);
 
     foreach (auto method, methods) {
-       combo->addItem(method.name, method.id);
+        combo->addItem(method.name, method.id);
     }
 
     auto lineEdit = new QLineEdit(this);
@@ -193,7 +142,7 @@ void MainWindow::on_pushButton_4_clicked()
     combos.push_back(mgui);
 }
 
-void MainWindow::on_pushButton_5_clicked()
+void AddForm::on_pushButton_5_clicked()
 {
     if (combos.count() == 0)
         return;
@@ -205,14 +154,11 @@ void MainWindow::on_pushButton_5_clicked()
     combos.pop_back();
 }
 
-void MainWindow::on_pushButton_10_clicked()
+void AddForm::on_pushButton_10_clicked()
 {
-    newCard();
-    ui->createMonth->clear();
-    ui->createYear->clear();
 }
 
-void MainWindow::on_pushButton_11_clicked()
+void AddForm::on_pushButton_11_clicked()
 {
     if (ui->barCode->text().count() != barCodeLenght)
     {
@@ -285,32 +231,20 @@ void MainWindow::on_pushButton_11_clicked()
     addSignal(creatingCard, cardMethods);
 }
 
-void MainWindow::on_barCode_textChanged(const QString &arg1)
+void AddForm::on_barCode_textChanged(const QString &arg1)
 {
     if (arg1.count() != barCodeLenght)
         return;
 
-    if (mode == Adding)
-        barCodeFinish(arg1);
+    barCodeFinish(arg1);
 
-    auto year = arg1.mid(5,2);
-    auto month = arg1.mid(7,2);
+    auto data = Helper::ParseBarcode(arg1);
 
-    ui->createMonth->setText(month);
-    ui->createYear->setText("20"+year);
+    ui->createMonth->setText(data.month);
+    ui->createYear->setText("20"+data.year);
 }
 
-void MainWindow::on_pushButton_12_clicked()
+void AddForm::on_pushButton_12_clicked()
 {
     cancelAdding();
-}
-
-void MainWindow::on_pushButton_8_clicked()
-{
-    navigation(true);
-}
-
-void MainWindow::on_pushButton_7_clicked()
-{
-    navigation(false);
 }

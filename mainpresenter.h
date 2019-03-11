@@ -3,8 +3,8 @@
 
 #include <QObject>
 #include "imainview.h"
+#include "addpresenter.h"
 #include "databaseconnector.h"
-#include "cardmethod.h"
 
 class MainPresenter : public QObject
 {
@@ -14,8 +14,9 @@ public:
 
     void setMainView(IMainView *value);
 
-    void setDatabaseConnector(const DatabaseConnector &value);
+    void setAddPresenter(AddPresenter *value);
 
+    void setDbConnector(const DatabaseConnector &value);
     void start();
 
 signals:
@@ -23,17 +24,15 @@ signals:
 public slots:
 
 private slots:
-    void onBarCodeFinish(QString);
-    void onAdd(const RepairCard&, const QVector<CardMethod>&);
-    void onNewCard();
-    void onCancelAdding();
     void onNavigation(bool);
+    void onAddComplete();
+    void onAdd();
 
 private:
-    IMainView* mainView;
-    DatabaseConnector databaseConnector;
-    RepairCard repairCard;
-
+    IMainView* mainView = nullptr;
+    AddPresenter* addPresenter = nullptr;
+    DatabaseConnector dbConnector;
+    void showLastCard();
 };
 
 #endif // MAINPRESENTER_H

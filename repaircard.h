@@ -2,6 +2,7 @@
 #define REPAIRCARD_H
 
 #include <QDate>
+#include "client.h"
 
 struct RepairCard
 {
@@ -20,6 +21,9 @@ struct RepairCard
     QString note = "";
     QString productName = "";
     QString barCode = "";
+    Client client;
+    QString state;
+    QString repairer;
     int currentIndex = 0;
     int allIndexes = 0;
 };

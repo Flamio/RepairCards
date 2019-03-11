@@ -7,6 +7,8 @@ struct Client
 {
     int id = 0;
     QString name;
+    QString phone;
+    QString contact;
     QString address;
 };
 

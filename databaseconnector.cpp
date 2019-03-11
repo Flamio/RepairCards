@@ -61,7 +61,7 @@ RepairCard DatabaseConnector::getLastCard()
 {
     RepairCard card;
     QSqlQuery query;
-    query.exec("SELECT c.*, p.name FROM repair_cards c left join products p on c.product_id=p.id ORDER BY id DESC LIMIT 1");
+    query.exec("SELECT c.*, p.name, cl.phone, cl.person, cl.address, st.name, rep.name, cl.name FROM repair_cards c left join products p on c.product_id=p.id left join clients cl on c.client_id=cl.id left join states st on c.state_id=st.id left join repairers rep on c.repairer_id=rep.id ORDER BY id DESC LIMIT 1");
     if (query.first())
         fillCard(card, query);
     currentIndex = ids.count() - 1;
@@ -128,7 +128,7 @@ bool DatabaseConnector::addMethods(const QVector<CardMethod> cardMethods)
 QVector<CardMethod> DatabaseConnector::getMethods(int cardId)
 {
     QSqlQuery query;
-    query.exec(QString("SELECT id_method, description FROM cards_methods where id_card=%1").arg(cardId));
+    query.exec(QString("SELECT cm.id_method, cm.description, m.name FROM cards_methods cm left join methods m on cm.id_method=m.id where id_card=%1").arg(cardId));
     QVector<CardMethod> methods;
 
     while (query.next())
@@ -137,6 +137,7 @@ QVector<CardMethod> DatabaseConnector::getMethods(int cardId)
         m.cardId = cardId;
         m.methodId = query.value(0).toInt();
         m.description = query.value(1).toString();
+        m.methodName = query.value(2).toString();
         methods.push_back(m);
     }
 
@@ -176,6 +177,12 @@ void DatabaseConnector::fillCard(RepairCard& card, QSqlQuery& query)
     card.costForClient = query.value(12).toInt();
     card.costRepair = query.value(13).toInt();
     card.productName = query.value(14).toString();
+    card.client.phone = query.value(15).toString();
+    card.client.contact = query.value(16).toString();
+    card.client.address = query.value(17).toString();
+    card.state = query.value(18).toString();
+    card.repairer = query.value(19).toString();
+    card.client.name = query.value(20).toString();
     card.allIndexes = ids.count();
     card.currentIndex = currentIndex+1;
 }
@@ -184,7 +191,7 @@ RepairCard DatabaseConnector::getCardById(int id)
 {
     RepairCard card;
     QSqlQuery query;
-    query.exec(QString("SELECT c.*, p.name FROM repair_cards c left join products p on c.product_id=p.id where c.id=%1").arg(id));
+    query.exec(QString("SELECT c.*, p.name, cl.phone, cl.person, cl.address, st.name, rep.name, cl.name FROM repair_cards c left join products p on c.product_id=p.id left join clients cl on c.client_id=cl.id left join states st on c.state_id=st.id left join repairers rep on c.repairer_id=rep.id where c.id=%1").arg(id));
     if (query.first())
         fillCard(card, query);
     return card;
