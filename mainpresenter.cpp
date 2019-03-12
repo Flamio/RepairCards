@@ -10,6 +10,7 @@ void MainPresenter::setMainView(IMainView *value)
     mainView = value;
     connect(dynamic_cast<QObject*>(mainView), SIGNAL(navigation(bool)), this, SLOT(onNavigation(bool)));
     connect(dynamic_cast<QObject*>(mainView), SIGNAL(add()), this, SLOT(onAdd()));
+    connect(dynamic_cast<QObject*>(mainView), SIGNAL(deleteSignal(int)), this, SLOT(onDelete(int)));
 }
 
 void MainPresenter::setAddPresenter(AddPresenter *value)
@@ -38,6 +39,16 @@ void MainPresenter::start()
 void MainPresenter::onAdd()
 {
     addPresenter->show();
+}
+
+void MainPresenter::onDelete(int id)
+{
+    dbConnector.deleteCard(id);
+
+    auto card = dbConnector.getNextCard();
+
+    auto methods = dbConnector.getMethods(card.id);
+    mainView->setCard(card, methods);
 }
 
 void MainPresenter::onNavigation(bool forward)

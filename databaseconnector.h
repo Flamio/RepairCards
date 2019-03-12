@@ -27,6 +27,7 @@ public:
     QVector<CardMethod> getMethods(int cardId);
     RepairCard getPreviousCard();
     RepairCard getNextCard();
+    void deleteCard(int id);
 
 private:
     QSqlDatabase db;
@@ -34,7 +35,7 @@ private:
     RepairCard getCardById(int id);
     int currentIndex = 0;
     void fillCard(RepairCard& card, QSqlQuery& query);
-    bool updateIds();
+    bool updateIds(bool currentChange=true);
 };
 
 #endif // DATABASECONNECTOR_H

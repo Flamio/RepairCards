@@ -27,6 +27,7 @@ private slots:
     void onNavigation(bool);
     void onAddComplete();
     void onAdd();
+    void onDelete(int);
 
 private:
     IMainView* mainView = nullptr;

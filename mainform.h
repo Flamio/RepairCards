@@ -29,6 +29,7 @@ public:
 signals:
     void add();
     void navigation(bool);
+    void deleteSignal(int id);
 
 private slots:
     void on_pushButton_7_clicked();
@@ -36,6 +37,8 @@ private slots:
     void on_pushButton_8_clicked();
 
     void on_pushButton_10_clicked();
+
+    void on_pushButton_9_clicked();
 
 private:
     Ui::MainForm *ui;

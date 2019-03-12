@@ -1,12 +1,13 @@
 #include "mainform.h"
 #include "ui_mainform.h"
 #include "helper.h"
+#include <QMessageBox>
 
 MainForm::MainForm(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::MainForm)
 {
-    ui->setupUi(this);    
+    ui->setupUi(this);
 }
 
 MainForm::~MainForm()
@@ -75,4 +76,13 @@ void MainForm::on_pushButton_8_clicked()
 void MainForm::on_pushButton_10_clicked()
 {
     emit add();
+}
+
+void MainForm::on_pushButton_9_clicked()
+{
+    QMessageBox::StandardButton reply;
+    reply = QMessageBox::question(this, "Удаление", "Вы действительно хотите удалить ремонтную карту?",
+                                  QMessageBox::Yes|QMessageBox::No);
+    if (reply == QMessageBox::Yes)
+        deleteSignal(ui->id->text().toInt());
 }

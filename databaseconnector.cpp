@@ -107,7 +107,7 @@ bool DatabaseConnector::addMethods(const QVector<CardMethod> cardMethods)
             return false;
         }
     }
-     db.commit();
+    db.commit();
 
     return true;
 }
@@ -141,10 +141,40 @@ RepairCard DatabaseConnector::getPreviousCard()
 
 RepairCard DatabaseConnector::getNextCard()
 {
-    if (currentIndex != ids.count() - 1)
-        currentIndex++;
+    currentIndex++;
+    if (currentIndex >= ids.count() - 1)
+        currentIndex = ids.count() - 1;
+
 
     return getCardById(ids[currentIndex]);
+}
+
+void DatabaseConnector::deleteCard(int id)
+{
+    db.transaction();
+    QSqlQuery query;
+    auto queryString = QString("delete from repair_cards where id=%1").arg(id);
+
+    auto result = query.exec(queryString);
+    if (!result)
+    {
+        db.rollback();
+        return;
+    }
+
+    queryString = QString("delete from cards_methods where id_card=%1").arg(id);
+
+    result = query.exec(queryString);
+    if (!result)
+    {
+        db.rollback();
+        return;
+    }
+
+    db.commit();
+
+    updateIds(false);
+    currentIndex--;
 }
 
 void DatabaseConnector::fillCard(RepairCard& card, QSqlQuery& query)
@@ -176,7 +206,7 @@ void DatabaseConnector::fillCard(RepairCard& card, QSqlQuery& query)
     card.currentIndex = currentIndex+1;
 }
 
-bool DatabaseConnector::updateIds()
+bool DatabaseConnector::updateIds(bool currentChange)
 {
     QSqlQuery query;
     if (!query.exec(QString("select id from repair_cards ORDER BY id")))
@@ -185,8 +215,8 @@ bool DatabaseConnector::updateIds()
     ids.clear();
     while (query.next())
         ids.push_back(query.value(0).toInt());
-
-    currentIndex = ids.count()-1;
+    if (currentChange)
+        currentIndex = ids.count()-1;
     return true;
 }
 
