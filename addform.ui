@@ -77,19 +77,6 @@
           </property>
          </widget>
         </item>
-        <item row="1" column="4">
-         <widget class="QDateEdit" name="readyDate">
-          <property name="maximumSize">
-           <size>
-            <width>16777215</width>
-            <height>16777215</height>
-           </size>
-          </property>
-          <property name="displayFormat">
-           <string>dd.MM.yyyy</string>
-          </property>
-         </widget>
-        </item>
         <item row="1" column="0">
          <widget class="QLineEdit" name="cardNumber">
           <property name="maximumSize">
@@ -100,39 +87,6 @@
           </property>
           <property name="readOnly">
            <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="5">
-         <widget class="QDateEdit" name="returnDate">
-          <property name="displayFormat">
-           <string>dd.MM.yyyy</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <widget class="QDateEdit" name="receiveDate">
-          <property name="maximumSize">
-           <size>
-            <width>16777215</width>
-            <height>16777215</height>
-           </size>
-          </property>
-          <property name="dateTime">
-           <datetime>
-            <hour>0</hour>
-            <minute>0</minute>
-            <second>0</second>
-            <year>2000</year>
-            <month>1</month>
-            <day>8</day>
-           </datetime>
-          </property>
-          <property name="currentSection">
-           <enum>QDateTimeEdit::DaySection</enum>
-          </property>
-          <property name="displayFormat">
-           <string>dd.MM.yyyy</string>
           </property>
          </widget>
         </item>
@@ -181,17 +135,38 @@
           </property>
          </widget>
         </item>
+        <item row="1" column="1">
+         <widget class="QLineEdit" name="receiveDate">
+          <property name="inputMask">
+           <string>99.99.9999</string>
+          </property>
+         </widget>
+        </item>
         <item row="1" column="2">
-         <widget class="QDateEdit" name="dateEdit">
-          <property name="displayFormat">
-           <string>dd.MM.yyyy</string>
+         <widget class="QLineEdit" name="sendDate">
+          <property name="inputMask">
+           <string>99.99.9999</string>
           </property>
          </widget>
         </item>
         <item row="1" column="3">
-         <widget class="QDateEdit" name="dateEdit_2">
-          <property name="displayFormat">
-           <string>dd.MM.yyyy</string>
+         <widget class="QLineEdit" name="receiveDate2">
+          <property name="inputMask">
+           <string>99.99.9999</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="4">
+         <widget class="QLineEdit" name="readyDate">
+          <property name="inputMask">
+           <string>99.99.9999</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="5">
+         <widget class="QLineEdit" name="returnDate">
+          <property name="inputMask">
+           <string>99.99.9999</string>
           </property>
          </widget>
         </item>

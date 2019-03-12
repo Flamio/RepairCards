@@ -79,11 +79,11 @@ void AddForm::setCard(const RepairCard &card)
     ui->note->setText(creatingCard.note);
     ui->reason->setText(creatingCard.reason);
     ui->product->setText(creatingCard.productName);
-    ui->receiveDate->setDate(creatingCard.receiveFromClientDate);
-    ui->returnDate->setDate(creatingCard.returnDate);
+    ui->receiveDate->setText(creatingCard.receiveFromClientDate.toString("dd.MM.yyyy"));
+    ui->returnDate->setText(creatingCard.returnDate.toString("dd.MM.yyyy"));
     ui->repairer->setCurrentIndex(ui->repairer->findData(creatingCard.repairerId));
     ui->state->setCurrentIndex(ui->state->findData(creatingCard.stateId));
-    ui->readyDate->setDate(creatingCard.readyDate);
+    ui->readyDate->setText(creatingCard.readyDate.toString("dd.MM.yyyy"));
     ui->repairCost->setValue(creatingCard.costRepair);
     ui->clientCost->setValue(creatingCard.costForClient);
 
@@ -202,11 +202,11 @@ void AddForm::on_pushButton_11_clicked()
     creatingCard.complaints = ui->complains->toPlainText();
     creatingCard.id = ui->cardNumber->text().toInt();
     creatingCard.note = ui->note->toPlainText();
-    creatingCard.readyDate = ui->readyDate->date();
+    creatingCard.readyDate = QDate::fromString(ui->readyDate->text(), "dd.MM.yyyy");
     creatingCard.reason = ui->reason->toPlainText();
-    creatingCard.receiveFromClientDate = ui->receiveDate->date();
+    creatingCard.receiveFromClientDate = QDate::fromString(ui->receiveDate->text(),"dd.MM.yyyy");
     creatingCard.repairerId = ui->repairer->currentData().toInt();
-    creatingCard.returnDate = ui->returnDate->date();
+    creatingCard.returnDate = QDate::fromString(ui->returnDate->text(),"dd.MM.yyyy");
     creatingCard.stateId = ui->state->currentData().toInt();
     creatingCard.costForClient = ui->clientCost->value();
     creatingCard.costRepair = ui->repairCost->value();

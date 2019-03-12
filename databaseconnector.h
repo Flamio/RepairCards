@@ -34,6 +34,7 @@ private:
     RepairCard getCardById(int id);
     int currentIndex = 0;
     void fillCard(RepairCard& card, QSqlQuery& query);
+    bool updateIds();
 };
 
 #endif // DATABASECONNECTOR_H

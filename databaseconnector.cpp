@@ -11,15 +11,6 @@ bool DatabaseConnector::open()
     if (!result)
         return false;
 
-    QSqlQuery query;
-    if (!query.exec(QString("select id from repair_cards ORDER BY id")))
-        return false;
-
-    ids.clear();
-    while (query.next())
-        ids.push_back(query.value(0).toInt());
-
-    currentIndex = ids.count()-1;
     return true;
 }
 
@@ -59,12 +50,12 @@ QHash<int,Client> DatabaseConnector::getClients()
 
 RepairCard DatabaseConnector::getLastCard()
 {
+    updateIds();
     RepairCard card;
     QSqlQuery query;
     query.exec("SELECT c.*, p.name, cl.phone, cl.person, cl.address, st.name, rep.name, cl.name FROM repair_cards c left join products p on c.product_id=p.id left join clients cl on c.client_id=cl.id left join states st on c.state_id=st.id left join repairers rep on c.repairer_id=rep.id ORDER BY id DESC LIMIT 1");
     if (query.first())
         fillCard(card, query);
-    currentIndex = ids.count() - 1;
     return card;
 }
 
@@ -94,11 +85,6 @@ bool DatabaseConnector::addCard(const RepairCard &card)
             .arg(card.costForClient).arg(card.costRepair);
 
     auto result = query.exec(queryString);
-    if (result)
-    {
-        ids.push_back(card.id);
-        currentIndex = ids.count() - 1;
-    }
     return result;
 }
 
@@ -185,6 +171,20 @@ void DatabaseConnector::fillCard(RepairCard& card, QSqlQuery& query)
     card.client.name = query.value(20).toString();
     card.allIndexes = ids.count();
     card.currentIndex = currentIndex+1;
+}
+
+bool DatabaseConnector::updateIds()
+{
+    QSqlQuery query;
+    if (!query.exec(QString("select id from repair_cards ORDER BY id")))
+        return false;
+
+    ids.clear();
+    while (query.next())
+        ids.push_back(query.value(0).toInt());
+
+    currentIndex = ids.count()-1;
+    return true;
 }
 
 RepairCard DatabaseConnector::getCardById(int id)
