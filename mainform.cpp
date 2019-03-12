@@ -34,6 +34,8 @@ void MainForm::setCard(const RepairCard &card, const QVector<CardMethod> &method
     ui->reason->setPlainText(card.reason);
     ui->repairCost->setText(QString::number(card.costRepair));
     ui->repairer->setText(card.repairer);
+    ui->receive2->setText(card.receiveFromFactoryDate.toString("dd.MM.yyyy"));
+    ui->send->setText(card.sendDate.toString("dd.MM.yyyy"));
 
     for (auto method : this->methods)
     {

@@ -91,6 +91,8 @@ void AddForm::setCard(const RepairCard &card)
     ui->readyDate->setText(creatingCard.readyDate.toString("dd.MM.yyyy"));
     ui->repairCost->setValue(creatingCard.costRepair);
     ui->clientCost->setValue(creatingCard.costForClient);
+    ui->sendDate->setText(creatingCard.sendDate.toString("dd.MM.yyyy"));
+    ui->receiveDate2->setText(creatingCard.sendDate.toString("dd.MM.yyyy"));
 
     foreach (MethodGui item, combos) {
         delete item.combo;
@@ -215,6 +217,8 @@ void AddForm::on_pushButton_11_clicked()
     creatingCard.stateId = ui->state->currentData().toInt();
     creatingCard.costForClient = ui->clientCost->value();
     creatingCard.costRepair = ui->repairCost->value();
+    creatingCard.sendDate = QDate::fromString(ui->sendDate->text(), "dd.MM.yyyy");
+    creatingCard.receiveFromFactoryDate = QDate::fromString(ui->receiveDate2->text(), "dd.MM.yyyy");
 
     QVector<CardMethod> cardMethods;
     foreach (MethodGui element, combos)
@@ -236,7 +240,7 @@ void AddForm::on_barCode_textChanged(const QString &arg1)
     if (arg1.count() != barCodeLenght)
         return;
 
-    barCodeFinish(arg1);
+    emit barCodeFinish(arg1);
 
     auto data = Helper::ParseBarcode(arg1);
 

@@ -77,12 +77,13 @@ bool DatabaseConnector::addCard(const RepairCard &card)
 {
     QSqlQuery query;
     auto queryString = QString("insert into repair_cards values"
-                               " (%1,%2,%3,%4,'%5','%6','%7',%8,'%9','%10','%11','%12',%13,%14)")
+                               " (%1,%2,%3,%4,'%5','%6','%7',%8,'%9','%10','%11','%12',%13,%14,'%15','%16')")
             .arg(card.id).arg(card.repairerId).arg(card.productId).arg(card.clientId)
             .arg(card.receiveFromClientDate.toString("dd.MM.yyyy")).arg(card.readyDate.toString("dd.MM.yyyy")).arg(card.returnDate.toString("dd.MM.yyyy"))
             .arg(card.stateId)
             .arg(card.complaints).arg(card.reason).arg(card.note).arg(card.barCode)
-            .arg(card.costForClient).arg(card.costRepair);
+            .arg(card.costForClient).arg(card.costRepair)
+            .arg(card.receiveFromFactoryDate.toString("dd.MM.yyyy")).arg(card.sendDate.toString("dd.MM.yyyy"));
 
     auto result = query.exec(queryString);
     return result;
@@ -153,7 +154,7 @@ void DatabaseConnector::fillCard(RepairCard& card, QSqlQuery& query)
     card.productId  = query.value(2).toInt();
     card.clientId = query.value(3).toInt();
     card.receiveFromClientDate = QDate::fromString(query.value(4).toString(),"dd.MM.yyyy");
-    card.readyDate= QDate::fromString(query.value(5).toString(),"dd.MM.yyyy");;
+    card.readyDate= QDate::fromString(query.value(5).toString(),"dd.MM.yyyy");
     card.returnDate= QDate::fromString(query.value(6).toString(),"dd.MM.yyyy");
     card.stateId = query.value(7).toInt();
     card.complaints = query.value(8).toString();
@@ -162,13 +163,15 @@ void DatabaseConnector::fillCard(RepairCard& card, QSqlQuery& query)
     card.barCode = query.value(11).toString();
     card.costForClient = query.value(12).toInt();
     card.costRepair = query.value(13).toInt();
-    card.productName = query.value(14).toString();
-    card.client.phone = query.value(15).toString();
-    card.client.contact = query.value(16).toString();
-    card.client.address = query.value(17).toString();
-    card.state = query.value(18).toString();
-    card.repairer = query.value(19).toString();
-    card.client.name = query.value(20).toString();
+    card.receiveFromFactoryDate = QDate::fromString(query.value(14).toString(), "dd.MM.yyyy");
+    card.sendDate = QDate::fromString(query.value(15).toString(), "dd.MM.yyyy");
+    card.productName = query.value(16).toString();
+    card.client.phone = query.value(17).toString();
+    card.client.contact = query.value(18).toString();
+    card.client.address = query.value(19).toString();
+    card.state = query.value(20).toString();
+    card.repairer = query.value(21).toString();
+    card.client.name = query.value(22).toString();
     card.allIndexes = ids.count();
     card.currentIndex = currentIndex+1;
 }

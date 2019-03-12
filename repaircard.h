@@ -16,6 +16,8 @@ struct RepairCard
     QDate receiveFromClientDate = QDate::currentDate();
     QDate readyDate;
     QDate returnDate;
+    QDate receiveFromFactoryDate;
+    QDate sendDate;
     QString complaints = "";
     QString reason = "";
     QString note = "";
