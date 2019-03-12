@@ -8,6 +8,11 @@ AddForm::AddForm(QWidget *parent) :
     ui(new Ui::AddForm)
 {
     ui->setupUi(this);
+
+    dateOnReturnDate = new DateOnDoubleClick(ui->returnDate);
+    dateOnReadyDate = new DateOnDoubleClick(ui->readyDate);
+    dateOnReceiveDate = new DateOnDoubleClick(ui->receiveDate2);
+    dateOnSendDate = new DateOnDoubleClick(ui->sendDate);
 }
 
 AddForm::~AddForm()

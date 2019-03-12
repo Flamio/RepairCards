@@ -6,6 +6,7 @@
 #include <QHBoxLayout>
 #include "iaddview.h"
 #include "cardmethod.h"
+#include <QEvent>
 
 namespace Ui {
 class AddForm;
@@ -16,6 +17,23 @@ struct MethodGui
     QComboBox* combo;
     QLineEdit* edit;
 };
+
+class DateOnDoubleClick : public QObject {
+    bool eventFilter(QObject *watched, QEvent *event) {
+        if (event->type() == QEvent::MouseButtonDblClick)
+            QMetaObject::invokeMethod(watched, "setText", Q_ARG(QString, QDate::currentDate().toString("dd.MM.yyyy")));
+
+        return QObject::eventFilter(watched, event);
+    }
+public:
+    explicit DateOnDoubleClick(QObject * parent = nullptr) : QObject(parent) {
+        addTo(parent);
+    }
+    void addTo(QObject * obj) {
+        if (obj) obj->installEventFilter(this);
+    }
+};
+
 
 class AddForm : public QMainWindow, public IAddView
 {
@@ -64,6 +82,11 @@ private:
     QVector<Handbook> methods;
     RepairCard creatingCard;
     void addGuiMethodsItem();
+
+    DateOnDoubleClick* dateOnReturnDate = nullptr;
+    DateOnDoubleClick* dateOnSendDate = nullptr;
+    DateOnDoubleClick* dateOnReadyDate = nullptr;
+    DateOnDoubleClick* dateOnReceiveDate = nullptr;
 };
 
 #endif // MAINWINDOW_H
