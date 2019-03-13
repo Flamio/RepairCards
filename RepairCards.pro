@@ -35,7 +35,6 @@ HEADERS  += \
     databaseconnector.h \
     handbook.h \
     client.h \
-    mainviewmode.h \
     repaircard.h \
     cardmethod.h \
     addform.h \
@@ -44,7 +43,8 @@ HEADERS  += \
     mainpresenter.h \
     iaddview.h \
     imainview.h \
-    helper.h
+    helper.h \
+    addformmode.h
 
 FORMS    += \
     addform.ui \

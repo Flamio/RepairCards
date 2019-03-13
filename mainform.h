@@ -30,6 +30,7 @@ protected:
     void closeEvent(QCloseEvent *);
 
 signals:
+    void edit(int);
     void add();
     void navigation(bool);
     void deleteSignal(int id);
@@ -42,6 +43,8 @@ private slots:
     void on_pushButton_10_clicked();
 
     void on_pushButton_9_clicked();
+
+    void on_pushButton_clicked();
 
 private:
     Ui::MainForm *ui;

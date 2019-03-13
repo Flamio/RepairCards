@@ -277,6 +277,13 @@
            </spacer>
           </item>
           <item>
+           <widget class="QPushButton" name="pushButton">
+            <property name="text">
+             <string>Редактировать</string>
+            </property>
+           </widget>
+          </item>
+          <item>
            <widget class="QPushButton" name="pushButton_9">
             <property name="font">
              <font>
@@ -284,7 +291,7 @@
              </font>
             </property>
             <property name="text">
-             <string>Удалить карту</string>
+             <string>Удалить</string>
             </property>
            </widget>
           </item>
@@ -296,7 +303,7 @@
              </font>
             </property>
             <property name="text">
-             <string>Добавить карту</string>
+             <string>Добавить</string>
             </property>
            </widget>
           </item>

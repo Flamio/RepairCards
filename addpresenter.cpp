@@ -10,6 +10,7 @@ void AddPresenter::setAddView(IAddView *value)
     addView = value;
     connect(dynamic_cast<QObject*>(addView), SIGNAL(barCodeFinish(QString)), this, SLOT(onBarCodeFinish(QString)));
     connect(dynamic_cast<QObject*>(addView), SIGNAL(addSignal(const RepairCard&, const QVector<CardMethod>&)), this, SLOT(onAdd(const RepairCard&, const QVector<CardMethod>&)));    
+    connect(dynamic_cast<QObject*>(addView), SIGNAL(editSignal(const RepairCard&, const QVector<CardMethod>&)), this, SLOT(onEdit(const RepairCard&, const QVector<CardMethod>&)));
 }
 
 void AddPresenter::setDatabaseConnector(const DatabaseConnector &value)
@@ -42,14 +43,6 @@ void AddPresenter::start()
     addView->setCard(repairCard,methods_);*/
 }
 
-void AddPresenter::show()
-{
-    repairCard = databaseConnector.getLastCard();
-    repairCard.id++;
-    addView->setCard(repairCard);
-    addView->showWindow();
-}
-
 void AddPresenter::onBarCodeFinish(QString code)
 {
     auto productCode = code.left(5);
@@ -73,6 +66,31 @@ void AddPresenter::onAdd(const RepairCard &card, const QVector<CardMethod> &meth
         return;
     }
 
-    complete();
+    addComplete();
     addView->closeWindow();
+}
+
+void AddPresenter::onEdit(const RepairCard &card, const QVector<CardMethod> &methods)
+{
+    auto result = databaseConnector.updateCard(card);
+    if (!result)
+    {
+        addView->showInfo("Ошибка обновления ремонтной карты !");
+        return;
+    }
+
+    result = databaseConnector.addMethods(methods);
+    if (!result)
+    {
+        addView->showInfo("Ошибка добавления способов устранения!");
+        return;
+    }
+
+    editComplete(card.id);
+    addView->closeWindow();
+}
+
+IAddView *AddPresenter::getAddView() const
+{
+    return addView;
 }

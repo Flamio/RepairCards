@@ -28,6 +28,8 @@ private slots:
     void onAddComplete();
     void onAdd();
     void onDelete(int);
+    void onEdit(int);
+    void onEditComplete(int);
 
 private:
     IMainView* mainView = nullptr;

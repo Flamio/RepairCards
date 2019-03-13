@@ -28,11 +28,12 @@ public:
     RepairCard getPreviousCard();
     RepairCard getNextCard();
     void deleteCard(int id);
+    bool updateCard(const RepairCard& card);
+    RepairCard getCardById(int id);
 
 private:
     QSqlDatabase db;
     QVector<int> ids;
-    RepairCard getCardById(int id);
     int currentIndex = 0;
     void fillCard(RepairCard& card, QSqlQuery& query);
     bool updateIds(bool currentChange=true);

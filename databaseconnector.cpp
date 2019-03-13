@@ -177,6 +177,42 @@ void DatabaseConnector::deleteCard(int id)
     currentIndex--;
 }
 
+bool DatabaseConnector::updateCard(const RepairCard &card)
+{
+    db.transaction();
+    QSqlQuery query;
+    auto queryString = QString("update repair_cards"
+                               " set repairer_id=%1,product_id=%2,client_id=%3,receive_date='%4',ready_date='%5',return='%6',state_id=%7,complaints='%8',reason='%9',note='%10',bar_code='%11',"
+                               " cost_for_client=%12,cost_repair=%13,receive_date2='%14',sendDate='%15'"
+                               " where id=%17")
+            .arg(card.repairerId).arg(card.productId).arg(card.clientId)
+            .arg(card.receiveFromClientDate.toString("dd.MM.yyyy")).arg(card.readyDate.toString("dd.MM.yyyy")).arg(card.returnDate.toString("dd.MM.yyyy"))
+            .arg(card.stateId)
+            .arg(card.complaints).arg(card.reason).arg(card.note).arg(card.barCode)
+            .arg(card.costForClient).arg(card.costRepair)
+            .arg(card.receiveFromFactoryDate.toString("dd.MM.yyyy")).arg(card.sendDate.toString("dd.MM.yyyy"))
+            .arg(card.id);
+
+    auto result = query.exec(queryString);
+    if (!result)
+    {
+        db.rollback();
+        return false;
+    }
+
+    queryString = QString("delete from cards_methods where id_card=%1").arg(card.id);
+
+    result = query.exec(queryString);
+    if (!result)
+    {
+        db.rollback();
+        return false;
+    }
+
+    db.commit();
+    return true;
+}
+
 void DatabaseConnector::fillCard(RepairCard& card, QSqlQuery& query)
 {
     card.id = query.value(0).toInt();

@@ -4,7 +4,7 @@
 
 #include "handbook.h"
 #include "client.h"
-#include "mainviewmode.h"
+#include "addformmode.h"
 #include "repaircard.h"
 #include "cardmethod.h"
 
@@ -18,10 +18,12 @@ public:
     virtual void showInfo(QString) = 0;
     virtual void barCodeFinish(QString barcode) = 0;
     virtual void addSignal(const RepairCard& card, const QVector<CardMethod>& methods) = 0;
+    virtual void editSignal(const RepairCard& card, const QVector<CardMethod>& methods) = 0;
     virtual void setProduct(const Handbook& product) = 0;
     virtual void showWindow() = 0;
-    virtual void setCard(const RepairCard &card) = 0;
+    virtual void setCard(const RepairCard &card, QVector<CardMethod>* methods=nullptr) = 0;
     virtual void closeWindow() = 0;
+    virtual void setMode(const AddFormMode &value) = 0;
 
 signals:
 };

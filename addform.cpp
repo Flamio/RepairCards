@@ -67,13 +67,18 @@ void AddForm::showInfo(QString info)
     msg.exec();
 }
 
-void AddForm::setCard(const RepairCard &card)
+void AddForm::setCard(const RepairCard &card, QVector<CardMethod>* methods)
 {
-    RepairCard card_;
-    creatingCard = card_;
-    creatingCard.id = card.id;
-    ui->createMonth->clear();
-    ui->createYear->clear();
+    if (mode == Adding)
+    {
+        RepairCard card_;
+        creatingCard = card_;
+        creatingCard.id = card.id;
+        ui->createMonth->clear();
+        ui->createYear->clear();
+    }
+    else
+        creatingCard = card;
 
     ui->cardNumber->setText(QString::number(creatingCard.id));
     ui->barCode->setText(creatingCard.barCode);
@@ -94,12 +99,44 @@ void AddForm::setCard(const RepairCard &card)
     ui->repairCost->setValue(creatingCard.costRepair);
     ui->clientCost->setValue(creatingCard.costForClient);
     ui->sendDate->setText(creatingCard.sendDate.toString("dd.MM.yyyy"));
-    ui->receiveDate2->setText(creatingCard.sendDate.toString("dd.MM.yyyy"));
+    ui->receiveDate2->setText(creatingCard.receiveFromFactoryDate.toString("dd.MM.yyyy"));
 
     foreach (MethodGui item, combos) {
         delete item.combo;
         delete item.edit;
         combos.pop_back();
+    }
+
+    if (methods == nullptr)
+        return;
+
+    for (auto method = methods->begin(); method != methods->end(); method++)
+    {
+        QComboBox* combo = new QComboBox(this);
+        combo->addItem("", 0);
+
+        foreach (auto method_, this->methods) {
+            combo->addItem(method_.name, method_.id);
+        }
+
+        combo->setCurrentIndex(combo->findData(method->methodId));
+
+        auto lineEdit = new QLineEdit(this);
+
+        auto font = lineEdit->font();
+        font.setPointSize(Helper::getFontSize());
+        combo->setFont(font);
+        lineEdit->setFont(font);
+        lineEdit->setText(method->description);
+
+        ui->verticalLayout_8->addWidget(combo);
+        ui->verticalLayout_9->addWidget(lineEdit);
+
+        MethodGui mgui;
+        mgui.combo = combo;
+        mgui.combo->setEditable(true);
+        mgui.edit = lineEdit;
+        combos.push_back(mgui);
     }
 }
 
@@ -231,6 +268,7 @@ void AddForm::on_pushButton_11_clicked()
     {
         if (element.combo->currentData().toInt() == 0)
             continue;
+
         CardMethod cardMethod;
         cardMethod.description = element.edit->text();
         cardMethod.methodId = element.combo->currentData().toInt();
@@ -238,7 +276,10 @@ void AddForm::on_pushButton_11_clicked()
         cardMethods.push_back(cardMethod);
     }
 
-    addSignal(creatingCard, cardMethods);
+    if (this->mode == Adding)
+        addSignal(creatingCard, cardMethods);
+    else
+        editSignal(creatingCard, cardMethods);
 }
 
 void AddForm::on_barCode_textChanged(const QString &arg1)
@@ -278,4 +319,13 @@ void AddForm::on_sendDate_textChanged(const QString &arg1)
         ui->readyDate->clear();
         ui->state->setCurrentIndex(ui->state->findData(sendStateId));
     }
+}
+
+void AddForm::setMode(const AddFormMode &value)
+{
+    mode = value;
+    if (mode == Adding)
+        this->setWindowTitle("Ремонтная карта (добавление)");
+    else
+        this->setWindowTitle("Ремонтная карта (редактирование)");
 }

@@ -101,3 +101,8 @@ void MainForm::on_pushButton_9_clicked()
     if (reply == QMessageBox::Yes)
         deleteSignal(ui->id->text().toInt());
 }
+
+void MainForm::on_pushButton_clicked()
+{
+    emit edit(ui->id->text().toInt());
+}

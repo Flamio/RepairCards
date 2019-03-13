@@ -14,22 +14,24 @@ public:
 
     void setAddView(IAddView *value);
     void setDatabaseConnector(const DatabaseConnector &value);
-    void start();
-    void show();
+    void start();    
+
+    IAddView *getAddView() const;
 
 signals:
-    void complete();
+    void addComplete();
+    void editComplete(int id);
 
 public slots:
 
 private slots:
     void onBarCodeFinish(QString);
     void onAdd(const RepairCard&, const QVector<CardMethod>&);
+    void onEdit(const RepairCard&, const QVector<CardMethod>&);
 
 private:
     IAddView* addView;
     DatabaseConnector databaseConnector;
-    RepairCard repairCard;
 };
 
 #endif // ADDPRESENTER_H

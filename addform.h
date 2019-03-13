@@ -50,12 +50,15 @@ public:
     virtual void showInfo(QString);
     virtual void setProduct(const Handbook& product);
     virtual void showWindow();
-    virtual void setCard(const RepairCard &card);
+    virtual void setCard(const RepairCard &card, QVector<CardMethod>* methods=nullptr);
     virtual void closeWindow();
 
+    void setMode(const AddFormMode &value);
+
 signals:
-    void barCodeFinish(QString barcode);    
+    void barCodeFinish(QString barcode);
     void addSignal(const RepairCard& card, const QVector<CardMethod>& methods);
+    void editSignal(const RepairCard& card, const QVector<CardMethod>& methods);
 
 private slots:
 
@@ -89,6 +92,8 @@ private:
     DateOnDoubleClick* dateOnSendDate = nullptr;
     DateOnDoubleClick* dateOnReadyDate = nullptr;
     DateOnDoubleClick* dateOnReceiveDate = nullptr;
+
+    AddFormMode mode = Adding;
 };
 
 #endif // MAINWINDOW_H
