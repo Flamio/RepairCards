@@ -25,7 +25,6 @@ public slots:
 private slots:
     void onBarCodeFinish(QString);
     void onAdd(const RepairCard&, const QVector<CardMethod>&);
-    void onCancelAdding();
 
 private:
     IAddView* addView;

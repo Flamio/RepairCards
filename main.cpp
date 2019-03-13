@@ -19,15 +19,14 @@ int main(int argc, char *argv[])
     }
 
     AddPresenter addPresenter(&a);
-    AddForm w;
-    addPresenter.setAddView(&w);
-    addPresenter.setDatabaseConnector(dbConnector);
-
-    addPresenter.start();
-
 
     MainForm mainForm;
     mainForm.show();
+
+    AddForm w(&mainForm);
+    addPresenter.setAddView(&w);
+    addPresenter.setDatabaseConnector(dbConnector);
+    addPresenter.start();
 
     MainPresenter mainPresenter;
     mainPresenter.setAddPresenter(&addPresenter);

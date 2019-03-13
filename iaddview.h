@@ -18,7 +18,6 @@ public:
     virtual void showInfo(QString) = 0;
     virtual void barCodeFinish(QString barcode) = 0;
     virtual void addSignal(const RepairCard& card, const QVector<CardMethod>& methods) = 0;
-    virtual void cancelAdding() = 0;
     virtual void setProduct(const Handbook& product) = 0;
     virtual void showWindow() = 0;
     virtual void setCard(const RepairCard &card) = 0;

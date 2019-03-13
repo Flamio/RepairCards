@@ -26,6 +26,9 @@ public:
 
     virtual void setCard(const RepairCard &card, const QVector<CardMethod>& methods);
 
+protected:
+    void closeEvent(QCloseEvent *);
+
 signals:
     void add();
     void navigation(bool);

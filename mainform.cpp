@@ -58,9 +58,24 @@ void MainForm::setCard(const RepairCard &card, const QVector<CardMethod> &method
         name->setReadOnly(true);
         description->setReadOnly(true);
         description->setText(method.description);
+        auto font = name->font();
+        font.setPointSize(Helper::getFontSize());
+        name->setFont(font);
+        description->setFont(font);
         ui->verticalLayout_2->addWidget(name);
         ui->verticalLayout_3->addWidget(description);
     }
+}
+
+void MainForm::closeEvent(QCloseEvent *event)
+{
+    QMessageBox::StandardButton reply;
+    reply = QMessageBox::question(this, "Выход", "Вы действительно хотите закрыть программу?",
+                                  QMessageBox::Yes|QMessageBox::No);
+    if (reply == QMessageBox::Yes)
+        event->accept();
+    else
+        event->ignore();
 }
 
 void MainForm::on_pushButton_7_clicked()

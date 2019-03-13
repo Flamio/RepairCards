@@ -9,8 +9,7 @@ void AddPresenter::setAddView(IAddView *value)
 {
     addView = value;
     connect(dynamic_cast<QObject*>(addView), SIGNAL(barCodeFinish(QString)), this, SLOT(onBarCodeFinish(QString)));
-    connect(dynamic_cast<QObject*>(addView), SIGNAL(addSignal(const RepairCard&, const QVector<CardMethod>&)), this, SLOT(onAdd(const RepairCard&, const QVector<CardMethod>&)));
-    connect(dynamic_cast<QObject*>(addView), SIGNAL(cancelAdding()), this, SLOT(onCancelAdding()));
+    connect(dynamic_cast<QObject*>(addView), SIGNAL(addSignal(const RepairCard&, const QVector<CardMethod>&)), this, SLOT(onAdd(const RepairCard&, const QVector<CardMethod>&)));    
 }
 
 void AddPresenter::setDatabaseConnector(const DatabaseConnector &value)
@@ -75,10 +74,5 @@ void AddPresenter::onAdd(const RepairCard &card, const QVector<CardMethod> &meth
     }
 
     complete();
-    addView->closeWindow();
-}
-
-void AddPresenter::onCancelAdding()
-{
     addView->closeWindow();
 }

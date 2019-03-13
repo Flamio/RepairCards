@@ -13,6 +13,8 @@ AddForm::AddForm(QWidget *parent) :
     dateOnReadyDate = new DateOnDoubleClick(ui->readyDate);
     dateOnReceiveDate = new DateOnDoubleClick(ui->receiveDate2);
     dateOnSendDate = new DateOnDoubleClick(ui->sendDate);
+
+    ui->barCode->setValidator(new QRegExpValidator(QRegExp("^\\d{17}$"),this));
 }
 
 AddForm::~AddForm()
@@ -135,6 +137,11 @@ void AddForm::on_pushButton_4_clicked()
 
     auto lineEdit = new QLineEdit(this);
 
+    auto font = lineEdit->font();
+    font.setPointSize(Helper::getFontSize());
+    combo->setFont(font);
+    lineEdit->setFont(font);
+
     ui->verticalLayout_8->addWidget(combo);
     ui->verticalLayout_9->addWidget(lineEdit);
 
@@ -197,10 +204,9 @@ void AddForm::on_pushButton_11_clicked()
         showInfo("Не выбрано состояние!");
         return;
     }
-    if (ui->clientCost->value() != 0 && ui->repairCost->value() != 0 ||
-            ui->clientCost->value() == 0 && ui->repairCost->value() == 0 )
+    if (ui->clientCost->value() != 0 && ui->repairCost->value() != 0)
     {
-        showInfo("Должно быть заполнена цена для клиента или цена ремонта!");
+        showInfo("Должна быть заполнена цена для клиента или цена ремонта!");
         return;
     }
 
@@ -250,5 +256,26 @@ void AddForm::on_barCode_textChanged(const QString &arg1)
 
 void AddForm::on_pushButton_12_clicked()
 {
-    cancelAdding();
+    this->close();
+}
+
+void AddForm::on_sendDate_textChanged(const QString &arg1)
+{
+    if (arg1.length() < 10)
+    {
+        ui->receiveDate2->setDisabled(true);
+        ui->receiveDate2->clear();
+        ui->returnDate->setDisabled(false);
+        ui->readyDate->setDisabled(false);
+        ui->state->setCurrentIndex(0);
+    }
+    else
+    {
+        ui->receiveDate2->setEnabled(true);
+        ui->returnDate->setDisabled(true);
+        ui->readyDate->setDisabled(true);
+        ui->returnDate->clear();
+        ui->readyDate->clear();
+        ui->state->setCurrentIndex(ui->state->findData(sendStateId));
+    }
 }

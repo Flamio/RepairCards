@@ -54,8 +54,7 @@ public:
     virtual void closeWindow();
 
 signals:
-    void barCodeFinish(QString barcode);
-    void cancelAdding();
+    void barCodeFinish(QString barcode);    
     void addSignal(const RepairCard& card, const QVector<CardMethod>& methods);
 
 private slots:
@@ -74,7 +73,10 @@ private slots:
 
     void on_pushButton_12_clicked();
 
+    void on_sendDate_textChanged(const QString &arg1);
+
 private:
+    const int sendStateId = 4;
     const int barCodeLenght = 17;
     Ui::AddForm *ui;
     QHash<int,Client> clients;

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>900</width>
-    <height>715</height>
+    <width>1009</width>
+    <height>746</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,6 +18,11 @@
     <layout class="QGridLayout" name="gridLayout">
      <item row="8" column="0">
       <widget class="QLabel" name="label_14">
+       <property name="font">
+        <font>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
        <property name="text">
         <string>Причина отказа</string>
        </property>
@@ -27,6 +32,11 @@
       <layout class="QGridLayout" name="gridLayout_4">
        <item row="1" column="2">
         <widget class="QLineEdit" name="clientCost">
+         <property name="font">
+          <font>
+           <pointsize>12</pointsize>
+          </font>
+         </property>
          <property name="readOnly">
           <bool>true</bool>
          </property>
@@ -34,6 +44,11 @@
        </item>
        <item row="1" column="3">
         <widget class="QLineEdit" name="repairCost">
+         <property name="font">
+          <font>
+           <pointsize>12</pointsize>
+          </font>
+         </property>
          <property name="readOnly">
           <bool>true</bool>
          </property>
@@ -41,6 +56,11 @@
        </item>
        <item row="0" column="3">
         <widget class="QLabel" name="label_17">
+         <property name="font">
+          <font>
+           <pointsize>12</pointsize>
+          </font>
+         </property>
          <property name="text">
           <string>Затраты на ремонт</string>
          </property>
@@ -54,6 +74,11 @@
            <height>0</height>
           </size>
          </property>
+         <property name="font">
+          <font>
+           <pointsize>12</pointsize>
+          </font>
+         </property>
          <property name="readOnly">
           <bool>true</bool>
          </property>
@@ -61,6 +86,11 @@
        </item>
        <item row="0" column="2">
         <widget class="QLabel" name="label_16">
+         <property name="font">
+          <font>
+           <pointsize>12</pointsize>
+          </font>
+         </property>
          <property name="text">
           <string>Цена для клиента</string>
          </property>
@@ -68,6 +98,11 @@
        </item>
        <item row="0" column="0">
         <widget class="QLabel" name="label_15">
+         <property name="font">
+          <font>
+           <pointsize>12</pointsize>
+          </font>
+         </property>
          <property name="text">
           <string>Ремонтник</string>
          </property>
@@ -92,6 +127,11 @@
       <layout class="QGridLayout" name="gridLayout_5">
        <item row="0" column="0">
         <widget class="QLabel" name="label_18">
+         <property name="font">
+          <font>
+           <pointsize>12</pointsize>
+          </font>
+         </property>
          <property name="text">
           <string>Способ устранения</string>
          </property>
@@ -99,21 +139,39 @@
        </item>
        <item row="0" column="1">
         <widget class="QLabel" name="label_19">
+         <property name="font">
+          <font>
+           <pointsize>12</pointsize>
+          </font>
+         </property>
          <property name="text">
           <string>Описание</string>
          </property>
         </widget>
        </item>
        <item row="1" column="0">
-        <layout class="QVBoxLayout" name="verticalLayout_2"/>
+        <layout class="QVBoxLayout" name="verticalLayout_2">
+         <property name="spacing">
+          <number>0</number>
+         </property>
+        </layout>
        </item>
        <item row="1" column="1">
-        <layout class="QVBoxLayout" name="verticalLayout_3"/>
+        <layout class="QVBoxLayout" name="verticalLayout_3">
+         <property name="spacing">
+          <number>0</number>
+         </property>
+        </layout>
        </item>
       </layout>
      </item>
      <item row="17" column="0">
       <widget class="QFrame" name="frame_2">
+       <property name="font">
+        <font>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
        <property name="frameShape">
         <enum>QFrame::StyledPanel</enum>
        </property>
@@ -125,6 +183,11 @@
          <layout class="QHBoxLayout" name="horizontalLayout_6">
           <item>
            <widget class="QPushButton" name="pushButton_7">
+            <property name="font">
+             <font>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
             <property name="text">
              <string>Назад</string>
             </property>
@@ -132,6 +195,11 @@
           </item>
           <item>
            <widget class="QPushButton" name="pushButton_8">
+            <property name="font">
+             <font>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
             <property name="text">
              <string>Вперед</string>
             </property>
@@ -144,6 +212,11 @@
               <width>100</width>
               <height>16777215</height>
              </size>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>12</pointsize>
+             </font>
             </property>
             <property name="inputMask">
              <string/>
@@ -170,10 +243,21 @@
            </spacer>
           </item>
           <item>
-           <widget class="QComboBox" name="comboBox_5"/>
+           <widget class="QComboBox" name="comboBox_5">
+            <property name="font">
+             <font>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
+           </widget>
           </item>
           <item>
            <widget class="QPushButton" name="pushButton_6">
+            <property name="font">
+             <font>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
             <property name="text">
              <string>печать</string>
             </property>
@@ -194,6 +278,11 @@
           </item>
           <item>
            <widget class="QPushButton" name="pushButton_9">
+            <property name="font">
+             <font>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
             <property name="text">
              <string>Удалить карту</string>
             </property>
@@ -201,6 +290,11 @@
           </item>
           <item>
            <widget class="QPushButton" name="pushButton_10">
+            <property name="font">
+             <font>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
             <property name="text">
              <string>Добавить карту</string>
             </property>
@@ -218,6 +312,11 @@
          <width>16777215</width>
          <height>50</height>
         </size>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>12</pointsize>
+        </font>
        </property>
        <property name="readOnly">
         <bool>true</bool>
@@ -252,6 +351,11 @@
      </item>
      <item row="6" column="0">
       <widget class="QLabel" name="label_13">
+       <property name="font">
+        <font>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
        <property name="text">
         <string>Жалобы</string>
        </property>
@@ -284,6 +388,11 @@
          <height>50</height>
         </size>
        </property>
+       <property name="font">
+        <font>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
        <property name="readOnly">
         <bool>true</bool>
        </property>
@@ -293,6 +402,11 @@
       <layout class="QGridLayout" name="gridLayout_3">
        <item row="1" column="3">
         <widget class="QLineEdit" name="createYear">
+         <property name="font">
+          <font>
+           <pointsize>12</pointsize>
+          </font>
+         </property>
          <property name="readOnly">
           <bool>true</bool>
          </property>
@@ -300,6 +414,11 @@
        </item>
        <item row="1" column="1">
         <widget class="QLineEdit" name="barcode">
+         <property name="font">
+          <font>
+           <pointsize>12</pointsize>
+          </font>
+         </property>
          <property name="readOnly">
           <bool>true</bool>
          </property>
@@ -307,6 +426,11 @@
        </item>
        <item row="0" column="0">
         <widget class="QLabel" name="label_9">
+         <property name="font">
+          <font>
+           <pointsize>12</pointsize>
+          </font>
+         </property>
          <property name="text">
           <string>Изделие</string>
          </property>
@@ -314,6 +438,11 @@
        </item>
        <item row="1" column="4">
         <widget class="QLineEdit" name="createMonth">
+         <property name="font">
+          <font>
+           <pointsize>12</pointsize>
+          </font>
+         </property>
          <property name="readOnly">
           <bool>true</bool>
          </property>
@@ -334,6 +463,11 @@
        </item>
        <item row="0" column="3">
         <widget class="QLabel" name="label_11">
+         <property name="font">
+          <font>
+           <pointsize>12</pointsize>
+          </font>
+         </property>
          <property name="text">
           <string>Год выпуска</string>
          </property>
@@ -341,6 +475,11 @@
        </item>
        <item row="0" column="1">
         <widget class="QLabel" name="label_10">
+         <property name="font">
+          <font>
+           <pointsize>12</pointsize>
+          </font>
+         </property>
          <property name="text">
           <string>Штрихкод</string>
          </property>
@@ -348,6 +487,11 @@
        </item>
        <item row="1" column="0">
         <widget class="QLineEdit" name="product">
+         <property name="font">
+          <font>
+           <pointsize>12</pointsize>
+          </font>
+         </property>
          <property name="readOnly">
           <bool>true</bool>
          </property>
@@ -355,6 +499,11 @@
        </item>
        <item row="0" column="4">
         <widget class="QLabel" name="label_12">
+         <property name="font">
+          <font>
+           <pointsize>12</pointsize>
+          </font>
+         </property>
          <property name="text">
           <string>Месяц</string>
          </property>
@@ -375,6 +524,11 @@
          <width>16777215</width>
          <height>50</height>
         </size>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>12</pointsize>
+        </font>
        </property>
        <property name="readOnly">
         <bool>true</bool>
@@ -398,6 +552,11 @@
       <layout class="QGridLayout" name="gridLayout_2">
        <item row="0" column="5">
         <widget class="QLabel" name="label_7">
+         <property name="font">
+          <font>
+           <pointsize>12</pointsize>
+          </font>
+         </property>
          <property name="text">
           <string>Возврат</string>
          </property>
@@ -405,6 +564,11 @@
        </item>
        <item row="0" column="0">
         <widget class="QLabel" name="label_2">
+         <property name="font">
+          <font>
+           <pointsize>12</pointsize>
+          </font>
+         </property>
          <property name="text">
           <string>Номер карты</string>
          </property>
@@ -412,6 +576,11 @@
        </item>
        <item row="0" column="3">
         <widget class="QLabel" name="label_5">
+         <property name="font">
+          <font>
+           <pointsize>12</pointsize>
+          </font>
+         </property>
          <property name="text">
           <string>Получение</string>
          </property>
@@ -419,6 +588,11 @@
        </item>
        <item row="1" column="2">
         <widget class="QLineEdit" name="send">
+         <property name="font">
+          <font>
+           <pointsize>12</pointsize>
+          </font>
+         </property>
          <property name="readOnly">
           <bool>true</bool>
          </property>
@@ -426,6 +600,11 @@
        </item>
        <item row="1" column="5">
         <widget class="QLineEdit" name="returnDate">
+         <property name="font">
+          <font>
+           <pointsize>12</pointsize>
+          </font>
+         </property>
          <property name="readOnly">
           <bool>true</bool>
          </property>
@@ -433,6 +612,11 @@
        </item>
        <item row="1" column="0">
         <widget class="QLineEdit" name="id">
+         <property name="font">
+          <font>
+           <pointsize>12</pointsize>
+          </font>
+         </property>
          <property name="readOnly">
           <bool>true</bool>
          </property>
@@ -440,6 +624,11 @@
        </item>
        <item row="1" column="4">
         <widget class="QLineEdit" name="ready">
+         <property name="font">
+          <font>
+           <pointsize>12</pointsize>
+          </font>
+         </property>
          <property name="readOnly">
           <bool>true</bool>
          </property>
@@ -447,6 +636,11 @@
        </item>
        <item row="0" column="1">
         <widget class="QLabel" name="label_3">
+         <property name="font">
+          <font>
+           <pointsize>12</pointsize>
+          </font>
+         </property>
          <property name="text">
           <string>Прием</string>
          </property>
@@ -454,6 +648,11 @@
        </item>
        <item row="1" column="1">
         <widget class="QLineEdit" name="receive">
+         <property name="font">
+          <font>
+           <pointsize>12</pointsize>
+          </font>
+         </property>
          <property name="readOnly">
           <bool>true</bool>
          </property>
@@ -461,6 +660,11 @@
        </item>
        <item row="0" column="4">
         <widget class="QLabel" name="label_6">
+         <property name="font">
+          <font>
+           <pointsize>12</pointsize>
+          </font>
+         </property>
          <property name="text">
           <string>Готовность</string>
          </property>
@@ -468,6 +672,11 @@
        </item>
        <item row="0" column="2">
         <widget class="QLabel" name="label_4">
+         <property name="font">
+          <font>
+           <pointsize>12</pointsize>
+          </font>
+         </property>
          <property name="text">
           <string>Отправка</string>
          </property>
@@ -475,6 +684,11 @@
        </item>
        <item row="1" column="3">
         <widget class="QLineEdit" name="receive2">
+         <property name="font">
+          <font>
+           <pointsize>12</pointsize>
+          </font>
+         </property>
          <property name="readOnly">
           <bool>true</bool>
          </property>
@@ -482,6 +696,11 @@
        </item>
        <item row="0" column="6">
         <widget class="QLabel" name="label_8">
+         <property name="font">
+          <font>
+           <pointsize>12</pointsize>
+          </font>
+         </property>
          <property name="text">
           <string>Состояние</string>
          </property>
@@ -489,6 +708,11 @@
        </item>
        <item row="1" column="6">
         <widget class="QLineEdit" name="state">
+         <property name="font">
+          <font>
+           <pointsize>12</pointsize>
+          </font>
+         </property>
          <property name="readOnly">
           <bool>true</bool>
          </property>
@@ -498,6 +722,11 @@
      </item>
      <item row="1" column="0">
       <widget class="QLineEdit" name="client">
+       <property name="font">
+        <font>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
        <property name="readOnly">
         <bool>true</bool>
        </property>
@@ -505,6 +734,11 @@
      </item>
      <item row="15" column="0">
       <widget class="QLabel" name="label_20">
+       <property name="font">
+        <font>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
        <property name="text">
         <string>Примечание</string>
        </property>
@@ -512,6 +746,11 @@
      </item>
      <item row="0" column="0">
       <widget class="QLabel" name="label">
+       <property name="font">
+        <font>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
        <property name="text">
         <string>Клиент</string>
        </property>
