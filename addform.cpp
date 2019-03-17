@@ -11,7 +11,8 @@ AddForm::AddForm(QWidget *parent) :
 
     dateOnReturnDate = new DateOnDoubleClick(ui->returnDate);
     dateOnReadyDate = new DateOnDoubleClick(ui->readyDate);
-    dateOnReceiveDate = new DateOnDoubleClick(ui->receiveDate2);
+    dateOnReceive2Date = new DateOnDoubleClick(ui->receiveDate2);
+    dateOnReceiveDate = new DateOnDoubleClick(ui->receiveDate);
     dateOnSendDate = new DateOnDoubleClick(ui->sendDate);
 
     ui->barCode->setValidator(new QRegExpValidator(QRegExp("^\\d{17}$"),this));
@@ -29,10 +30,7 @@ void AddForm::setMethods(QVector<Handbook>& methods)
 
 void AddForm::setStates(QVector<Handbook> &states)
 {
-    ui->state->addItem("", 0);
-
-    foreach (auto state, states)
-        ui->state->addItem(state.name, state.id);
+    this->states = states;
 }
 
 void AddForm::setRepairers(QVector<Handbook> &repairers)
@@ -94,7 +92,7 @@ void AddForm::setCard(const RepairCard &card, QVector<CardMethod>* methods)
     ui->receiveDate->setText(creatingCard.receiveFromClientDate.toString("dd.MM.yyyy"));
     ui->returnDate->setText(creatingCard.returnDate.toString("dd.MM.yyyy"));
     ui->repairer->setCurrentIndex(ui->repairer->findData(creatingCard.repairerId));
-    ui->state->setCurrentIndex(ui->state->findData(creatingCard.stateId));
+    showState(creatingCard.stateId);
     ui->readyDate->setText(creatingCard.readyDate.toString("dd.MM.yyyy"));
     ui->repairCost->setValue(creatingCard.costRepair);
     ui->clientCost->setValue(creatingCard.costForClient);
@@ -236,9 +234,9 @@ void AddForm::on_pushButton_11_clicked()
         return;
     }
 
-    if ( ui->state->currentData().toInt() == 0)
+    if ( ui->state->text().trimmed() == "")
     {
-        showInfo("Не выбрано состояние!");
+        showInfo("Не определено состояние!");
         return;
     }
     if (ui->clientCost->value() != 0 && ui->repairCost->value() != 0)
@@ -257,7 +255,6 @@ void AddForm::on_pushButton_11_clicked()
     creatingCard.receiveFromClientDate = QDate::fromString(ui->receiveDate->text(),"dd.MM.yyyy");
     creatingCard.repairerId = ui->repairer->currentData().toInt();
     creatingCard.returnDate = QDate::fromString(ui->returnDate->text(),"dd.MM.yyyy");
-    creatingCard.stateId = ui->state->currentData().toInt();
     creatingCard.costForClient = ui->clientCost->value();
     creatingCard.costRepair = ui->repairCost->value();
     creatingCard.sendDate = QDate::fromString(ui->sendDate->text(), "dd.MM.yyyy");
@@ -305,20 +302,45 @@ void AddForm::on_sendDate_textChanged(const QString &arg1)
     if (arg1.length() < 10)
     {
         ui->receiveDate2->setDisabled(true);
-        ui->receiveDate2->clear();
         ui->returnDate->setDisabled(false);
-        ui->readyDate->setDisabled(false);
-        ui->state->setCurrentIndex(0);
+        ui->readyDate->setEnabled(true);
+        ui->receiveDate2->clear();
     }
     else
     {
         ui->receiveDate2->setEnabled(true);
         ui->returnDate->setDisabled(true);
-        ui->readyDate->setDisabled(true);
         ui->returnDate->clear();
+        ui->readyDate->setEnabled(false);
         ui->readyDate->clear();
-        ui->state->setCurrentIndex(ui->state->findData(sendStateId));
     }
+
+    updateState();
+}
+
+void AddForm::showState(int id)
+{
+    for (auto state : states)
+        if (state.id == id)
+            ui->state->setText(state.name);
+}
+
+void AddForm::updateState()
+{
+    if (ui->receiveDate->text().length() < 10 && ui->returnDate->text().length() < 10)
+    {
+        ui->state->clear();
+        return;
+    }
+
+    if (ui->receiveDate->text().length() ==10 && ui->sendDate->text().length() ==10 && ui->receiveDate2->text().length() < 10)
+        showState(sendStateId);
+    else if (ui->receiveDate->text().length() ==10 && ui->readyDate->text().length() ==10)
+        showState(readyStateId);
+    else if (ui->returnDate->text().length() ==10)
+        showState(returnStateId);
+    else
+         showState(repairStateId);
 }
 
 void AddForm::setMode(const AddFormMode &value)
@@ -328,4 +350,69 @@ void AddForm::setMode(const AddFormMode &value)
         this->setWindowTitle("Ремонтная карта (добавление)");
     else
         this->setWindowTitle("Ремонтная карта (редактирование)");
+}
+
+void AddForm::on_receiveDate_textChanged(const QString &arg1)
+{
+    if (arg1.length() < 10)
+    {
+        ui->receiveDate2->setDisabled(true);
+        ui->readyDate->setDisabled(true);
+        ui->sendDate->setDisabled(true);
+
+        ui->receiveDate2->clear();
+        ui->readyDate->clear();
+        ui->sendDate->clear();
+    }
+    else
+    {
+        ui->receiveDate2->setDisabled(true);
+        ui->readyDate->setDisabled(true);
+        ui->sendDate->setDisabled(false);
+    }
+
+    ui->returnDate->setDisabled(false);
+    updateState();
+}
+
+void AddForm::on_receiveDate2_textChanged(const QString &arg1)
+{
+    if (arg1.length() < 10)
+        ui->readyDate->setEnabled(false);
+    else
+        ui->readyDate->setEnabled(true);
+    updateState();
+}
+
+void AddForm::on_readyDate_textChanged(const QString &arg1)
+{
+    if (arg1.length() < 10)
+        ui->returnDate->setEnabled(true);
+    else
+        ui->returnDate->setEnabled(false);
+
+    updateState();
+}
+
+void AddForm::on_returnDate_textChanged(const QString &arg1)
+{
+    if (arg1.length() < 10)
+    {
+        ui->receiveDate->setDisabled(false);
+    }
+    else
+    {
+        ui->receiveDate2->clear();
+        ui->receiveDate->clear();
+        ui->readyDate->clear();
+        ui->sendDate->clear();
+        ui->readyDate->clear();
+
+        ui->receiveDate2->setDisabled(true);
+        ui->receiveDate->setDisabled(true);
+        ui->readyDate->setDisabled(true);
+        ui->sendDate->setDisabled(true);
+    }
+
+    updateState();
 }

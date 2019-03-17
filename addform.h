@@ -76,24 +76,41 @@ private slots:
 
     void on_pushButton_12_clicked();
 
-    void on_sendDate_textChanged(const QString &arg1);
+    void on_sendDate_textChanged(const QString &arg1);    
+
+    void on_receiveDate_textChanged(const QString &arg1);
+
+    void on_receiveDate2_textChanged(const QString &arg1);
+
+    void on_readyDate_textChanged(const QString &arg1);
+
+    void on_returnDate_textChanged(const QString &arg1);
 
 private:
     const int sendStateId = 4;
+    const int readyStateId = 1;
+    const int returnStateId = 2;
+    const int repairStateId = 3;
     const int barCodeLenght = 17;
+
     Ui::AddForm *ui;
     QHash<int,Client> clients;
     QVector<MethodGui> combos;
     QVector<Handbook> methods;
+    QVector<Handbook> states;
     RepairCard creatingCard;
     void addGuiMethodsItem();
 
     DateOnDoubleClick* dateOnReturnDate = nullptr;
     DateOnDoubleClick* dateOnSendDate = nullptr;
     DateOnDoubleClick* dateOnReadyDate = nullptr;
+    DateOnDoubleClick* dateOnReceive2Date = nullptr;
     DateOnDoubleClick* dateOnReceiveDate = nullptr;
 
     AddFormMode mode = Adding;
+
+    void showState(int id);
+    void updateState();
 };
 
 #endif // MAINWINDOW_H

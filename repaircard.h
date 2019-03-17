@@ -13,7 +13,7 @@ struct RepairCard
     int stateId = 0;
     int costForClient = 0;
     int costRepair = 0;
-    QDate receiveFromClientDate = QDate::currentDate();
+    QDate receiveFromClientDate;
     QDate readyDate;
     QDate returnDate;
     QDate receiveFromFactoryDate;
