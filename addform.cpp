@@ -302,15 +302,14 @@ void AddForm::on_sendDate_textChanged(const QString &arg1)
     if (arg1.length() < 10)
     {
         ui->receiveDate2->setDisabled(true);
-        ui->returnDate->setDisabled(false);
+        ui->returnDate->setEnabled(true);
         ui->readyDate->setEnabled(true);
         ui->receiveDate2->clear();
     }
     else
     {
         ui->receiveDate2->setEnabled(true);
-        ui->returnDate->setDisabled(true);
-        ui->returnDate->clear();
+        ui->returnDate->setEnabled(false);
         ui->readyDate->setEnabled(false);
         ui->readyDate->clear();
     }
@@ -320,6 +319,7 @@ void AddForm::on_sendDate_textChanged(const QString &arg1)
 
 void AddForm::showState(int id)
 {
+    creatingCard.stateId = id;
     for (auto state : states)
         if (state.id == id)
             ui->state->setText(state.name);
@@ -335,7 +335,7 @@ void AddForm::updateState()
 
     if (ui->receiveDate->text().length() ==10 && ui->sendDate->text().length() ==10 && ui->receiveDate2->text().length() < 10)
         showState(sendStateId);
-    else if (ui->receiveDate->text().length() ==10 && ui->readyDate->text().length() ==10)
+    else if (ui->receiveDate->text().length() ==10 && ui->readyDate->text().length() ==10 && ui->returnDate->text().length() < 10)
         showState(readyStateId);
     else if (ui->returnDate->text().length() ==10)
         showState(returnStateId);
@@ -367,7 +367,7 @@ void AddForm::on_receiveDate_textChanged(const QString &arg1)
     else
     {
         ui->receiveDate2->setDisabled(true);
-        ui->readyDate->setDisabled(true);
+        ui->readyDate->setDisabled(false);
         ui->sendDate->setDisabled(false);
     }
 
@@ -377,19 +377,33 @@ void AddForm::on_receiveDate_textChanged(const QString &arg1)
 
 void AddForm::on_receiveDate2_textChanged(const QString &arg1)
 {
-    if (arg1.length() < 10)
+    if (arg1.length() < 10 && ui->sendDate->text().length() == 10)
+    {
         ui->readyDate->setEnabled(false);
+        ui->returnDate->setEnabled(false);
+        ui->readyDate->clear();
+    }
     else
-        ui->readyDate->setEnabled(true);
+    {
+            ui->returnDate->setEnabled(true);
+            ui->readyDate->setEnabled(true);
+    }
     updateState();
 }
 
 void AddForm::on_readyDate_textChanged(const QString &arg1)
 {
     if (arg1.length() < 10)
-        ui->returnDate->setEnabled(true);
+    {
+        ui->sendDate->setDisabled(false);
+        if (ui->sendDate->text().length() == 10)
+            ui->receiveDate2->setDisabled(false);
+    }
     else
-        ui->returnDate->setEnabled(false);
+    {
+        ui->sendDate->setDisabled(true);
+        ui->receiveDate2->setDisabled(true);
+    }
 
     updateState();
 }
@@ -399,19 +413,18 @@ void AddForm::on_returnDate_textChanged(const QString &arg1)
     if (arg1.length() < 10)
     {
         ui->receiveDate->setDisabled(false);
+        ui->sendDate->setDisabled(false);
+        ui->readyDate->setDisabled(false);
+        if (ui->sendDate->text().length() == 10)
+            ui->receiveDate2->setDisabled(false);
     }
     else
     {
-        ui->receiveDate2->clear();
-        ui->receiveDate->clear();
-        ui->readyDate->clear();
-        ui->sendDate->clear();
-        ui->readyDate->clear();
-
         ui->receiveDate2->setDisabled(true);
         ui->receiveDate->setDisabled(true);
         ui->readyDate->setDisabled(true);
         ui->sendDate->setDisabled(true);
+        ui->receiveDate2->setDisabled(true);
     }
 
     updateState();

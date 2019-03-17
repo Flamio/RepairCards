@@ -21,7 +21,10 @@ struct MethodGui
 class DateOnDoubleClick : public QObject {
     bool eventFilter(QObject *watched, QEvent *event) {
         if (event->type() == QEvent::MouseButtonDblClick)
-            QMetaObject::invokeMethod(watched, "setText", Q_ARG(QString, QDate::currentDate().toString("dd.MM.yyyy")));
+        {
+            if (((QWidget*)watched)->isEnabled())
+                QMetaObject::invokeMethod(watched, "setText", Q_ARG(QString, QDate::currentDate().toString("dd.MM.yyyy")));
+        }
 
         return QObject::eventFilter(watched, event);
     }

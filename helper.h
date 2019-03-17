@@ -15,7 +15,7 @@ public:
     Helper();
 
     static BarcodeData ParseBarcode(const QString& barcode);
-    static int getFontSize(){return 12;}
+    static int getFontSize(){return 10;}
 };
 
 #endif // HELPER_H
