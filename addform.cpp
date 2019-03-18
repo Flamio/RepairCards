@@ -21,6 +21,11 @@ AddForm::AddForm(QWidget *parent) :
 AddForm::~AddForm()
 {
     delete ui;
+    delete dateOnReturnDate;
+    delete dateOnReadyDate;
+    delete dateOnReceive2Date;
+    delete dateOnReceiveDate;
+    delete dateOnSendDate;
 }
 
 void AddForm::setMethods(QVector<Handbook>& methods)
@@ -282,6 +287,7 @@ void AddForm::on_pushButton_11_clicked()
 void AddForm::on_barCode_textChanged(const QString &arg1)
 {
     if (arg1.count() != barCodeLenght)
+
         return;
 
     emit barCodeFinish(arg1);
