@@ -4,11 +4,12 @@
 
 #include "handbook.h"
 #include "client.h"
-#include "addformmode.h"
+#include "formmode.h"
 #include "repaircard.h"
 #include "cardmethod.h"
+#include "iview.h"
 
-class IAddView
+class IAddView : public IView
 {
 public:
     virtual void setMethods(QVector<Handbook>&) = 0;
@@ -20,10 +21,11 @@ public:
     virtual void addSignal(const RepairCard& card, const QVector<CardMethod>& methods) = 0;
     virtual void editSignal(const RepairCard& card, const QVector<CardMethod>& methods) = 0;
     virtual void setProduct(const Handbook& product) = 0;
-    virtual void showWindow() = 0;
     virtual void setCard(const RepairCard &card, QVector<CardMethod>* methods=nullptr) = 0;
-    virtual void closeWindow() = 0;
-    virtual void setMode(const AddFormMode &value) = 0;
+    virtual void setMode(const FormMode &value) = 0;
+    virtual void editRepairers() = 0;
+    virtual void editMethods() = 0;
+    virtual void addMethod(const Handbook&) = 0;
 
 signals:
 };

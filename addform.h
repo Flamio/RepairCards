@@ -8,6 +8,7 @@
 #include "cardmethod.h"
 #include <QEvent>
 
+
 namespace Ui {
 class AddForm;
 }
@@ -55,13 +56,16 @@ public:
     virtual void showWindow();
     virtual void setCard(const RepairCard &card, QVector<CardMethod>* methods=nullptr);
     virtual void closeWindow();
+    virtual void addMethod(const Handbook&);
 
-    void setMode(const AddFormMode &value);
+    void setMode(const FormMode &value);
 
 signals:
     void barCodeFinish(QString barcode);
     void addSignal(const RepairCard& card, const QVector<CardMethod>& methods);
     void editSignal(const RepairCard& card, const QVector<CardMethod>& methods);
+    void editRepairers();
+    void editMethods();
 
 private slots:
 
@@ -89,6 +93,10 @@ private slots:
 
     void on_returnDate_textChanged(const QString &arg1);
 
+    void on_pushButton_3_clicked();
+
+    void on_pushButton_6_clicked();
+
 private:
     const int sendStateId = 4;
     const int readyStateId = 1;
@@ -110,10 +118,11 @@ private:
     DateOnDoubleClick* dateOnReceive2Date = nullptr;
     DateOnDoubleClick* dateOnReceiveDate = nullptr;
 
-    AddFormMode mode = Adding;
+    FormMode mode = Adding;
 
     void showState(int id);
     void updateState();
+
 };
 
 #endif // MAINWINDOW_H

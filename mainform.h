@@ -25,6 +25,8 @@ public:
     ~MainForm();
 
     virtual void setCard(const RepairCard &card, const QVector<CardMethod>& methods);
+    virtual void showWindow(){}
+    virtual void closeWindow(){}
 
 protected:
     void closeEvent(QCloseEvent *);

@@ -1,7 +1,7 @@
 #ifndef ADDFORMMODE_H
 #define ADDFORMMODE_H
 
-enum AddFormMode
+enum FormMode
 {    
     Adding,
     Editing

@@ -29,7 +29,8 @@ SOURCES += main.cpp\
     mainform.cpp \
     addpresenter.cpp \
     mainpresenter.cpp \
-    helper.cpp
+    helper.cpp \
+    edithandbookform.cpp
 
 HEADERS  += \
     databaseconnector.h \
@@ -44,8 +45,12 @@ HEADERS  += \
     iaddview.h \
     imainview.h \
     helper.h \
-    addformmode.h
+    edithandbookform.h \
+    ihandbookeditview.h \
+    iview.h \
+    formmode.h
 
 FORMS    += \
     addform.ui \
-    mainform.ui
+    mainform.ui \
+    edithandbookform.ui

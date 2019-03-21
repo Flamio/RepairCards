@@ -2,8 +2,9 @@
 #define IMAINVIEW_H
 #include "repaircard.h"
 #include "cardmethod.h"
+#include "iview.h"
 
-class IMainView
+class IMainView : public IView
 {
 public:
     virtual void add() = 0;

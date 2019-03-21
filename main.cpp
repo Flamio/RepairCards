@@ -5,6 +5,7 @@
 #include "addpresenter.h"
 #include "mainform.h"
 #include "mainpresenter.h"
+#include "edithandbookform.h"
 
 int main(int argc, char *argv[])
 {
@@ -23,10 +24,18 @@ int main(int argc, char *argv[])
     MainForm mainForm;
     mainForm.show();
 
+
+
     AddForm w(&mainForm);
+    EditHandbookForm editRepairerForm(&w);
+    EditHandbookForm editMethodForm(&w);
+
     addPresenter.setAddView(&w);
     addPresenter.setDatabaseConnector(dbConnector);
+    addPresenter.setRepairerEditView(&editRepairerForm);
+    addPresenter.setMethodEditView(&editMethodForm);
     addPresenter.start();
+
 
     MainPresenter mainPresenter;
     mainPresenter.setAddPresenter(&addPresenter);

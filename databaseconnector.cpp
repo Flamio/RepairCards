@@ -266,6 +266,39 @@ RepairCard DatabaseConnector::getCardById(int id)
     return card;
 }
 
+int DatabaseConnector::addHandbook(const Handbook &handbook, const QString &tableName)
+{
+    QSqlQuery query;
+    auto queryString = QString("insert into %1('name') values ('%2')")
+            .arg(tableName)
+            .arg(handbook.name);
+
+
+    if (!query.exec(queryString))
+        return -1;
+
+    return query.lastInsertId().toInt();
+}
+
+bool DatabaseConnector::updateHandbook(const Handbook &handbook, const QString &tableName)
+{
+    QSqlQuery query;
+    auto queryString = QString("update %1 set name=%1 where id=%2")
+            .arg(tableName).arg(handbook.name).arg(handbook.id);
+
+    return query.exec(queryString);
+}
+
+void DatabaseConnector::deleteHandbook(int id, const QString &tableName)
+{
+    QSqlQuery query;
+    auto queryString = QString("delete from %1 where id=%2").arg(tableName).arg(id);
+
+    auto result = query.exec(queryString);
+
+    int a = 0;
+}
+
 DatabaseConnector::DatabaseConnector()
 {
 

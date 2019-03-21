@@ -5,6 +5,7 @@
 #include "imainview.h"
 #include "addpresenter.h"
 #include "databaseconnector.h"
+#include "ihandbookeditview.h"
 
 class MainPresenter : public QObject
 {
@@ -33,6 +34,7 @@ private slots:
 
 private:
     IMainView* mainView = nullptr;
+
     AddPresenter* addPresenter = nullptr;
     DatabaseConnector dbConnector;
     void showLastCard();

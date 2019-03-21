@@ -148,6 +148,34 @@ void AddForm::closeWindow()
     close();
 }
 
+void AddForm::addMethod(const Handbook &m)
+{
+    QComboBox* combo = new QComboBox(this);
+    combo->addItem("", 0);
+
+    foreach (auto method, methods) {
+        combo->addItem(method.name, method.id);
+    }
+
+    combo->setCurrentIndex(combo->findData(m.id));
+
+    auto lineEdit = new QLineEdit(this);
+
+    auto font = lineEdit->font();
+    font.setPointSize(Helper::getFontSize());
+    combo->setFont(font);
+    lineEdit->setFont(font);
+
+    ui->verticalLayout_8->addWidget(combo);
+    ui->verticalLayout_9->addWidget(lineEdit);
+
+    MethodGui mgui;
+    mgui.combo = combo;
+    mgui.combo->setEditable(true);
+    mgui.edit = lineEdit;
+    combos.push_back(mgui);
+}
+
 void AddForm::showWindow()
 {
     show();
@@ -349,7 +377,7 @@ void AddForm::updateState()
          showState(repairStateId);
 }
 
-void AddForm::setMode(const AddFormMode &value)
+void AddForm::setMode(const FormMode &value)
 {
     mode = value;
     if (mode == Adding)
@@ -434,4 +462,14 @@ void AddForm::on_returnDate_textChanged(const QString &arg1)
     }
 
     updateState();
+}
+
+void AddForm::on_pushButton_3_clicked()
+{
+    emit editRepairers();
+}
+
+void AddForm::on_pushButton_6_clicked()
+{
+    emit editMethods();
 }
