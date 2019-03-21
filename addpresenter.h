@@ -37,7 +37,7 @@ private slots:
     void onEditMethods();
     void onMethodAdd(Handbook&);
     void onMethodEdit(const Handbook&);
-    void onDeleteHandbook(int id);
+    void onDeleteMethod(int id);
 
 private:
     IAddView* addView = nullptr;

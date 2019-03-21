@@ -21,6 +21,7 @@ public:
     virtual void showWindow();
     virtual void closeWindow();
     virtual void setMode(FormMode mode);
+    virtual void setHandbook(int id);
 
 signals:
     void add(Handbook&);

@@ -127,19 +127,39 @@ void AddPresenter::onMethodAdd(Handbook &h)
     addView->setMethods(methods);
     addView->addMethod(h);
     methodEditView->setMode(Editing);
+    methodEditView->setHandbooks(methods);
     methodEditView->closeWindow();
 }
 
 void AddPresenter::onMethodEdit(const Handbook &h)
 {
+    auto entries = databaseConnector.getMethodEntries(h.id);
+    if (entries != 0)
+    {
+        addView->showInfo("Нельзя редактировать! Этот способ устранения используется в других ремонтных картах!");
+        return;
+    }
 
+    databaseConnector.updateHandbook(h, "methods");
+    auto methods = databaseConnector.getHandbook("methods");
+    addView->setMethods(methods);
+    methodEditView->setHandbooks(methods);
+    methodEditView->setHandbook(h.id);
+    methodEditView->closeWindow();
 }
 
-void AddPresenter::onDeleteHandbook(int id)
+void AddPresenter::onDeleteMethod(int id)
 {
+    auto entries = databaseConnector.getMethodEntries(id);
+    if (entries != 0)
+    {
+        addView->showInfo("Нельзя удалить! Этот способ устранения используется в других ремонтных картах!");
+        return;
+    }
     databaseConnector.deleteHandbook(id, "methods");
     auto methods = databaseConnector.getHandbook("methods");
     methodEditView->setHandbooks(methods);
+    addView->setMethods(methods);
 }
 
 void AddPresenter::setMethodEditView(IHandbookEditView *value)
@@ -147,7 +167,7 @@ void AddPresenter::setMethodEditView(IHandbookEditView *value)
     methodEditView = value;
     connect(dynamic_cast<QObject*>(methodEditView), SIGNAL(add(Handbook&)), this, SLOT(onMethodAdd(Handbook&)));
     connect(dynamic_cast<QObject*>(methodEditView), SIGNAL(edit(const Handbook&)), this, SLOT(onMethodEdit(const Handbook&)));
-    connect(dynamic_cast<QObject*>(methodEditView), SIGNAL(deleteHandbook(int)), this, SLOT(onDeleteHandbook(int)));
+    connect(dynamic_cast<QObject*>(methodEditView), SIGNAL(deleteHandbook(int)), this, SLOT(onDeleteMethod(int)));
 }
 
 void AddPresenter::setRepairerEditView(IHandbookEditView *value)

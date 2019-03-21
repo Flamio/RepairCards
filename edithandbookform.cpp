@@ -89,6 +89,11 @@ void EditHandbookForm::setMode(FormMode mode)
     }
 }
 
+void EditHandbookForm::setHandbook(int id)
+{
+    ui->handbook->setCurrentIndex(ui->handbook->findData(id));
+}
+
 void EditHandbookForm::on_pushButton_clicked()
 {
     setMode(Adding);

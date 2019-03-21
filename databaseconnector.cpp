@@ -283,7 +283,7 @@ int DatabaseConnector::addHandbook(const Handbook &handbook, const QString &tabl
 bool DatabaseConnector::updateHandbook(const Handbook &handbook, const QString &tableName)
 {
     QSqlQuery query;
-    auto queryString = QString("update %1 set name=%1 where id=%2")
+    auto queryString = QString("update %1 set name='%2' where id=%3")
             .arg(tableName).arg(handbook.name).arg(handbook.id);
 
     return query.exec(queryString);
@@ -293,10 +293,16 @@ void DatabaseConnector::deleteHandbook(int id, const QString &tableName)
 {
     QSqlQuery query;
     auto queryString = QString("delete from %1 where id=%2").arg(tableName).arg(id);
+    query.exec(queryString);
+}
 
-    auto result = query.exec(queryString);
-
-    int a = 0;
+int DatabaseConnector::getMethodEntries(int methodId)
+{
+    QSqlQuery query;
+    query.exec(QString("select count(*) from cards_methods where id_method =%1").arg(methodId));
+    if (query.first())
+        return query.value(0).toInt();
+    return 0;
 }
 
 DatabaseConnector::DatabaseConnector()
