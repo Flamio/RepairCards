@@ -67,6 +67,7 @@ signals:
     void editSignal(const RepairCard& card, const QVector<CardMethod>& methods);
     void editRepairers();
     void editMethods();
+    void editClients();
 
 private slots:
 
@@ -97,6 +98,8 @@ private slots:
     void on_pushButton_3_clicked();
 
     void on_pushButton_6_clicked();
+
+    void on_pushButton_clicked();
 
 private:
     const int sendStateId = 4;

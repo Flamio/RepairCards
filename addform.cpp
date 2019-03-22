@@ -479,3 +479,8 @@ void AddForm::on_pushButton_6_clicked()
 {
     emit editMethods();
 }
+
+void AddForm::on_pushButton_clicked()
+{
+    emit editClients();
+}

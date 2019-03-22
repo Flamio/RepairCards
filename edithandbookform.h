@@ -28,16 +28,20 @@ signals:
     void edit(const Handbook&);
     void deleteHandbook(int id);
 
-private slots:
+protected slots:
     void on_pushButton_3_clicked();
 
-    void on_handbook_currentIndexChanged(int index);
+    virtual void on_handbook_currentIndexChanged(int index);
 
     void on_pushButton_2_clicked();
 
     void on_pushButton_clicked();
 
     void on_del_clicked();
+
+protected:
+        Ui::EditHandbookForm *getUi() const;
+        QVector<Handbook>& getHandbooks();
 
 private:
     Ui::EditHandbookForm *ui;

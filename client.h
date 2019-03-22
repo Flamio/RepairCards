@@ -2,11 +2,10 @@
 #define CLIENT_H
 
 #include <QString>
+#include "handbook.h"
 
-struct Client
+struct Client : Handbook
 {
-    int id = 0;
-    QString name;
     QString phone;
     QString contact;
     QString address;

@@ -87,7 +87,8 @@ void EditHandbookForm::setMode(FormMode mode)
         ui->pushButton->setVisible(true);
         ui->id->setVisible(true);
         ui->idLabel->setVisible(true);
-        ui->name->setText(handbooks[ui->handbook->currentIndex()].name);
+        if (handbooks.count() > 0)
+            ui->name->setText(handbooks[ui->handbook->currentIndex()].name);
     }
 }
 
@@ -108,4 +109,14 @@ void EditHandbookForm::on_del_clicked()
                                   QMessageBox::Yes|QMessageBox::No);
     if (reply == QMessageBox::Yes)
         emit deleteHandbook(ui->id->text().toInt());
+}
+
+Ui::EditHandbookForm *EditHandbookForm::getUi() const
+{
+    return ui;
+}
+
+QVector<Handbook>& EditHandbookForm::getHandbooks()
+{
+    return handbooks;
 }

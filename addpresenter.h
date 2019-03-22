@@ -23,6 +23,8 @@ public:
 
     void setMethodEditView(IHandbookEditView *value);
 
+    void setClientEditView(IHandbookEditView *value);
+
 signals:
     void addComplete();
     void editComplete(int id);
@@ -38,6 +40,7 @@ private slots:
     void onMethodAdd(Handbook&);
     void onMethodEdit(const Handbook&);
     void onDeleteMethod(int id);
+    void onEditClients();
 
     void onRepairerAdd(Handbook&);
     void onRepairerEdit(const Handbook&);
@@ -47,6 +50,7 @@ private:
     IAddView* addView = nullptr;
     IHandbookEditView* repairerEditView = nullptr;
     IHandbookEditView* methodEditView = nullptr;
+    IHandbookEditView* clientEditView = nullptr;
     DatabaseConnector databaseConnector;
 
 };

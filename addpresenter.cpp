@@ -13,6 +13,7 @@ void AddPresenter::setAddView(IAddView *value)
     connect(dynamic_cast<QObject*>(addView), SIGNAL(editSignal(const RepairCard&, const QVector<CardMethod>&)), this, SLOT(onEdit(const RepairCard&, const QVector<CardMethod>&)));
     connect(dynamic_cast<QObject*>(addView), SIGNAL(editRepairers()), this, SLOT(onEditRepairers()));
     connect(dynamic_cast<QObject*>(addView), SIGNAL(editMethods()), this, SLOT(onEditMethods()));
+    connect(dynamic_cast<QObject*>(addView), SIGNAL(editClients()), this, SLOT(onEditClients()));
 }
 
 void AddPresenter::setDatabaseConnector(const DatabaseConnector &value)
@@ -35,15 +36,14 @@ void AddPresenter::start()
     addView->setRepairers(repairers);
     addView->setClients(clients);
 
-    if (repairerEditView == nullptr)
-        return;
-
     repairerEditView->setHandbooks(repairers);
-
-    if (methodEditView == nullptr)
-        return;
-
     methodEditView->setHandbooks(methods);
+
+    QVector<Handbook> clientsVector;
+    for (auto client : clients)
+        clientsVector.push_back(client);
+
+    clientEditView->setHandbooks(clientsVector);
 
     /*repairCard = databaseConnector.getLastCard();
     auto methods_ = databaseConnector.getMethods(repairCard.id);
@@ -162,6 +162,11 @@ void AddPresenter::onDeleteMethod(int id)
     addView->setMethods(methods);
 }
 
+void AddPresenter::onEditClients()
+{
+    clientEditView->showWindow();
+}
+
 void AddPresenter::onRepairerAdd(Handbook &h)
 {
     auto addedId = databaseConnector.addHandbook(h, "repairers");
@@ -210,6 +215,11 @@ void AddPresenter::onDeleteRepairer(int id)
     auto repairers = databaseConnector.getHandbook("repairers");
     repairerEditView->setHandbooks(repairers);
     addView->setRepairers(repairers);
+}
+
+void AddPresenter::setClientEditView(IHandbookEditView *value)
+{
+    clientEditView = value;
 }
 
 void AddPresenter::setMethodEditView(IHandbookEditView *value)

@@ -29,6 +29,7 @@ public:
     virtual void addMethod(const Handbook&) = 0;
 
 signals:
+    virtual void editClients() = 0;
 };
 
 Q_DECLARE_INTERFACE(IAddView, "IAddView")
