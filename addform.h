@@ -57,6 +57,7 @@ public:
     virtual void setCard(const RepairCard &card, QVector<CardMethod>* methods=nullptr);
     virtual void closeWindow();
     virtual void addMethod(const Handbook&);
+    virtual void setRepairer(int id);
 
     void setMode(const FormMode &value);
 

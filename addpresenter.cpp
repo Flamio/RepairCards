@@ -133,7 +133,7 @@ void AddPresenter::onMethodAdd(Handbook &h)
 
 void AddPresenter::onMethodEdit(const Handbook &h)
 {
-    auto entries = databaseConnector.getMethodEntries(h.id);
+    auto entries = databaseConnector.getEntries(h.id, "id_methods", "card_methods");
     if (entries != 0)
     {
         addView->showInfo("Нельзя редактировать! Этот способ устранения используется в других ремонтных картах!");
@@ -150,7 +150,7 @@ void AddPresenter::onMethodEdit(const Handbook &h)
 
 void AddPresenter::onDeleteMethod(int id)
 {
-    auto entries = databaseConnector.getMethodEntries(id);
+    auto entries = databaseConnector.getEntries(id,"id_methods", "card_methods");
     if (entries != 0)
     {
         addView->showInfo("Нельзя удалить! Этот способ устранения используется в других ремонтных картах!");
@@ -160,6 +160,56 @@ void AddPresenter::onDeleteMethod(int id)
     auto methods = databaseConnector.getHandbook("methods");
     methodEditView->setHandbooks(methods);
     addView->setMethods(methods);
+}
+
+void AddPresenter::onRepairerAdd(Handbook &h)
+{
+    auto addedId = databaseConnector.addHandbook(h, "repairers");
+    if (addedId == -1)
+    {
+        addView->showInfo("Не удалось добавить новый метод!");
+        return;
+    }
+
+    h.id = addedId;
+    auto repairers = databaseConnector.getHandbook("repairers");
+    addView->setRepairers(repairers);
+    addView->setRepairer(addedId);
+    repairerEditView->setMode(Editing);
+    repairerEditView->setHandbooks(repairers);
+    repairerEditView->closeWindow();
+}
+
+void AddPresenter::onRepairerEdit(const Handbook &h)
+{
+    auto entries = databaseConnector.getEntries(h.id, "repairer_id", "repair_cards");
+    if (entries != 0)
+    {
+        addView->showInfo("Нельзя редактировать! Этот ремонтник используется в других ремонтных картах!");
+        return;
+    }
+
+    databaseConnector.updateHandbook(h, "repairers");
+    auto repairers = databaseConnector.getHandbook("repairers");
+    addView->setRepairers(repairers);
+    addView->setRepairer(h.id);
+    repairerEditView->setHandbooks(repairers);
+    repairerEditView->setHandbook(h.id);
+    repairerEditView->closeWindow();
+}
+
+void AddPresenter::onDeleteRepairer(int id)
+{
+    auto entries = databaseConnector.getEntries(id, "repairer_id", "repair_cards");
+    if (entries != 0)
+    {
+        addView->showInfo("Нельзя удалять! Этот ремонтник используется в других ремонтных картах!");
+        return;
+    }
+    databaseConnector.deleteHandbook(id, "repairers");
+    auto repairers = databaseConnector.getHandbook("repairers");
+    repairerEditView->setHandbooks(repairers);
+    addView->setRepairers(repairers);
 }
 
 void AddPresenter::setMethodEditView(IHandbookEditView *value)
@@ -173,6 +223,10 @@ void AddPresenter::setMethodEditView(IHandbookEditView *value)
 void AddPresenter::setRepairerEditView(IHandbookEditView *value)
 {
     repairerEditView = value;
+
+    connect(dynamic_cast<QObject*>(repairerEditView), SIGNAL(add(Handbook&)), this, SLOT(onRepairerAdd(Handbook&)));
+    connect(dynamic_cast<QObject*>(repairerEditView), SIGNAL(edit(const Handbook&)), this, SLOT(onRepairerEdit(const Handbook&)));
+    connect(dynamic_cast<QObject*>(repairerEditView), SIGNAL(deleteHandbook(int)), this, SLOT(onDeleteRepairer(int)));
 }
 
 IAddView *AddPresenter::getAddView() const

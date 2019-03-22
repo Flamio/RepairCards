@@ -296,10 +296,11 @@ void DatabaseConnector::deleteHandbook(int id, const QString &tableName)
     query.exec(queryString);
 }
 
-int DatabaseConnector::getMethodEntries(int methodId)
+int DatabaseConnector::getEntries(int id, const QString& column, const QString& table)
 {
     QSqlQuery query;
-    query.exec(QString("select count(*) from cards_methods where id_method =%1").arg(methodId));
+    auto queryStr = QString("select count(*) from %1 where %2=%3").arg(table).arg(column).arg(id);
+    query.exec(queryStr);
     if (query.first())
         return query.value(0).toInt();
     return 0;

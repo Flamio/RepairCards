@@ -23,6 +23,7 @@ public:
     virtual void setProduct(const Handbook& product) = 0;
     virtual void setCard(const RepairCard &card, QVector<CardMethod>* methods=nullptr) = 0;
     virtual void setMode(const FormMode &value) = 0;
+    virtual void setRepairer(int id) = 0;
     virtual void editRepairers() = 0;
     virtual void editMethods() = 0;
     virtual void addMethod(const Handbook&) = 0;

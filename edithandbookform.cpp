@@ -77,10 +77,12 @@ void EditHandbookForm::setMode(FormMode mode)
         ui->pushButton->setVisible(false);
         ui->id->setVisible(false);
         ui->idLabel->setVisible(false);
+        ui->del->setVisible(false);
         ui->name->clear();
     }
     else
     {
+        ui->del->setVisible(true);
         ui->handbook->setVisible(true);
         ui->pushButton->setVisible(true);
         ui->id->setVisible(true);

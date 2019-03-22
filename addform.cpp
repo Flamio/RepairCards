@@ -40,6 +40,7 @@ void AddForm::setStates(QVector<Handbook> &states)
 
 void AddForm::setRepairers(QVector<Handbook> &repairers)
 {
+    ui->repairer->clear();
     ui->repairer->addItem("", 0);
 
     foreach (auto state, repairers)
@@ -174,6 +175,11 @@ void AddForm::addMethod(const Handbook &m)
     mgui.combo->setEditable(true);
     mgui.edit = lineEdit;
     combos.push_back(mgui);
+}
+
+void AddForm::setRepairer(int id)
+{
+    ui->repairer->setCurrentIndex(ui->repairer->findData(id));
 }
 
 void AddForm::showWindow()

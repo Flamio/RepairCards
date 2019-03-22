@@ -39,6 +39,10 @@ private slots:
     void onMethodEdit(const Handbook&);
     void onDeleteMethod(int id);
 
+    void onRepairerAdd(Handbook&);
+    void onRepairerEdit(const Handbook&);
+    void onDeleteRepairer(int id);
+
 private:
     IAddView* addView = nullptr;
     IHandbookEditView* repairerEditView = nullptr;
