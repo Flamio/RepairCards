@@ -8,13 +8,13 @@
 class IHandbookEditView : public IView
 {
 public:
-    virtual void setHandbooks(const QVector<Handbook>&) = 0;
+    virtual void setHandbooks(const QVector<Handbook*>&) = 0;
     virtual void setMode(FormMode) = 0;
     virtual void setHandbook(int id) = 0;
 
 signals:
-    virtual void add(Handbook&) = 0;
-    virtual void edit(const Handbook&) = 0;
+    virtual void add(Handbook*) = 0;
+    virtual void edit(Handbook*) = 0;
     virtual void deleteHandbook(int id) =0;
 };
 

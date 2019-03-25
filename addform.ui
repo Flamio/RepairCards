@@ -419,7 +419,7 @@
            </font>
           </property>
           <property name="text">
-           <string>Новый</string>
+           <string>Редактор</string>
           </property>
          </widget>
         </item>

@@ -1,6 +1,7 @@
 #include "databaseconnector.h"
 #include <QSqlQuery>
 #include <QVariant>
+#include "product.h"
 
 bool DatabaseConnector::open()
 {
@@ -14,17 +15,17 @@ bool DatabaseConnector::open()
     return true;
 }
 
-QVector<Handbook> DatabaseConnector::getHandbook(const QString& handbookName)
+QVector<Handbook*> DatabaseConnector::getHandbook(const QString& handbookName)
 {
     QSqlQuery query;
     query.exec(QString("SELECT id, name FROM %1 ORDER BY name").arg(handbookName));
-    QVector<Handbook> methods;
+    QVector<Handbook*> methods;
 
     while (query.next())
     {
-        Handbook hb;
-        hb.id = query.value(0).toInt();
-        hb.name = query.value(1).toString();
+        auto  hb = new Handbook();
+        hb->id = query.value(0).toInt();
+        hb->name = query.value(1).toString();
         methods.push_back(hb);
     }
     return methods;
@@ -33,7 +34,7 @@ QVector<Handbook> DatabaseConnector::getHandbook(const QString& handbookName)
 QHash<int,Client> DatabaseConnector::getClients()
 {
     QSqlQuery query;
-    query.exec("SELECT id, name, address FROM clients");
+    query.exec("SELECT id, name, address, phone, person FROM clients");
     QHash<int,Client> clients;
 
     while (query.next())
@@ -43,6 +44,8 @@ QHash<int,Client> DatabaseConnector::getClients()
         hb.id = id;
         hb.name = query.value(1).toString();
         hb.address = query.value(2).toString();
+        hb.phone = query.value(3).toString();
+        hb.person = query.value(4).toString();
         clients[id] = hb;
     }
     return clients;
@@ -233,7 +236,7 @@ void DatabaseConnector::fillCard(RepairCard& card, QSqlQuery& query)
     card.sendDate = QDate::fromString(query.value(15).toString(), "dd.MM.yyyy");
     card.productName = query.value(16).toString();
     card.client.phone = query.value(17).toString();
-    card.client.contact = query.value(18).toString();
+    card.client.person = query.value(18).toString();
     card.client.address = query.value(19).toString();
     card.state = query.value(20).toString();
     card.repairer = query.value(21).toString();
@@ -304,6 +307,23 @@ int DatabaseConnector::getEntries(int id, const QString& column, const QString& 
     if (query.first())
         return query.value(0).toInt();
     return 0;
+}
+
+QVector<Handbook *> DatabaseConnector::getProducts()
+{
+    QSqlQuery query;
+    query.exec(QString("SELECT * FROM products ORDER BY name"));
+    QVector<Handbook*> products;
+
+    while (query.next())
+    {
+        auto  hb = new Product();
+        hb->id = query.value(0).toInt();
+        hb->code = query.value(1).toString();
+        hb->name = query.value(2).toString();
+        products.push_back(hb);
+    }
+    return products;
 }
 
 DatabaseConnector::DatabaseConnector()

@@ -25,6 +25,8 @@ public:
 
     void setClientEditView(IHandbookEditView *value);
 
+    void setProductEditView(IHandbookEditView *value);
+
 signals:
     void addComplete();
     void editComplete(int id);
@@ -37,13 +39,14 @@ private slots:
     void onEdit(const RepairCard&, const QVector<CardMethod>&);
     void onEditRepairers();
     void onEditMethods();
-    void onMethodAdd(Handbook&);
-    void onMethodEdit(const Handbook&);
+    void onMethodAdd(Handbook*);
+    void onMethodEdit(Handbook*);
     void onDeleteMethod(int id);
     void onEditClients();
+    void onEditProducts();
 
-    void onRepairerAdd(Handbook&);
-    void onRepairerEdit(const Handbook&);
+    void onRepairerAdd(Handbook*);
+    void onRepairerEdit(Handbook*);
     void onDeleteRepairer(int id);
 
 private:
@@ -51,8 +54,14 @@ private:
     IHandbookEditView* repairerEditView = nullptr;
     IHandbookEditView* methodEditView = nullptr;
     IHandbookEditView* clientEditView = nullptr;
+    IHandbookEditView* productEditView = nullptr;
     DatabaseConnector databaseConnector;
 
+    QVector<Handbook*> clientsVector;
+    QVector<Handbook*> methods;
+    QVector<Handbook*> repairers;
+    QVector<Handbook*> states;
+    QVector<Handbook*> products;
 };
 
 #endif // ADDPRESENTER_H

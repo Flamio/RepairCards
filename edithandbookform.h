@@ -17,15 +17,15 @@ public:
     explicit EditHandbookForm(QWidget *parent = 0);
     ~EditHandbookForm();
 
-    virtual void setHandbooks(const QVector<Handbook>&);
+    virtual void setHandbooks(const QVector<Handbook*>&);
     virtual void showWindow();
     virtual void closeWindow();
     virtual void setMode(FormMode mode);
     virtual void setHandbook(int id);
 
 signals:
-    void add(Handbook&);
-    void edit(const Handbook&);
+    void add(Handbook*);
+    void edit(Handbook*);
     void deleteHandbook(int id);
 
 protected slots:
@@ -41,14 +41,14 @@ protected slots:
 
 protected:
         Ui::EditHandbookForm *getUi() const;
-        QVector<Handbook>& getHandbooks();
+        QVector<Handbook*>& getHandbooks();
 
 private:
     Ui::EditHandbookForm *ui;
-    QVector<Handbook> handbooks;
+    QVector<Handbook*> handbooks;
     FormMode mode = Editing;
 
-    Handbook handbook;
+    Handbook* handbook = nullptr;
 };
 
 #endif // EDITHANDBOOKFORM_H

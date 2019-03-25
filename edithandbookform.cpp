@@ -14,12 +14,17 @@ EditHandbookForm::~EditHandbookForm()
     delete ui;
 }
 
-void EditHandbookForm::setHandbooks(const QVector<Handbook> &handbooks)
+void EditHandbookForm::setHandbooks(const QVector<Handbook*> &handbooks)
 {
+    for (auto h : this->handbooks)
+        delete h;
+
+    this->handbooks.clear();
+
     ui->handbook->clear();
     this->handbooks = handbooks;
     for (auto h : handbooks)
-        ui->handbook->addItem(h.name, h.id);
+        ui->handbook->addItem(h->name, h->id);
 }
 
 void EditHandbookForm::showWindow()
@@ -44,9 +49,13 @@ void EditHandbookForm::on_handbook_currentIndexChanged(int index)
 {
     if (index < 0)
         index = 0;
+
+    if (handbooks.count() == 0)
+        return;
+
     auto hb = handbooks[index];
-    ui->id->setText(QString::number(hb.id));
-    ui->name->setText(hb.name);
+    ui->id->setText(QString::number(hb->id));
+    ui->name->setText(hb->name);
 }
 
 void EditHandbookForm::on_pushButton_2_clicked()
@@ -59,8 +68,13 @@ void EditHandbookForm::on_pushButton_2_clicked()
         return;
     }
 
-    handbook.id = ui->id->text().toInt();
-    handbook.name = ui->name->text();
+    if (handbook != nullptr)
+        delete handbook;
+
+    handbook = new Handbook();
+
+    handbook->id = ui->id->text().toInt();
+    handbook->name = ui->name->text();
 
     if (mode == Adding)
         emit add(handbook);
@@ -88,7 +102,7 @@ void EditHandbookForm::setMode(FormMode mode)
         ui->id->setVisible(true);
         ui->idLabel->setVisible(true);
         if (handbooks.count() > 0)
-            ui->name->setText(handbooks[ui->handbook->currentIndex()].name);
+            ui->name->setText(handbooks[ui->handbook->currentIndex()]->name);
     }
 }
 
@@ -116,7 +130,7 @@ Ui::EditHandbookForm *EditHandbookForm::getUi() const
     return ui;
 }
 
-QVector<Handbook>& EditHandbookForm::getHandbooks()
+QVector<Handbook*>& EditHandbookForm::getHandbooks()
 {
     return handbooks;
 }

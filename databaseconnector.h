@@ -17,7 +17,7 @@ public:
 
     bool open();
 
-    QVector<Handbook> getHandbook(const QString& handbookName);
+    QVector<Handbook*> getHandbook(const QString& handbookName);
     QHash<int,Client> getClients();
 
     RepairCard getLastCard();
@@ -34,6 +34,7 @@ public:
     bool updateHandbook(const Handbook& handbook, const QString& tableName);
     void deleteHandbook(int id, const QString& tableName);
     int getEntries(int id, const QString& column, const QString& table);
+    QVector<Handbook*> getProducts();
 
 private:
     QSqlDatabase db;

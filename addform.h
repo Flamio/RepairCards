@@ -47,9 +47,9 @@ public:
     explicit AddForm(QWidget *parent = 0);
     ~AddForm();
 
-    void setMethods(QVector<Handbook>&);
-    virtual void setStates(QVector<Handbook>&);
-    virtual void setRepairers(QVector<Handbook>&);
+    void setMethods(QVector<Handbook*>&);
+    virtual void setStates(QVector<Handbook*>&);
+    virtual void setRepairers(QVector<Handbook*>&);
     virtual void setClients(QHash<int,Client>&);    
     virtual void showInfo(QString);
     virtual void setProduct(const Handbook& product);
@@ -68,6 +68,7 @@ signals:
     void editRepairers();
     void editMethods();
     void editClients();
+    void editProducts();
 
 private slots:
 
@@ -101,6 +102,8 @@ private slots:
 
     void on_pushButton_clicked();
 
+    void on_pushButton_2_clicked();
+
 private:
     const int sendStateId = 4;
     const int readyStateId = 1;
@@ -111,8 +114,8 @@ private:
     Ui::AddForm *ui;
     QHash<int,Client> clients;
     QVector<MethodGui> combos;
-    QVector<Handbook> methods;
-    QVector<Handbook> states;
+    QVector<Handbook*> methods;
+    QVector<Handbook*> states;
     RepairCard creatingCard;
     void addGuiMethodsItem();
 

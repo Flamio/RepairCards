@@ -28,23 +28,23 @@ AddForm::~AddForm()
     delete dateOnSendDate;
 }
 
-void AddForm::setMethods(QVector<Handbook>& methods)
+void AddForm::setMethods(QVector<Handbook*>& methods)
 {
     this->methods = methods;
 }
 
-void AddForm::setStates(QVector<Handbook> &states)
+void AddForm::setStates(QVector<Handbook*> &states)
 {
     this->states = states;
 }
 
-void AddForm::setRepairers(QVector<Handbook> &repairers)
+void AddForm::setRepairers(QVector<Handbook*> &repairers)
 {
     ui->repairer->clear();
     ui->repairer->addItem("", 0);
 
     foreach (auto state, repairers)
-        ui->repairer->addItem(state.name, state.id);
+        ui->repairer->addItem(state->name, state->id);
 }
 
 void AddForm::setClients(QHash<int,Client> &clients)
@@ -120,7 +120,7 @@ void AddForm::setCard(const RepairCard &card, QVector<CardMethod>* methods)
         combo->addItem("", 0);
 
         foreach (auto method_, this->methods) {
-            combo->addItem(method_.name, method_.id);
+            combo->addItem(method_->name, method_->id);
         }
 
         combo->setCurrentIndex(combo->findData(method->methodId));
@@ -155,7 +155,7 @@ void AddForm::addMethod(const Handbook &m)
     combo->addItem("", 0);
 
     foreach (auto method, methods) {
-        combo->addItem(method.name, method.id);
+        combo->addItem(method->name, method->id);
     }
 
     combo->setCurrentIndex(combo->findData(m.id));
@@ -206,7 +206,7 @@ void AddForm::on_pushButton_4_clicked()
     combo->addItem("", 0);
 
     foreach (auto method, methods) {
-        combo->addItem(method.name, method.id);
+        combo->addItem(method->name, method->id);
     }
 
     auto lineEdit = new QLineEdit(this);
@@ -361,8 +361,8 @@ void AddForm::showState(int id)
 {
     creatingCard.stateId = id;
     for (auto state : states)
-        if (state.id == id)
-            ui->state->setText(state.name);
+        if (state->id == id)
+            ui->state->setText(state->name);
 }
 
 void AddForm::updateState()
@@ -483,4 +483,9 @@ void AddForm::on_pushButton_6_clicked()
 void AddForm::on_pushButton_clicked()
 {
     emit editClients();
+}
+
+void AddForm::on_pushButton_2_clicked()
+{
+    emit editProducts();
 }

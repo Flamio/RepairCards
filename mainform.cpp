@@ -21,7 +21,7 @@ void MainForm::setCard(const RepairCard &card, const QVector<CardMethod> &method
     auto data = Helper::ParseBarcode(card.barCode);
     ui->createMonth->setText(data.month);
     ui->createYear->setText("20"+data.year);
-    ui->client->setText(QString("%1 %2 %3 %4").arg(card.client.name).arg(card.client.phone).arg(card.client.contact).arg(card.client.address));
+    ui->client->setText(QString("%1 %2 %3 %4").arg(card.client.name).arg(card.client.phone).arg(card.client.person).arg(card.client.address));
     ui->clientCost->setText(QString::number(card.costForClient));
     ui->complains->setPlainText(card.complaints);
     ui->id->setText(QString::number(card.id));

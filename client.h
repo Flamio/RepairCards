@@ -7,7 +7,7 @@
 struct Client : Handbook
 {
     QString phone;
-    QString contact;
+    QString person;
     QString address;
 };
 

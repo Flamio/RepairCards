@@ -7,6 +7,7 @@
 #include "mainpresenter.h"
 #include "edithandbookform.h"
 #include "clienteditform.h"
+#include "producteditform.h"
 
 int main(int argc, char *argv[])
 {
@@ -29,12 +30,15 @@ int main(int argc, char *argv[])
     EditHandbookForm editRepairerForm(&w);
     EditHandbookForm editMethodForm(&w);
     ClientEditForm clientEditForm(&w);
+    ProductEditForm productEditForm(&w);
+
 
     addPresenter.setAddView(&w);
     addPresenter.setDatabaseConnector(dbConnector);
     addPresenter.setRepairerEditView(&editRepairerForm);
     addPresenter.setMethodEditView(&editMethodForm);
     addPresenter.setClientEditView(&clientEditForm);
+    addPresenter.setProductEditView(&productEditForm);
     addPresenter.start();
 
 

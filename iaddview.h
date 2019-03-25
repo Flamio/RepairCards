@@ -12,9 +12,9 @@
 class IAddView : public IView
 {
 public:
-    virtual void setMethods(QVector<Handbook>&) = 0;
-    virtual void setStates(QVector<Handbook>&) = 0;
-    virtual void setRepairers(QVector<Handbook>&) = 0;
+    virtual void setMethods(QVector<Handbook*>&) = 0;
+    virtual void setStates(QVector<Handbook*>&) = 0;
+    virtual void setRepairers(QVector<Handbook*>&) = 0;
     virtual void setClients(QHash<int,Client>&) = 0;    
     virtual void showInfo(QString) = 0;
     virtual void barCodeFinish(QString barcode) = 0;
@@ -30,6 +30,7 @@ public:
 
 signals:
     virtual void editClients() = 0;
+    virtual void editProducts() = 0;
 };
 
 Q_DECLARE_INTERFACE(IAddView, "IAddView")
