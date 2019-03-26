@@ -27,6 +27,7 @@ public:
     virtual void editRepairers() = 0;
     virtual void editMethods() = 0;
     virtual void addMethod(const Handbook&) = 0;
+    virtual void barCodeFinishEmit() = 0;
 
 signals:
     virtual void editClients() = 0;

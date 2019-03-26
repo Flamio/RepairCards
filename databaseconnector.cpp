@@ -299,6 +299,35 @@ void DatabaseConnector::deleteHandbook(int id, const QString &tableName)
     query.exec(queryString);
 }
 
+int DatabaseConnector::addProduct(const Product &product)
+{
+    QSqlQuery query;
+    auto queryString = QString("insert into products('name','code') values ('%1', '%2')")
+            .arg(product.name)
+            .arg(product.code);
+
+    if (!query.exec(queryString))
+        return -1;
+
+    return query.lastInsertId().toInt();
+}
+
+bool DatabaseConnector::updateProduct(const Product &product)
+{
+    QSqlQuery query;
+    auto queryString = QString("update products set name='%1', code='%2' where id=%3")
+            .arg(product.name).arg(product.code).arg(product.id);
+
+    return query.exec(queryString);
+}
+
+void DatabaseConnector::deleteProduct(int id)
+{
+    QSqlQuery query;
+    auto queryString = QString("delete from products where id=%2").arg(id);
+    query.exec(queryString);
+}
+
 int DatabaseConnector::getEntries(int id, const QString& column, const QString& table)
 {
     QSqlQuery query;

@@ -130,7 +130,7 @@ Ui::EditHandbookForm *EditHandbookForm::getUi() const
     return ui;
 }
 
-QVector<Handbook*>& EditHandbookForm::getHandbooks()
+QVector<Handbook*>* EditHandbookForm::getHandbooks()
 {
-    return handbooks;
+    return &handbooks;
 }

@@ -41,7 +41,7 @@ protected slots:
 
 protected:
         Ui::EditHandbookForm *getUi() const;
-        QVector<Handbook*>& getHandbooks();
+        QVector<Handbook*>* getHandbooks();
 
 private:
     Ui::EditHandbookForm *ui;

@@ -58,6 +58,7 @@ public:
     virtual void closeWindow();
     virtual void addMethod(const Handbook&);
     virtual void setRepairer(int id);
+    virtual void barCodeFinishEmit();
 
     void setMode(const FormMode &value);
 

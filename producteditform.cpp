@@ -12,9 +12,12 @@ ProductEditForm::ProductEditForm(QWidget *parent) : EditHandbookForm(parent)
 
 void ProductEditForm::on_handbook_currentIndexChanged(int index)
 {
+    if (index == -1)
+        return;
+
     EditHandbookForm::on_handbook_currentIndexChanged(index);
 
     auto handbooks = getHandbooks();
-    auto product = (Product*)handbooks[index];
+    auto product = (Product*)(*handbooks)[index];
     code.setText(product->code);
 }

@@ -8,6 +8,7 @@
 #include "client.h"
 #include "repaircard.h"
 #include "cardmethod.h"
+#include "product.h"
 
 class DatabaseConnector
 {
@@ -33,6 +34,11 @@ public:
     int addHandbook(const Handbook& handbook, const QString& tableName);
     bool updateHandbook(const Handbook& handbook, const QString& tableName);
     void deleteHandbook(int id, const QString& tableName);
+
+    int addProduct(const Product& product);
+    bool updateProduct(const Product& product);
+    void deleteProduct(int id);
+
     int getEntries(int id, const QString& column, const QString& table);
     QVector<Handbook*> getProducts();
 

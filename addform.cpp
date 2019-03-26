@@ -182,6 +182,14 @@ void AddForm::setRepairer(int id)
     ui->repairer->setCurrentIndex(ui->repairer->findData(id));
 }
 
+void AddForm::barCodeFinishEmit()
+{
+    if (ui->barCode->text().count() != barCodeLenght)
+        return;
+
+    emit barCodeFinish(ui->barCode->text());
+}
+
 void AddForm::showWindow()
 {
     show();

@@ -21,7 +21,7 @@ void ClientEditForm::on_handbook_currentIndexChanged(int index)
 
     auto handbooks = getHandbooks();
 
-    auto client = (Client*)handbooks[index];
+    auto client = (Client*)(*handbooks)[index];
     phone.setText(client->phone);
     address.setText(client->address);
     contact.setText(client->person);

@@ -49,6 +49,9 @@ private slots:
     void onRepairerEdit(Handbook*);
     void onDeleteRepairer(int id);
 
+    void onProductAdd(Handbook*);
+    void onProductEdit(Handbook*);
+    void onDeleteProduct(int id);
 private:
     IAddView* addView = nullptr;
     IHandbookEditView* repairerEditView = nullptr;

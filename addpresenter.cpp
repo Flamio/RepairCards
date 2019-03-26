@@ -228,9 +228,49 @@ void AddPresenter::onDeleteRepairer(int id)
     addView->setRepairers(repairers);
 }
 
+void AddPresenter::onProductAdd(Handbook *h)
+{
+    auto product = (Product*)h;
+    auto addedId = databaseConnector.addProduct(*product);
+    if (addedId == -1)
+    {
+        addView->showInfo("Не удалось добавить новое изделие!");
+        return;
+    }
+
+    h->id = addedId;
+    auto products = databaseConnector.getProducts();
+    productEditView->setMode(Editing);
+    productEditView->setHandbooks(products);
+    productEditView->closeWindow();
+    addView->barCodeFinishEmit();
+}
+
+void AddPresenter::onProductEdit(Handbook *h)
+{
+
+}
+
+void AddPresenter::onDeleteProduct(int id)
+{
+    auto entries = databaseConnector.getEntries(id, "product_id", "repair_cards");
+    if (entries != 0)
+    {
+        addView->showInfo("Нельзя удалять! Это изделие используется в других ремонтных картах!");
+        return;
+    }
+    databaseConnector.deleteProduct(id);
+    auto products = databaseConnector.getProducts();
+    productEditView->setHandbooks(products);
+    addView->setRepairers(products);
+}
+
 void AddPresenter::setProductEditView(IHandbookEditView *value)
 {
     productEditView = value;
+    connect(dynamic_cast<QObject*>(productEditView), SIGNAL(add(Handbook*)), this, SLOT(onProductAdd(Handbook*)));
+    connect(dynamic_cast<QObject*>(productEditView), SIGNAL(edit(Handbook*)), this, SLOT(onProductEdit(Handbook*)));
+    connect(dynamic_cast<QObject*>(productEditView), SIGNAL(deleteHandbook(int)), this, SLOT(onDeleteProduct(int)));
 }
 
 void AddPresenter::setClientEditView(IHandbookEditView *value)
