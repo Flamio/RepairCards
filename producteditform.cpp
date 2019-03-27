@@ -21,3 +21,19 @@ void ProductEditForm::on_handbook_currentIndexChanged(int index)
     auto product = (Product*)(*handbooks)[index];
     code.setText(product->code);
 }
+
+void ProductEditForm::fillHandbookFields(Handbook** h)
+{
+    auto hb = new Product();
+    hb->id = getUi()->id->text().toInt();
+    hb->name = getUi()->name->text();
+    hb->code = code.text();
+
+    *h = hb;
+}
+
+void ProductEditForm::clearFieldsOnAdd()
+{
+    EditHandbookForm::clearFieldsOnAdd();
+    code.clear();
+}

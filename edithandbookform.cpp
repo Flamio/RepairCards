@@ -71,10 +71,7 @@ void EditHandbookForm::on_pushButton_2_clicked()
     if (handbook != nullptr)
         delete handbook;
 
-    handbook = new Handbook();
-
-    handbook->id = ui->id->text().toInt();
-    handbook->name = ui->name->text();
+    fillHandbookFields(&handbook);
 
     if (mode == Adding)
         emit add(handbook);
@@ -92,7 +89,7 @@ void EditHandbookForm::setMode(FormMode mode)
         ui->id->setVisible(false);
         ui->idLabel->setVisible(false);
         ui->del->setVisible(false);
-        ui->name->clear();
+        clearFieldsOnAdd();
     }
     else
     {
@@ -133,4 +130,25 @@ Ui::EditHandbookForm *EditHandbookForm::getUi() const
 QVector<Handbook*>* EditHandbookForm::getHandbooks()
 {
     return &handbooks;
+}
+
+Handbook *EditHandbookForm::getHandbook() const
+{
+    return handbook;
+}
+
+void EditHandbookForm::fillHandbookFields(Handbook** hb)
+{
+
+    auto h = new Handbook();
+
+    h->id = ui->id->text().toInt();
+    h->name = ui->name->text();
+
+    *hb = h;
+}
+
+void EditHandbookForm::clearFieldsOnAdd()
+{
+    ui->name->clear();
 }

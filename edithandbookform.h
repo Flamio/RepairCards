@@ -40,8 +40,12 @@ protected slots:
     void on_del_clicked();
 
 protected:
-        Ui::EditHandbookForm *getUi() const;
-        QVector<Handbook*>* getHandbooks();
+    Ui::EditHandbookForm *getUi() const;
+    QVector<Handbook*>* getHandbooks();
+    Handbook *getHandbook() const;
+
+    virtual void fillHandbookFields(Handbook**);
+    virtual void clearFieldsOnAdd();
 
 private:
     Ui::EditHandbookForm *ui;

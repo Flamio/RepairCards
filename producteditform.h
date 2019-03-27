@@ -13,6 +13,10 @@ public:
 protected slots:
     virtual void on_handbook_currentIndexChanged(int index);
 
+protected:
+    virtual void fillHandbookFields(Handbook** h);
+    virtual void clearFieldsOnAdd();
+
 private:
     QLabel codeLabel;
     QLineEdit code;

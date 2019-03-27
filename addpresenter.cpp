@@ -248,7 +248,21 @@ void AddPresenter::onProductAdd(Handbook *h)
 
 void AddPresenter::onProductEdit(Handbook *h)
 {
+    auto entries = databaseConnector.getEntries(h->id, "product_id", "repair_cards");
+    if (entries != 0)
+    {
+        addView->showInfo("Нельзя редактировать! Это изделие используется в других ремонтных картах!");
+        return;
+    }
 
+    auto product = (Product*)h;
+    databaseConnector.updateProduct(*product);
+    auto products= databaseConnector.getProducts();
+
+    productEditView->setHandbooks(products);
+    productEditView->setHandbook(h->id);
+    productEditView->closeWindow();
+    addView->barCodeFinishEmit();
 }
 
 void AddPresenter::onDeleteProduct(int id)
@@ -262,7 +276,7 @@ void AddPresenter::onDeleteProduct(int id)
     databaseConnector.deleteProduct(id);
     auto products = databaseConnector.getProducts();
     productEditView->setHandbooks(products);
-    addView->setRepairers(products);
+    addView->barCodeFinishEmit();
 }
 
 void AddPresenter::setProductEditView(IHandbookEditView *value)
