@@ -22,21 +22,31 @@ void AddPresenter::setDatabaseConnector(const DatabaseConnector &value)
     databaseConnector = value;
 }
 
-void AddPresenter::start()
+QVector<Handbook *> AddPresenter::convertClients(const QHash<int, Client>& clients)
 {
-    methods = databaseConnector.getHandbook("methods");
-    repairers = databaseConnector.getHandbook("repairers");
-    states = databaseConnector.getHandbook("states");
-    auto clients = databaseConnector.getClients();
+    QVector<Handbook*> clientsVector;
     for (auto client : clients)
     {
         auto c = new Client();
         memcpy(c, &client, sizeof(Client));
         clientsVector.push_back(c);
     }
+
     qSort(clientsVector.begin(), clientsVector.end(), [] (const Handbook* one, const Handbook* two) { return one->name < two->name;});
 
-    products = databaseConnector.getProducts();
+    return clientsVector;
+}
+
+void AddPresenter::start()
+{
+    auto methods = databaseConnector.getHandbook("methods");
+    auto repairers = databaseConnector.getHandbook("repairers");
+    auto states = databaseConnector.getHandbook("states");
+    auto clients = databaseConnector.getClients();
+
+    QVector<Handbook*> clientsVector = convertClients(clients);
+
+    auto products = databaseConnector.getProducts();
 
     if (addView == nullptr)
         return;
@@ -279,6 +289,57 @@ void AddPresenter::onDeleteProduct(int id)
     addView->barCodeFinishEmit();
 }
 
+void AddPresenter::onClientAdd(Handbook *h)
+{
+    auto client = (Client*)h;
+
+    auto addedId = databaseConnector.addClient(*client);
+    if (addedId == -1)
+    {
+        addView->showInfo("Не удалось добавить нового клиента!");
+        return;
+    }
+
+    h->id = addedId;
+    auto clients = databaseConnector.getClients();
+    addView->setClients(clients);
+    clientEditView->setMode(Editing);
+    clientEditView->setHandbooks(convertClients(clients));
+    clientEditView->closeWindow();
+}
+
+void AddPresenter::onClientEdit(Handbook *h)
+{
+    auto client = (Client*)h;
+    auto entries = databaseConnector.getEntries(h->id, "client_id", "repair_cards");
+    if (entries != 0)
+    {
+        addView->showInfo("Нельзя редактировать! Этот клиент используется в других ремонтных картах!");
+        return;
+    }
+
+    databaseConnector.updateClient(*client);
+    auto clients = databaseConnector.getClients();
+    addView->setClients(clients);
+    clientEditView->setHandbooks(convertClients(clients));
+    clientEditView->setHandbook(h->id);
+    clientEditView->closeWindow();
+}
+
+void AddPresenter::onDeleteClient(int id)
+{
+    auto entries = databaseConnector.getEntries(id, "client_id", "repair_cards");
+    if (entries != 0)
+    {
+        addView->showInfo("Нельзя удалять! Этот клиент используется в других ремонтных картах!");
+        return;
+    }
+    databaseConnector.deleteClient(id);
+    auto clients = databaseConnector.getClients();
+    clientEditView->setHandbooks(convertClients(clients));
+    addView->setClients(clients);
+}
+
 void AddPresenter::setProductEditView(IHandbookEditView *value)
 {
     productEditView = value;
@@ -290,6 +351,9 @@ void AddPresenter::setProductEditView(IHandbookEditView *value)
 void AddPresenter::setClientEditView(IHandbookEditView *value)
 {
     clientEditView = value;
+    connect(dynamic_cast<QObject*>(clientEditView), SIGNAL(add(Handbook*)), this, SLOT(onClientAdd(Handbook*)));
+    connect(dynamic_cast<QObject*>(clientEditView), SIGNAL(edit(Handbook*)), this, SLOT(onClientEdit(Handbook*)));
+    connect(dynamic_cast<QObject*>(clientEditView), SIGNAL(deleteHandbook(int)), this, SLOT(onDeleteClient(int)));
 }
 
 void AddPresenter::setMethodEditView(IHandbookEditView *value)

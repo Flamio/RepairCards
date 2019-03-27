@@ -39,6 +39,10 @@ public:
     bool updateProduct(const Product& product);
     void deleteProduct(int id);
 
+    int addClient(const Client& product);
+    bool updateClient(const Client& product);
+    void deleteClient(int id);
+
     int getEntries(int id, const QString& column, const QString& table);
     QVector<Handbook*> getProducts();
 

@@ -52,6 +52,10 @@ private slots:
     void onProductAdd(Handbook*);
     void onProductEdit(Handbook*);
     void onDeleteProduct(int id);
+
+    void onClientAdd(Handbook*);
+    void onClientEdit(Handbook*);
+    void onDeleteClient(int id);
 private:
     IAddView* addView = nullptr;
     IHandbookEditView* repairerEditView = nullptr;
@@ -59,12 +63,7 @@ private:
     IHandbookEditView* clientEditView = nullptr;
     IHandbookEditView* productEditView = nullptr;
     DatabaseConnector databaseConnector;
-
-    QVector<Handbook*> clientsVector;
-    QVector<Handbook*> methods;
-    QVector<Handbook*> repairers;
-    QVector<Handbook*> states;
-    QVector<Handbook*> products;
+    QVector<Handbook *> convertClients(const QHash<int, Client>& clients);
 };
 
 #endif // ADDPRESENTER_H

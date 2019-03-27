@@ -13,6 +13,10 @@ public:
 protected slots:
     virtual void on_handbook_currentIndexChanged(int index);
 
+protected:
+    void clearFieldsOnAdd();
+    void fillHandbookFields(Handbook** h);
+
 private:
     QLabel phoneLabel;
     QLineEdit phone;

@@ -17,6 +17,9 @@ ClientEditForm::ClientEditForm(QWidget *parent) : EditHandbookForm(parent)
 
 void ClientEditForm::on_handbook_currentIndexChanged(int index)
 {
+    if (index == -1)
+        return;
+
     EditHandbookForm::on_handbook_currentIndexChanged(index);
 
     auto handbooks = getHandbooks();
@@ -25,4 +28,24 @@ void ClientEditForm::on_handbook_currentIndexChanged(int index)
     phone.setText(client->phone);
     address.setText(client->address);
     contact.setText(client->person);
+}
+
+void ClientEditForm::fillHandbookFields(Handbook** h)
+{
+    auto hb = new Client();
+    hb->id = getUi()->id->text().toInt();
+    hb->name = getUi()->name->text();
+    hb->address = address.text();
+    hb->person = contact.text();
+    hb->phone = phone.text();
+
+    *h = hb;
+}
+
+void ClientEditForm::clearFieldsOnAdd()
+{
+    EditHandbookForm::clearFieldsOnAdd();
+    phone.clear();
+    address.clear();
+    contact.clear();
 }

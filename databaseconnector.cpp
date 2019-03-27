@@ -328,6 +328,37 @@ void DatabaseConnector::deleteProduct(int id)
     query.exec(queryString);
 }
 
+int DatabaseConnector::addClient(const Client &client)
+{
+    QSqlQuery query;
+    auto queryString = QString("insert into clients('name', 'phone', 'person', 'address') values ('%1', '%2', '%3', '%4')")
+            .arg(client.name)
+            .arg(client.phone)
+            .arg(client.person)
+            .arg(client.address);
+
+    if (!query.exec(queryString))
+        return -1;
+
+    return query.lastInsertId().toInt();
+}
+
+bool DatabaseConnector::updateClient(const Client &client)
+{
+    QSqlQuery query;
+    auto queryString = QString("update clients set name='%1', phone='%2', person='%3', address='%4' where id=%5")
+            .arg(client.name).arg(client.phone).arg(client.person).arg(client.address).arg(client.id);
+
+    return query.exec(queryString);
+}
+
+void DatabaseConnector::deleteClient(int id)
+{
+    QSqlQuery query;
+    auto queryString = QString("delete from clients where id=%2").arg(id);
+    query.exec(queryString);
+}
+
 int DatabaseConnector::getEntries(int id, const QString& column, const QString& table)
 {
     QSqlQuery query;

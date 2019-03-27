@@ -47,11 +47,11 @@ void EditHandbookForm::on_pushButton_3_clicked()
 
 void EditHandbookForm::on_handbook_currentIndexChanged(int index)
 {
-    if (index < 0)
-        index = 0;
-
     if (handbooks.count() == 0)
         return;
+
+    if (index < 0 || handbooks.count() < index + 1)
+        index = 0;
 
     auto hb = handbooks[index];
     ui->id->setText(QString::number(hb->id));

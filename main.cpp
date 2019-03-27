@@ -32,7 +32,6 @@ int main(int argc, char *argv[])
     ClientEditForm clientEditForm(&w);
     ProductEditForm productEditForm(&w);
 
-
     addPresenter.setAddView(&w);
     addPresenter.setDatabaseConnector(dbConnector);
     addPresenter.setRepairerEditView(&editRepairerForm);
