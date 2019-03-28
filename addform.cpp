@@ -47,19 +47,16 @@ void AddForm::setRepairers(QVector<Handbook*> &repairers)
         ui->repairer->addItem(state->name, state->id);
 }
 
-void AddForm::setClients(QHash<int,Client> &clients)
+void AddForm::setClients(QHash<int,Client> &clients, QVector<Handbook*>&vector)
 {
+    ui->client->clear();
     ui->client->addItem("", 0);
 
-    QVector<Client> vector;
-
-    foreach (auto client, clients)
-        vector.push_back(client);
-
-    qSort(vector.begin(), vector.end(), [] (const Client& one, const Client& two) { return one.name < two.name;});
-
     foreach (auto client, vector)
-        ui->client->addItem(client.name, client.id);
+    {
+        auto c = (Client*)client;
+        ui->client->addItem(c->name, c->id);
+    }
 
     this->clients = clients;
 }
@@ -190,6 +187,11 @@ void AddForm::barCodeFinishEmit()
     emit barCodeFinish(ui->barCode->text());
 }
 
+void AddForm::setClient(int id)
+{
+    ui->client->setCurrentIndex(ui->client->findData(id));
+}
+
 void AddForm::showWindow()
 {
     show();
@@ -199,13 +201,6 @@ void AddForm::setProduct(const Handbook& product)
 {
     ui->product->setText(product.name);
     creatingCard.productId = product.id;
-}
-
-void AddForm::on_client_activated(int index)
-{
-    auto hashIndex  = ui->client->itemData(index);
-    auto address = clients[hashIndex.toInt()].address;
-    ui->clientAddress->setText(address);
 }
 
 void AddForm::on_pushButton_4_clicked()
@@ -496,4 +491,11 @@ void AddForm::on_pushButton_clicked()
 void AddForm::on_pushButton_2_clicked()
 {
     emit editProducts();
+}
+
+void AddForm::on_client_currentIndexChanged(int index)
+{
+    auto hashIndex  = ui->client->itemData(index);
+    auto address = clients[hashIndex.toInt()].address;
+    ui->clientAddress->setText(address);
 }

@@ -15,7 +15,7 @@ public:
     virtual void setMethods(QVector<Handbook*>&) = 0;
     virtual void setStates(QVector<Handbook*>&) = 0;
     virtual void setRepairers(QVector<Handbook*>&) = 0;
-    virtual void setClients(QHash<int,Client>&) = 0;    
+    virtual void setClients(QHash<int,Client>&, QVector<Handbook*>&) = 0;
     virtual void showInfo(QString) = 0;
     virtual void barCodeFinish(QString barcode) = 0;
     virtual void addSignal(const RepairCard& card, const QVector<CardMethod>& methods) = 0;
@@ -24,6 +24,7 @@ public:
     virtual void setCard(const RepairCard &card, QVector<CardMethod>* methods=nullptr) = 0;
     virtual void setMode(const FormMode &value) = 0;
     virtual void setRepairer(int id) = 0;
+    virtual void setClient(int id) = 0;
     virtual void editRepairers() = 0;
     virtual void editMethods() = 0;
     virtual void addMethod(const Handbook&) = 0;

@@ -54,7 +54,7 @@ void AddPresenter::start()
     addView->setMethods(methods);
     addView->setStates(states);
     addView->setRepairers(repairers);
-    addView->setClients(clients);
+    addView->setClients(clients, clientsVector);
 
     repairerEditView->setHandbooks(repairers);
     methodEditView->setHandbooks(methods);
@@ -302,9 +302,11 @@ void AddPresenter::onClientAdd(Handbook *h)
 
     h->id = addedId;
     auto clients = databaseConnector.getClients();
-    addView->setClients(clients);
+    auto clientsVector = convertClients(clients);
+    addView->setClients(clients, clientsVector);
+    addView->setClient(client->id);
     clientEditView->setMode(Editing);
-    clientEditView->setHandbooks(convertClients(clients));
+    clientEditView->setHandbooks(clientsVector);
     clientEditView->closeWindow();
 }
 
@@ -320,8 +322,10 @@ void AddPresenter::onClientEdit(Handbook *h)
 
     databaseConnector.updateClient(*client);
     auto clients = databaseConnector.getClients();
-    addView->setClients(clients);
-    clientEditView->setHandbooks(convertClients(clients));
+    auto clientsVector = convertClients(clients);
+    addView->setClients(clients, clientsVector);
+    addView->setClient(client->id);
+    clientEditView->setHandbooks(clientsVector);
     clientEditView->setHandbook(h->id);
     clientEditView->closeWindow();
 }
@@ -337,7 +341,8 @@ void AddPresenter::onDeleteClient(int id)
     databaseConnector.deleteClient(id);
     auto clients = databaseConnector.getClients();
     clientEditView->setHandbooks(convertClients(clients));
-    addView->setClients(clients);
+    auto clientsVector = convertClients(clients);
+    addView->setClients(clients, clientsVector);
 }
 
 void AddPresenter::setProductEditView(IHandbookEditView *value)

@@ -16,12 +16,13 @@ EditHandbookForm::~EditHandbookForm()
 
 void EditHandbookForm::setHandbooks(const QVector<Handbook*> &handbooks)
 {
+    ui->handbook->clear();
     for (auto h : this->handbooks)
         delete h;
 
     this->handbooks.clear();
 
-    ui->handbook->clear();
+
     this->handbooks = handbooks;
     for (auto h : handbooks)
         ui->handbook->addItem(h->name, h->id);

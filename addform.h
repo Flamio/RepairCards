@@ -50,7 +50,7 @@ public:
     void setMethods(QVector<Handbook*>&);
     virtual void setStates(QVector<Handbook*>&);
     virtual void setRepairers(QVector<Handbook*>&);
-    virtual void setClients(QHash<int,Client>&);    
+    virtual void setClients(QHash<int,Client>&, QVector<Handbook*>&);
     virtual void showInfo(QString);
     virtual void setProduct(const Handbook& product);
     virtual void showWindow();
@@ -59,6 +59,7 @@ public:
     virtual void addMethod(const Handbook&);
     virtual void setRepairer(int id);
     virtual void barCodeFinishEmit();
+    virtual void setClient(int id);
 
     void setMode(const FormMode &value);
 
@@ -72,8 +73,6 @@ signals:
     void editProducts();
 
 private slots:
-
-    void on_client_activated(int index);
 
     void on_pushButton_4_clicked();
 
@@ -104,6 +103,8 @@ private slots:
     void on_pushButton_clicked();
 
     void on_pushButton_2_clicked();
+
+    void on_client_currentIndexChanged(int index);
 
 private:
     const int sendStateId = 4;
