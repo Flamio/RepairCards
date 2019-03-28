@@ -63,7 +63,6 @@ private:
     IHandbookEditView* clientEditView = nullptr;
     IHandbookEditView* productEditView = nullptr;
     DatabaseConnector databaseConnector;
-    QVector<Handbook *> convertClients(const QHash<int, Client>& clients);
 };
 
 #endif // ADDPRESENTER_H

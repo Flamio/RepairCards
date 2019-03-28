@@ -31,22 +31,22 @@ QVector<Handbook*> DatabaseConnector::getHandbook(const QString& handbookName)
     return methods;
 }
 
-QHash<int,Client> DatabaseConnector::getClients()
+QVector<Handbook*> DatabaseConnector::getClients()
 {
     QSqlQuery query;
     query.exec("SELECT id, name, address, phone, person FROM clients");
-    QHash<int,Client> clients;
+    QVector<Handbook*> clients;
 
     while (query.next())
     {
-        Client hb;
+        auto hb = new Client();
         int id = query.value(0).toInt();
-        hb.id = id;
-        hb.name = query.value(1).toString();
-        hb.address = query.value(2).toString();
-        hb.phone = query.value(3).toString();
-        hb.person = query.value(4).toString();
-        clients[id] = hb;
+        hb->id = id;
+        hb->name = query.value(1).toString();
+        hb->address = query.value(2).toString();
+        hb->phone = query.value(3).toString();
+        hb->person = query.value(4).toString();
+        clients.push_back(hb);
     }
     return clients;
 }

@@ -16,6 +16,7 @@ protected slots:
 protected:
     virtual void fillHandbookFields(Handbook** h);
     virtual void clearFieldsOnAdd();
+    virtual void fillFieldsOnEdit(int index);
 
 private:
     QLabel codeLabel;

@@ -19,7 +19,7 @@ public:
     bool open();
 
     QVector<Handbook*> getHandbook(const QString& handbookName);
-    QHash<int,Client> getClients();
+    QVector<Handbook*> getClients();
 
     RepairCard getLastCard();
     Handbook getProductByCode(const QString& code);

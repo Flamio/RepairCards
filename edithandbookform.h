@@ -46,6 +46,7 @@ protected:
 
     virtual void fillHandbookFields(Handbook**);
     virtual void clearFieldsOnAdd();
+    virtual void fillFieldsOnEdit(int currentIndex);
 
 private:
     Ui::EditHandbookForm *ui;

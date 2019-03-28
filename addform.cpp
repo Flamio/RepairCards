@@ -47,7 +47,7 @@ void AddForm::setRepairers(QVector<Handbook*> &repairers)
         ui->repairer->addItem(state->name, state->id);
 }
 
-void AddForm::setClients(QHash<int,Client> &clients, QVector<Handbook*>&vector)
+void AddForm::setClients(QVector<Handbook*>&vector)
 {
     ui->client->clear();
     ui->client->addItem("", 0);
@@ -58,7 +58,7 @@ void AddForm::setClients(QHash<int,Client> &clients, QVector<Handbook*>&vector)
         ui->client->addItem(c->name, c->id);
     }
 
-    this->clients = clients;
+    this->clients = vector;
 }
 
 void AddForm::showInfo(QString info)
@@ -84,8 +84,8 @@ void AddForm::setCard(const RepairCard &card, QVector<CardMethod>* methods)
     ui->cardNumber->setText(QString::number(creatingCard.id));
     ui->barCode->setText(creatingCard.barCode);
     ui->client->setCurrentIndex(ui->client->findData(creatingCard.clientId));
-    auto hashIndex  = ui->client->currentData();
-    auto address = clients[hashIndex.toInt()].address;
+    auto client = getClientById(ui->client->currentData().toInt());
+    auto address = client == nullptr ? "" : client->address;
     ui->clientAddress->setText(address);
 
     ui->complains->setText(creatingCard.complaints);
@@ -189,7 +189,9 @@ void AddForm::barCodeFinishEmit()
 
 void AddForm::setClient(int id)
 {
-    ui->client->setCurrentIndex(ui->client->findData(id));
+    auto index = ui->client->findData(id);
+    ui->client->setCurrentIndex(index);
+    on_client_activated(index);
 }
 
 void AddForm::showWindow()
@@ -383,7 +385,16 @@ void AddForm::updateState()
     else if (ui->returnDate->text().length() ==10)
         showState(returnStateId);
     else
-         showState(repairStateId);
+        showState(repairStateId);
+}
+
+Client *AddForm::getClientById(int id)
+{
+    for (auto client : clients)
+        if (client->id == id)
+            return (Client*)client;
+
+    return nullptr;
 }
 
 void AddForm::setMode(const FormMode &value)
@@ -493,9 +504,12 @@ void AddForm::on_pushButton_2_clicked()
     emit editProducts();
 }
 
-void AddForm::on_client_currentIndexChanged(int index)
+void AddForm::on_client_activated(int index)
 {
-    auto hashIndex  = ui->client->itemData(index);
-    auto address = clients[hashIndex.toInt()].address;
+    if (index == -1)
+        return;
+
+    auto client = getClientById(ui->client->itemData(index).toInt());
+    auto address = client == nullptr ? "" : client->address;
     ui->clientAddress->setText(address);
 }

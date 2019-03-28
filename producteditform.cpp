@@ -37,3 +37,12 @@ void ProductEditForm::clearFieldsOnAdd()
     EditHandbookForm::clearFieldsOnAdd();
     code.clear();
 }
+
+void ProductEditForm::fillFieldsOnEdit(int index)
+{
+    EditHandbookForm::fillFieldsOnEdit(index);
+
+    auto hb = getHandbooks();
+    auto product = (Product*)hb->at(index);
+    code.setText(product->code);
+}

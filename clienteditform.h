@@ -16,6 +16,7 @@ protected slots:
 protected:
     void clearFieldsOnAdd();
     void fillHandbookFields(Handbook** h);
+    virtual void fillFieldsOnEdit(int index);
 
 private:
     QLabel phoneLabel;

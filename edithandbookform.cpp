@@ -7,6 +7,7 @@ EditHandbookForm::EditHandbookForm(QWidget *parent) :
     ui(new Ui::EditHandbookForm)
 {
     ui->setupUi(this);
+    setMode(Editing);
 }
 
 EditHandbookForm::~EditHandbookForm()
@@ -16,7 +17,7 @@ EditHandbookForm::~EditHandbookForm()
 
 void EditHandbookForm::setHandbooks(const QVector<Handbook*> &handbooks)
 {
-    ui->handbook->clear();
+
     for (auto h : this->handbooks)
         delete h;
 
@@ -24,6 +25,7 @@ void EditHandbookForm::setHandbooks(const QVector<Handbook*> &handbooks)
 
 
     this->handbooks = handbooks;
+    ui->handbook->clear();
     for (auto h : handbooks)
         ui->handbook->addItem(h->name, h->id);
 }
@@ -90,6 +92,7 @@ void EditHandbookForm::setMode(FormMode mode)
         ui->id->setVisible(false);
         ui->idLabel->setVisible(false);
         ui->del->setVisible(false);
+        ui->pushButton_2->setText("ОК");
         clearFieldsOnAdd();
     }
     else
@@ -99,8 +102,9 @@ void EditHandbookForm::setMode(FormMode mode)
         ui->pushButton->setVisible(true);
         ui->id->setVisible(true);
         ui->idLabel->setVisible(true);
+        ui->pushButton_2->setText("Редактировать");
         if (handbooks.count() > 0)
-            ui->name->setText(handbooks[ui->handbook->currentIndex()]->name);
+            fillFieldsOnEdit(ui->handbook->currentIndex());
     }
 }
 
@@ -152,4 +156,9 @@ void EditHandbookForm::fillHandbookFields(Handbook** hb)
 void EditHandbookForm::clearFieldsOnAdd()
 {
     ui->name->clear();
+}
+
+void EditHandbookForm::fillFieldsOnEdit(int currentIndex)
+{
+    ui->name->setText(handbooks[currentIndex]->name);
 }

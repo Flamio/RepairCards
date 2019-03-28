@@ -41,6 +41,17 @@ void ClientEditForm::fillHandbookFields(Handbook** h)
     *h = hb;
 }
 
+void ClientEditForm::fillFieldsOnEdit(int index)
+{
+    EditHandbookForm::fillFieldsOnEdit(index);
+
+    auto hb = getHandbooks();
+    auto client = (Client*)hb->at(index);
+    phone.setText(client->phone);
+    contact.setText(client->person);
+    address.setText(client->address);
+}
+
 void ClientEditForm::clearFieldsOnAdd()
 {
     EditHandbookForm::clearFieldsOnAdd();

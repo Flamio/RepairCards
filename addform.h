@@ -50,7 +50,7 @@ public:
     void setMethods(QVector<Handbook*>&);
     virtual void setStates(QVector<Handbook*>&);
     virtual void setRepairers(QVector<Handbook*>&);
-    virtual void setClients(QHash<int,Client>&, QVector<Handbook*>&);
+    virtual void setClients(QVector<Handbook*>&);
     virtual void showInfo(QString);
     virtual void setProduct(const Handbook& product);
     virtual void showWindow();
@@ -104,7 +104,7 @@ private slots:
 
     void on_pushButton_2_clicked();
 
-    void on_client_currentIndexChanged(int index);
+    void on_client_activated(int index);
 
 private:
     const int sendStateId = 4;
@@ -114,7 +114,7 @@ private:
     const int barCodeLenght = 17;
 
     Ui::AddForm *ui;
-    QHash<int,Client> clients;
+    QVector<Handbook*> clients;
     QVector<MethodGui> combos;
     QVector<Handbook*> methods;
     QVector<Handbook*> states;
@@ -131,6 +131,8 @@ private:
 
     void showState(int id);
     void updateState();
+
+    Client* getClientById(int id);
 
 };
 
