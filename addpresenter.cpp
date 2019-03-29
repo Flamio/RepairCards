@@ -59,6 +59,13 @@ void AddPresenter::onBarCodeFinish(QString code)
     auto productCode = code.left(5);
     auto product = databaseConnector.getProductByCode(productCode);
     addView->setProduct(product);
+
+    auto pastCards = databaseConnector.getCardsByProductId(product.id);
+    if (pastCards.count() == 0)
+        return;
+
+    pastPrepareList->setCards(pastCards);
+    pastPrepareList->showWindow();
 }
 
 void AddPresenter::onAdd(const RepairCard &card, const QVector<CardMethod> &methods)
@@ -322,6 +329,11 @@ void AddPresenter::onDeleteClient(int id)
     auto clients = databaseConnector.getClients();
     clientEditView->setHandbooks(clients);
     addView->setClients(clients);
+}
+
+void AddPresenter::setPastPrepareList(IPastRepairList *value)
+{
+    pastPrepareList = value;
 }
 
 void AddPresenter::setProductEditView(IHandbookEditView *value)

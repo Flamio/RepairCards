@@ -269,6 +269,21 @@ RepairCard DatabaseConnector::getCardById(int id)
     return card;
 }
 
+QVector<RepairCard> DatabaseConnector::getCardsByProductId(int id)
+{
+    QSqlQuery query;
+    query.exec(QString("SELECT * FROM repair_cards WHERE product_id=%1 ORDER BY receive_date").arg(id));
+    QVector<RepairCard> cards;
+
+    while (query.next())
+    {
+        RepairCard card;
+        fillCard(card, query);
+        cards.push_back(card);
+    }
+    return cards;
+}
+
 int DatabaseConnector::addHandbook(const Handbook &handbook, const QString &tableName)
 {
     QSqlQuery query;

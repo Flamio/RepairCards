@@ -8,6 +8,7 @@
 #include "edithandbookform.h"
 #include "clienteditform.h"
 #include "producteditform.h"
+#include "pastrepairslist.h"
 
 int main(int argc, char *argv[])
 {
@@ -31,6 +32,7 @@ int main(int argc, char *argv[])
     EditHandbookForm editMethodForm(&w);
     ClientEditForm clientEditForm(&w);
     ProductEditForm productEditForm(&w);
+    PastRepairsList prl(&w);
 
     addPresenter.setAddView(&w);
     addPresenter.setDatabaseConnector(dbConnector);
@@ -38,6 +40,7 @@ int main(int argc, char *argv[])
     addPresenter.setMethodEditView(&editMethodForm);
     addPresenter.setClientEditView(&clientEditForm);
     addPresenter.setProductEditView(&productEditForm);
+    addPresenter.setPastPrepareList(&prl);
     addPresenter.start();
 
 

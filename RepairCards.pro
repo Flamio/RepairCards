@@ -32,7 +32,8 @@ SOURCES += main.cpp\
     helper.cpp \
     edithandbookform.cpp \
     clienteditform.cpp \
-    producteditform.cpp
+    producteditform.cpp \
+    pastrepairslist.cpp
 
 HEADERS  += \
     databaseconnector.h \
@@ -53,9 +54,12 @@ HEADERS  += \
     formmode.h \
     clienteditform.h \
     producteditform.h \
-    product.h
+    product.h \
+    pastrepairslist.h \
+    ipastrepairlist.h
 
 FORMS    += \
     addform.ui \
     mainform.ui \
-    edithandbookform.ui
+    edithandbookform.ui \
+    pastrepairslist.ui

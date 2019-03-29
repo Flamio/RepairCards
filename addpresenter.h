@@ -6,6 +6,7 @@
 #include "databaseconnector.h"
 #include "cardmethod.h"
 #include "ihandbookeditview.h"
+#include "ipastrepairlist.h"
 
 class AddPresenter : public QObject
 {
@@ -26,6 +27,8 @@ public:
     void setClientEditView(IHandbookEditView *value);
 
     void setProductEditView(IHandbookEditView *value);
+
+    void setPastPrepareList(IPastRepairList *value);
 
 signals:
     void addComplete();
@@ -62,6 +65,7 @@ private:
     IHandbookEditView* methodEditView = nullptr;
     IHandbookEditView* clientEditView = nullptr;
     IHandbookEditView* productEditView = nullptr;
+    IPastRepairList* pastPrepareList = nullptr;
     DatabaseConnector databaseConnector;
 };
 
