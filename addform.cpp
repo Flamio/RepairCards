@@ -41,8 +41,6 @@ void AddForm::setStates(QVector<Handbook*> &states)
 void AddForm::setRepairers(QVector<Handbook*> &repairers)
 {
     ui->repairer->clear();
-    ui->repairer->addItem("", 0);
-
     foreach (auto state, repairers)
         ui->repairer->addItem(state->name, state->id);
 }

@@ -67,8 +67,25 @@ void MainForm::setCard(const RepairCard &card, const QVector<CardMethod> &method
     }
 }
 
+IMainView *MainForm::newDialog()
+{
+    if (dialog != nullptr)
+        delete dialog;
+
+    dialog = new MainForm();
+    dialog->setIsDialog(true);
+    dialog->hideNavigationPanel();
+    return dialog;
+}
+
 void MainForm::closeEvent(QCloseEvent *event)
 {
+    if (isDialog)
+    {
+        event->accept();
+        return;
+    }
+
     QMessageBox::StandardButton reply;
     reply = QMessageBox::question(this, "Выход", "Вы действительно хотите закрыть программу?",
                                   QMessageBox::Yes|QMessageBox::No);
@@ -105,4 +122,14 @@ void MainForm::on_pushButton_9_clicked()
 void MainForm::on_pushButton_clicked()
 {
     emit edit(ui->id->text().toInt());
+}
+
+void MainForm::setIsDialog(bool value)
+{
+    isDialog = value;
+}
+
+void MainForm::hideNavigationPanel()
+{
+    ui->frame_2->setVisible(false);
 }

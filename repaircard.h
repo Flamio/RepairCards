@@ -7,7 +7,7 @@
 struct RepairCard
 {
     int id = 0;
-    int repairerId = 0;
+    int repairerId = 1;
     int productId = 0;
     int clientId = 0;
     int stateId = 0;

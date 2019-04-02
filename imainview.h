@@ -12,6 +12,7 @@ public:
     virtual void setCard(const RepairCard &card, const QVector<CardMethod>& methods) = 0;
     virtual void navigation(bool) = 0;
     virtual void deleteSignal(int id) = 0;
+    virtual IMainView* newDialog() = 0;
 signals:
 };
 

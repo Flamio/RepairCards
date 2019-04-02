@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include "ipastrepairlist.h"
+#include <QListWidgetItem>
 
 namespace Ui {
 class PastRepairsList;
@@ -28,6 +29,8 @@ private slots:
     void on_pushButton_clicked();
 
     void on_pushButton_2_clicked();
+
+    void on_listWidget_itemDoubleClicked(QListWidgetItem *item);
 
 private:
     Ui::PastRepairsList *ui;

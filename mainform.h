@@ -25,8 +25,12 @@ public:
     ~MainForm();
 
     virtual void setCard(const RepairCard &card, const QVector<CardMethod>& methods);
-    virtual void showWindow(){}
+    virtual void showWindow(){ show();}
     virtual void closeWindow(){}
+    virtual IMainView* newDialog();
+
+    void setIsDialog(bool value);
+    void hideNavigationPanel();
 
 protected:
     void closeEvent(QCloseEvent *);
@@ -51,7 +55,10 @@ private slots:
 private:
     Ui::MainForm *ui;
 
+    bool isDialog = false;
+
     QVector<UiMethod> methods;
+    MainForm* dialog = nullptr;
 };
 
 #endif // MAINFORM_H

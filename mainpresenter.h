@@ -6,6 +6,7 @@
 #include "addpresenter.h"
 #include "databaseconnector.h"
 #include "ihandbookeditview.h"
+#include "ipastrepairlist.h"
 
 class MainPresenter : public QObject
 {
@@ -20,6 +21,8 @@ public:
     void setDbConnector(const DatabaseConnector &value);
     void start();
 
+    void setPastPrepareList(IPastRepairList *value);
+
 signals:
 
 public slots:
@@ -31,9 +34,11 @@ private slots:
     void onDelete(int);
     void onEdit(int);
     void onEditComplete(int);
+    void onCardClicked(int);
 
 private:
     IMainView* mainView = nullptr;
+    IPastRepairList* pastPrepareList = nullptr;
 
     AddPresenter* addPresenter = nullptr;
     DatabaseConnector dbConnector;

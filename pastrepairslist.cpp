@@ -41,3 +41,9 @@ void PastRepairsList::on_pushButton_2_clicked()
     auto index = ui->listWidget->currentIndex().row();
     emit cardClicked(this->cards.at(index).id);
 }
+
+void PastRepairsList::on_listWidget_itemDoubleClicked(QListWidgetItem *item)
+{
+    auto index = ui->listWidget->row(item);
+    emit cardClicked(this->cards.at(index).id);
+}

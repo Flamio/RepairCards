@@ -45,6 +45,7 @@ int main(int argc, char *argv[])
 
 
     MainPresenter mainPresenter;
+    mainPresenter.setPastPrepareList(&prl);
     mainPresenter.setAddPresenter(&addPresenter);
     mainPresenter.setDbConnector(dbConnector);
     mainPresenter.setMainView(&mainForm);

@@ -73,6 +73,23 @@ void MainPresenter::onEditComplete(int id)
     mainView->setCard(card, methods);
 }
 
+void MainPresenter::onCardClicked(int id)
+{
+    auto dialog = mainView->newDialog();
+
+    auto card = dbConnector.getCardById(id);
+    auto methods = dbConnector.getMethods(id);
+    dialog->setCard(card, methods);
+    dialog->showWindow();
+}
+
+void MainPresenter::setPastPrepareList(IPastRepairList *value)
+{
+    pastPrepareList = value;
+
+    connect(dynamic_cast<QObject*>(pastPrepareList), SIGNAL(cardClicked(int)), this, SLOT(onCardClicked(int)));
+}
+
 void MainPresenter::onNavigation(bool forward)
 {
     RepairCard card;
