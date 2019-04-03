@@ -5,16 +5,11 @@
 #include "imainview.h"
 #include <QLineEdit>
 #include <QVector>
+#include <QTableWidgetItem>
 
 namespace Ui {
 class MainForm;
 }
-
-struct UiMethod
-{
-    QLineEdit* name = nullptr;
-    QLineEdit* description = nullptr;
-};
 
 class MainForm : public QDialog, public IMainView
 {
@@ -56,8 +51,6 @@ private:
     Ui::MainForm *ui;
 
     bool isDialog = false;
-
-    QVector<UiMethod> methods;
     MainForm* dialog = nullptr;
 };
 

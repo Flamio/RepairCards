@@ -138,7 +138,7 @@ void AddPresenter::onMethodAdd(Handbook *h)
 
 void AddPresenter::onMethodEdit(Handbook *h)
 {
-    auto entries = databaseConnector.getEntries(h->id, "id_methods", "card_methods");
+    auto entries = databaseConnector.getEntries(h->id, "id_method", "cards_methods");
     if (entries != 0)
     {
         addView->showInfo("Нельзя редактировать! Этот способ устранения используется в других ремонтных картах!");
@@ -155,7 +155,7 @@ void AddPresenter::onMethodEdit(Handbook *h)
 
 void AddPresenter::onDeleteMethod(int id)
 {
-    auto entries = databaseConnector.getEntries(id,"id_methods", "card_methods");
+    auto entries = databaseConnector.getEntries(id,"id_method", "cards_methods");
     if (entries != 0)
     {
         addView->showInfo("Нельзя удалить! Этот способ устранения используется в других ремонтных картах!");

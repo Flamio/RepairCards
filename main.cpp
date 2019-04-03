@@ -24,8 +24,7 @@ int main(int argc, char *argv[])
 
     AddPresenter addPresenter(&a);
 
-    MainForm mainForm;
-    mainForm.show();
+    MainForm mainForm;    
 
     AddForm w(&mainForm);
     EditHandbookForm editRepairerForm(&w);

@@ -36,6 +36,7 @@ void MainPresenter::showLastCard()
 void MainPresenter::start()
 {
     showLastCard();
+    mainView->showWindow();
 }
 
 void MainPresenter::onAdd()

@@ -38,32 +38,22 @@ void MainForm::setCard(const RepairCard &card, const QVector<CardMethod> &method
     ui->receive2->setText(card.receiveFromFactoryDate.toString("dd.MM.yyyy"));
     ui->send->setText(card.sendDate.toString("dd.MM.yyyy"));
 
-    for (auto method : this->methods)
-    {
-        delete method.name;
-        delete method.description;
-    }
+    ui->tableWidget->setRowCount(0);
 
-    this->methods.clear();
+    int i = 0;
 
     for (auto method : methods)
     {
-        auto name = new QLineEdit();
-        auto description = new QLineEdit();
-        UiMethod m;
-        m.name = name;
-        m.description = description;
-        this->methods.push_back(m);
-        name->setText(method.methodName);
-        name->setReadOnly(true);
-        description->setReadOnly(true);
-        description->setText(method.description);
-        auto font = name->font();
-        font.setPointSize(Helper::getFontSize());
-        name->setFont(font);
-        description->setFont(font);
-        ui->verticalLayout_2->addWidget(name);
-        ui->verticalLayout_3->addWidget(description);
+        auto item =  new QTableWidgetItem(method.methodName);
+        item->setFlags(Qt::ItemIsEnabled);
+        auto item2 =  new QTableWidgetItem(method.description);
+        item2->setFlags(Qt::ItemIsEnabled);
+
+        ui->tableWidget->insertRow(i);
+        ui->tableWidget->setItem(i,0, item);
+        ui->tableWidget->setItem(i,1, item2);
+        ui->tableWidget->setRowHeight(i,20);
+        i++;
     }
 }
 
