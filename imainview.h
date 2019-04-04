@@ -3,6 +3,7 @@
 #include "repaircard.h"
 #include "cardmethod.h"
 #include "iview.h"
+#include "printtype.h"
 
 class IMainView : public IView
 {
@@ -14,6 +15,7 @@ public:
     virtual void deleteSignal(int id) = 0;
     virtual IMainView* newDialog() = 0;
 signals:
+    virtual void print(int ,PrintType::PrintType&) = 0;
 };
 
 Q_DECLARE_INTERFACE(IMainView, "IMainView")

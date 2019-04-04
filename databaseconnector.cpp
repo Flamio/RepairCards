@@ -401,6 +401,23 @@ QVector<Handbook *> DatabaseConnector::getProducts()
     return products;
 }
 
+QVector<RepairCard> DatabaseConnector::getCardsByDateAndClient(QDate date, int clientId)
+{
+    QSqlQuery query;
+    auto q = QString("SELECT c.*, p.name, cl.phone, cl.person, cl.address, st.name, rep.name, cl.name FROM repair_cards c left join products p on c.product_id=p.id left join clients cl on c.client_id=cl.id left join states st on c.state_id=st.id left join repairers rep on c.repairer_id=rep.id WHERE"
+                     " receive_date='%1' and c.client_id=%2 ORDER BY receive_date").arg(date.toString("dd.MM.yyyy")).arg(clientId);
+    query.exec(q);
+    QVector<RepairCard> cards;
+
+    while (query.next())
+    {
+        RepairCard card;
+        fillCard(card, query);
+        cards.push_back(card);
+    }
+    return cards;
+}
+
 DatabaseConnector::DatabaseConnector()
 {
 

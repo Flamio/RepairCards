@@ -46,6 +46,7 @@ public:
 
     int getEntries(int id, const QString& column, const QString& table);
     QVector<Handbook*> getProducts();
+    QVector<RepairCard> getCardsByDateAndClient(QDate,int clientId);
 
 private:
     QSqlDatabase db;

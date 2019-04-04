@@ -7,12 +7,15 @@
 #include "databaseconnector.h"
 #include "ihandbookeditview.h"
 #include "ipastrepairlist.h"
+#include "printtype.h"
+#include "printerfactory.h"
 
 class MainPresenter : public QObject
 {
     Q_OBJECT
 public:
     explicit MainPresenter(QObject *parent = 0);
+    virtual ~MainPresenter();
 
     void setMainView(IMainView *value);
 
@@ -35,6 +38,7 @@ private slots:
     void onEdit(int);
     void onEditComplete(int);
     void onCardClicked(int);
+    void onPrint(int id,PrintType::PrintType&);
 
 private:
     IMainView* mainView = nullptr;
@@ -42,6 +46,8 @@ private:
 
     AddPresenter* addPresenter = nullptr;
     DatabaseConnector dbConnector;
+    PrinterFactory* printerFactory = nullptr;
+
     void showLastCard();
 };
 

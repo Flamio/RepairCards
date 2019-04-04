@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui sql
+QT       += core gui sql printsupport
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -33,7 +33,11 @@ SOURCES += main.cpp\
     edithandbookform.cpp \
     clienteditform.cpp \
     producteditform.cpp \
-    pastrepairslist.cpp
+    pastrepairslist.cpp \
+    printer.cpp \
+    printerfactory.cpp \
+    repaircardprinter.cpp \
+    invoiceprinter.cpp
 
 HEADERS  += \
     databaseconnector.h \
@@ -56,7 +60,12 @@ HEADERS  += \
     producteditform.h \
     product.h \
     pastrepairslist.h \
-    ipastrepairlist.h
+    ipastrepairlist.h \
+    printtype.h \
+    printer.h \
+    printerfactory.h \
+    repaircardprinter.h \
+    invoiceprinter.h
 
 FORMS    += \
     addform.ui \

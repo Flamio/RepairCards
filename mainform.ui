@@ -624,12 +624,28 @@
            </spacer>
           </item>
           <item>
-           <widget class="QComboBox" name="comboBox_5">
+           <widget class="QComboBox" name="print">
+            <property name="minimumSize">
+             <size>
+              <width>150</width>
+              <height>0</height>
+             </size>
+            </property>
             <property name="font">
              <font>
               <pointsize>10</pointsize>
              </font>
             </property>
+            <item>
+             <property name="text">
+              <string>Ремонтная карта</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Накладная на прием</string>
+             </property>
+            </item>
            </widget>
           </item>
           <item>

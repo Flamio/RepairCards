@@ -123,3 +123,10 @@ void MainForm::hideNavigationPanel()
 {
     ui->frame_2->setVisible(false);
 }
+
+void MainForm::on_pushButton_6_clicked()
+{
+    auto type = (PrintType::PrintType)ui->print->currentIndex();
+    auto cardId = ui->id->text().toInt();
+    emit print(cardId,type);
+}

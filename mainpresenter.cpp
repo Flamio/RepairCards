@@ -2,7 +2,12 @@
 
 MainPresenter::MainPresenter(QObject *parent) : QObject(parent)
 {
+    printerFactory = new PrinterFactory(&dbConnector, this);
+}
 
+MainPresenter::~MainPresenter()
+{
+    delete printerFactory;
 }
 
 void MainPresenter::setMainView(IMainView *value)
@@ -12,6 +17,7 @@ void MainPresenter::setMainView(IMainView *value)
     connect(dynamic_cast<QObject*>(mainView), SIGNAL(add()), this, SLOT(onAdd()));
     connect(dynamic_cast<QObject*>(mainView), SIGNAL(deleteSignal(int)), this, SLOT(onDelete(int)));
     connect(dynamic_cast<QObject*>(mainView), SIGNAL(edit(int)), this, SLOT(onEdit(int)));
+    connect(dynamic_cast<QObject*>(mainView), SIGNAL(print(int, PrintType::PrintType&)), this, SLOT(onPrint(int, PrintType::PrintType&)));
 }
 
 void MainPresenter::setAddPresenter(AddPresenter *value)
@@ -82,6 +88,12 @@ void MainPresenter::onCardClicked(int id)
     auto methods = dbConnector.getMethods(id);
     dialog->setCard(card, methods);
     dialog->showWindow();
+}
+
+void MainPresenter::onPrint(int id, PrintType::PrintType& type)
+{
+    auto printer = printerFactory->build(type);
+    printer->print(id);
 }
 
 void MainPresenter::setPastPrepareList(IPastRepairList *value)
