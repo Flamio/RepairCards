@@ -71,6 +71,9 @@ void InvoicePrinter::drawContent(int id, QPainter &painter)
 
     for (int i = -1; i < cards.count(); i++)
     {
+        QPen pen;
+        pen.setWidth(5);
+        painter.setPen(pen);
         const int heightP = 100;
         QRect r1(345, y, nameWidth, fm->height()+heightP);
         QRect r2(345 + nameWidth, y, barcodeWidth, fm->height()+heightP);
