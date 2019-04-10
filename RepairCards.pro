@@ -37,7 +37,8 @@ SOURCES += main.cpp\
     printer.cpp \
     printerfactory.cpp \
     repaircardprinter.cpp \
-    invoiceprinter.cpp
+    invoiceprinter.cpp \
+    paidcardprinter.cpp
 
 HEADERS  += \
     databaseconnector.h \
@@ -65,7 +66,8 @@ HEADERS  += \
     printer.h \
     printerfactory.h \
     repaircardprinter.h \
-    invoiceprinter.h
+    invoiceprinter.h \
+    paidcardprinter.h
 
 FORMS    += \
     addform.ui \

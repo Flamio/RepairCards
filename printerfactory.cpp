@@ -1,6 +1,7 @@
 #include "printerfactory.h"
 #include "repaircardprinter.h"
 #include "invoiceprinter.h"
+#include "paidcardprinter.h"
 
 PrinterFactory::PrinterFactory(DatabaseConnector* dbconnector,QObject *parent) : QObject(parent)
 {
@@ -14,7 +15,7 @@ Printer *PrinterFactory::build(PrintType::PrintType type)
 
     switch (type) {
     case PrintType::RepairCard:
-        printer = new RepairCardPrinter(this);
+        printer = new PaidCardPrinter(this);
         break;
     case PrintType::Invoice:
         printer = new InvoicePrinter(this);
