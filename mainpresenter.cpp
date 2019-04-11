@@ -92,7 +92,10 @@ void MainPresenter::onCardClicked(int id)
 
 void MainPresenter::onPrint(int id, PrintType::PrintType& type)
 {
-    auto printer = printerFactory->build(type);
+    auto card = dbConnector.getCardById(id);
+    auto printer = printerFactory->build(type, card.costForClient == 0);
+    if (printer == nullptr)
+        return;
     printer->print(id);
 }
 

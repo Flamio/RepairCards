@@ -10,7 +10,7 @@ class PrinterFactory : public QObject
     Q_OBJECT
 public:
     explicit PrinterFactory(DatabaseConnector* dbconnector, QObject *parent = nullptr);
-    Printer* build(PrintType::PrintType);
+    Printer* build(PrintType::PrintType, bool);
 
 signals:
 
