@@ -1,5 +1,5 @@
 #include "printerfactory.h"
-#include "repaircardprinter.h"
+#include "warantyprinter.h"
 #include "invoiceprinter.h"
 #include "paidcardprinter.h"
 
@@ -15,7 +15,7 @@ Printer *PrinterFactory::build(PrintType::PrintType type, bool isWaranty)
 
     switch (type) {
     case PrintType::RepairCard:
-        printer = isWaranty ? nullptr : new PaidCardPrinter(this);
+        printer = isWaranty ? (Printer*)new WarantyPrinter(this) : (Printer*)new PaidCardPrinter(this);
         break;
     case PrintType::Invoice:
         printer = new InvoicePrinter(this);
