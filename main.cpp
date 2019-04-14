@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
     if (!dbConnector.open())
     {
         QMessageBox msg;
-        msg.setText("Не могу открыть базу данных!!");
+        msg.setText("Не могу открыть базу данных!");
         msg.exec();
         return 0;
     }

@@ -112,4 +112,6 @@ void InvoicePrinter::drawContent(int id, QPainter &painter)
     y+=fm->height()*3;
     painter.drawText(QRect(1692, y,400,fm->height()),  "Принял:");
     painter.drawLine(2182, y + fm->height()+10, 4033, y + fm->height()+10);
+
+    delete fm;
 }

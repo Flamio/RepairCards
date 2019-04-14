@@ -144,5 +144,5 @@ void PaidCardPrinter::drawContent(int id, QPainter &painter)
     painter.drawText(620, 2751, "Причина отказа");
     painter.drawText(1644, 2580, card.repairer);
 
-
+    delete metrics;
 }
