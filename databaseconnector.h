@@ -61,6 +61,7 @@ private:
     void runFile(const QString& fileName);
 
     QString lastError;
+    RepairCard bufCard;
 };
 
 #endif // DATABASECONNECTOR_H

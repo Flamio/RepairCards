@@ -20,8 +20,10 @@ public:
     ~MainForm();
 
     virtual void setCard(const RepairCard &card, const QVector<CardMethod>& methods);
-    virtual void showWindow(){ show();}
-    virtual void closeWindow(){}
+    virtual void showWindow()
+    { show();}
+    virtual void closeWindow()
+    { this->setVisible(false);}
     virtual IMainView* newDialog();
 
     void setIsDialog(bool value);

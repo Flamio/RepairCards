@@ -35,14 +35,25 @@ void MainPresenter::setDbConnector(const DatabaseConnector &value)
 void MainPresenter::showLastCard()
 {
     auto card = dbConnector.getLastCard();
-    auto methods = dbConnector.getMethods(card.id);
-    mainView->setCard(card, methods);
+    if (card.stateId != 0)
+    {
+        auto methods = dbConnector.getMethods(card.id);
+        mainView->setCard(card, methods);
+        mainView->showWindow();
+        return;
+    }
+
+    addPresenter->getAddView()->showWindow();
+    addPresenter->getAddView()->showInfo("В базе данных нет ни одной ремонтной карты, создайте новую");
+    RepairCard cardNew;
+    cardNew.id++;
+    addPresenter->getAddView()->setCard(cardNew);
+    mainView->closeWindow();
 }
 
 void MainPresenter::start()
 {
     showLastCard();
-    mainView->showWindow();
 }
 
 void MainPresenter::onAdd()
@@ -59,6 +70,12 @@ void MainPresenter::onDelete(int id)
     dbConnector.deleteCard(id);
 
     auto card = dbConnector.getNextCard();
+
+    if (card.state == 0)
+    {
+        showLastCard();
+        return;
+    }
 
     auto methods = dbConnector.getMethods(card.id);
     mainView->setCard(card, methods);

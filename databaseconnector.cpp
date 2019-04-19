@@ -92,6 +92,8 @@ bool DatabaseConnector::addCard(const RepairCard &card)
             .arg(card.receiveFromFactoryDate.toString("dd.MM.yyyy")).arg(card.sendDate.toString("dd.MM.yyyy"));
 
     auto result = query.exec(queryString);
+    if (!result)
+        lastError = query.lastError().text();
     return result;
 }
 
@@ -148,6 +150,9 @@ RepairCard DatabaseConnector::getPreviousCard()
 
 RepairCard DatabaseConnector::getNextCard()
 {
+    if (ids.count() == 0)
+        return bufCard;
+
     currentIndex++;
     if (currentIndex >= ids.count() - 1)
         currentIndex = ids.count() - 1;

@@ -99,6 +99,7 @@ void AddForm::setCard(const RepairCard &card, QVector<CardMethod>* methods)
     ui->clientCost->setValue(creatingCard.costForClient);
     ui->sendDate->setText(creatingCard.sendDate.toString("dd.MM.yyyy"));
     ui->receiveDate2->setText(creatingCard.receiveFromFactoryDate.toString("dd.MM.yyyy"));
+    updateState();
 
     foreach (MethodGui item, combos) {
         delete item.combo;

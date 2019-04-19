@@ -28,7 +28,7 @@ int main(int argc, char *argv[])
 
     MainForm mainForm;    
 
-    AddForm w(&mainForm);
+    AddForm w;
     EditHandbookForm editRepairerForm(&w);
     EditHandbookForm editMethodForm(&w);
     ClientEditForm clientEditForm(&w);
