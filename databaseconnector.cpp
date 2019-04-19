@@ -5,6 +5,7 @@
 #include "product.h"
 #include <QFile>
 #include <QTextStream>
+#include <QDirIterator>
 
 bool DatabaseConnector::open()
 {
@@ -278,10 +279,11 @@ void DatabaseConnector::runFile(const QString &fileName)
 
     foreach (QString queryTxt, scriptQueries)
     {
-        if (queryTxt.trimmed().isEmpty()) {
+        if (queryTxt.trimmed().isEmpty())
             continue;
-        }
-        query.exec(queryTxt);
+
+        auto f = query.exec(queryTxt);
+        lastError = query.lastError().text();
         query.finish();
     }
 }
@@ -295,6 +297,27 @@ void DatabaseConnector::createTables()
 {
     runFile(":/sql/create_tables.sql");
     runFile(":/sql/insert_states.sql");
+}
+
+void DatabaseConnector::convert()
+{
+    QSqlQuery query;
+    query.exec("select number from convert where id=0");
+    query.first();
+    auto dbVersion = query.value(0).toInt();
+
+    QDirIterator it(":/convert", QDirIterator::Subdirectories);
+    while (it.hasNext())
+    {
+        auto fileName = it.next();
+        auto sl = fileName.lastIndexOf('/');
+        auto v = fileName.mid(sl + 1, fileName.count() - 5 - sl);
+        if (v.toInt() <= dbVersion)
+            continue;
+        runFile(fileName);
+        query.exec(QString("update convert set number=%1 where id=0").arg(v));
+        int a = 0;
+    }
 }
 
 RepairCard DatabaseConnector::getCardById(int id)

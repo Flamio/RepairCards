@@ -51,6 +51,7 @@ public:
     QString getLastError() const;
 
     void createTables();
+    void convert();
 
 private:
     QSqlDatabase db;

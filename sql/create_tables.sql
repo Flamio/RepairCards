@@ -27,5 +27,9 @@ CREATE TABLE repairers (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name CHAR
 -- Таблица: states
 CREATE TABLE states (id INTEGER PRIMARY KEY AUTOINCREMENT, name CHAR (255) UNIQUE);
 
+CREATE TABLE convert (id INTEGER PRIMARY KEY, number INTEGER);
+
+insert into convert values (0,0);
+
 COMMIT TRANSACTION;
 PRAGMA foreign_keys = on;
