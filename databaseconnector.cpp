@@ -263,15 +263,10 @@ bool DatabaseConnector::updateIds(bool currentChange)
     return true;
 }
 
-QString DatabaseConnector::getLastError() const
-{
-    return lastError;
-}
-
-void DatabaseConnector::createTables()
+void DatabaseConnector::runFile(const QString &fileName)
 {
     QSqlQuery query;
-    QFile scriptFile(":/sql/create_tables.sql");
+    QFile scriptFile(fileName);
     if (!scriptFile.open(QIODevice::ReadOnly))
         return;
     QStringList scriptQueries = QTextStream(&scriptFile).readAll().split(';');
@@ -284,6 +279,17 @@ void DatabaseConnector::createTables()
         query.exec(queryTxt);
         query.finish();
     }
+}
+
+QString DatabaseConnector::getLastError() const
+{
+    return lastError;
+}
+
+void DatabaseConnector::createTables()
+{
+    runFile(":/sql/create_tables.sql");
+    runFile(":/sql/insert_states.sql");
 }
 
 RepairCard DatabaseConnector::getCardById(int id)
@@ -321,7 +327,6 @@ int DatabaseConnector::addHandbook(const Handbook &handbook, const QString &tabl
 
     if (!query.exec(queryString))
     {
-        auto k = db.isOpen();
         lastError = query.lastError().text();
         return -1;
     }

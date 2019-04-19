@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>sql/create_tables.sql</file>
+        <file>sql/insert_states.sql</file>
     </qresource>
 </RCC>

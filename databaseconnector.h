@@ -58,6 +58,7 @@ private:
     int currentIndex = 0;
     void fillCard(RepairCard& card, QSqlQuery& query);
     bool updateIds(bool currentChange=true);
+    void runFile(const QString& fileName);
 
     QString lastError;
 };
