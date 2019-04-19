@@ -48,12 +48,18 @@ public:
     QVector<Handbook*> getProducts();
     QVector<RepairCard> getCardsByDateAndClient(QDate,int clientId);
 
+    QString getLastError() const;
+
+    void createTables();
+
 private:
     QSqlDatabase db;
     QVector<int> ids;
     int currentIndex = 0;
     void fillCard(RepairCard& card, QSqlQuery& query);
     bool updateIds(bool currentChange=true);
+
+    QString lastError;
 };
 
 #endif // DATABASECONNECTOR_H

@@ -1,7 +1,10 @@
 #include "databaseconnector.h"
 #include <QSqlQuery>
+#include <QSqlError>
 #include <QVariant>
 #include "product.h"
+#include <QFile>
+#include <QTextStream>
 
 bool DatabaseConnector::open()
 {
@@ -107,6 +110,7 @@ bool DatabaseConnector::addMethods(const QVector<CardMethod> cardMethods)
         if (!result)
         {
             db.rollback();
+            lastError = db.lastError().text();
             return false;
         }
     }
@@ -259,6 +263,29 @@ bool DatabaseConnector::updateIds(bool currentChange)
     return true;
 }
 
+QString DatabaseConnector::getLastError() const
+{
+    return lastError;
+}
+
+void DatabaseConnector::createTables()
+{
+    QSqlQuery query;
+    QFile scriptFile(":/sql/create_tables.sql");
+    if (!scriptFile.open(QIODevice::ReadOnly))
+        return;
+    QStringList scriptQueries = QTextStream(&scriptFile).readAll().split(';');
+
+    foreach (QString queryTxt, scriptQueries)
+    {
+        if (queryTxt.trimmed().isEmpty()) {
+            continue;
+        }
+        query.exec(queryTxt);
+        query.finish();
+    }
+}
+
 RepairCard DatabaseConnector::getCardById(int id)
 {
     RepairCard card;
@@ -293,7 +320,11 @@ int DatabaseConnector::addHandbook(const Handbook &handbook, const QString &tabl
 
 
     if (!query.exec(queryString))
+    {
+        auto k = db.isOpen();
+        lastError = query.lastError().text();
         return -1;
+    }
 
     return query.lastInsertId().toInt();
 }

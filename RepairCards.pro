@@ -76,3 +76,6 @@ FORMS    += \
     mainform.ui \
     edithandbookform.ui \
     pastrepairslist.ui
+
+RESOURCES += \
+    resources.qrc
