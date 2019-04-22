@@ -9,4 +9,7 @@ alter table repair_cards
 alter table repair_cards
     add column createMonth integer;
 
+update repair_cards
+    set isOwen=1;
+
 commit transaction;

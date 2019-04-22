@@ -59,6 +59,8 @@ private slots:
     void onClientAdd(Handbook*);
     void onClientEdit(Handbook*);
     void onDeleteClient(int id);
+    void checkPastRepairs(int productId);
+
 private:
     IAddView* addView = nullptr;
     IHandbookEditView* repairerEditView = nullptr;

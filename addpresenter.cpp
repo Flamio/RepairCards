@@ -15,6 +15,7 @@ void AddPresenter::setAddView(IAddView *value)
     connect(dynamic_cast<QObject*>(addView), SIGNAL(editMethods()), this, SLOT(onEditMethods()));
     connect(dynamic_cast<QObject*>(addView), SIGNAL(editClients()), this, SLOT(onEditClients()));
     connect(dynamic_cast<QObject*>(addView), SIGNAL(editProducts()), this, SLOT(onEditProducts()));
+     connect(dynamic_cast<QObject*>(addView), SIGNAL(checkProduct(int)), this, SLOT(checkPastRepairs(int)));
 }
 
 void AddPresenter::setDatabaseConnector(const DatabaseConnector &value)
@@ -43,15 +44,14 @@ void AddPresenter::start()
     clientEditView->setHandbooks(clients);
     productEditView->setHandbooks(products);
 
-    /*repairCard = databaseConnector.getLastCard();
-    auto methods_ = databaseConnector.getMethods(repairCard.id);
-    if (repairCard.id == 0)
-    {
-        addView->setMode(Adding);
-        addView->showInfo("Не найдено ни одной ремонтной карты! Создайте новую");
-        repairCard.id++;
-    }
-    addView->setCard(repairCard,methods_);*/
+    auto productsTableModel = databaseConnector.getTableModel("products");
+
+    QCompleter *completer = new QCompleter(productsTableModel, this);
+    completer->setCompletionColumn(2);
+    completer->setCompletionMode(QCompleter::CompletionMode::PopupCompletion);
+    completer->setModelSorting(QCompleter::CaseInsensitivelySortedModel);
+    completer->setCaseSensitivity(Qt::CaseInsensitive);
+    addView->setProductCompleter(completer);
 }
 
 void AddPresenter::onBarCodeFinish(QString code)
@@ -60,12 +60,7 @@ void AddPresenter::onBarCodeFinish(QString code)
     auto product = databaseConnector.getProductByCode(productCode);
     addView->setProduct(product);
 
-    auto pastCards = databaseConnector.getCardsByProductId(product.id);
-    if (pastCards.count() == 0)
-        return;
-
-    pastPrepareList->setCards(pastCards);
-    pastPrepareList->showWindow();
+    checkPastRepairs(product.id);
 }
 
 void AddPresenter::onAdd(const RepairCard &card, const QVector<CardMethod> &methods)
@@ -329,6 +324,16 @@ void AddPresenter::onDeleteClient(int id)
     auto clients = databaseConnector.getClients();
     clientEditView->setHandbooks(clients);
     addView->setClients(clients);
+}
+
+void AddPresenter::checkPastRepairs(int productId)
+{
+    auto pastCards = databaseConnector.getCardsByProductId(productId);
+    if (pastCards.count() == 0)
+        return;
+
+    pastPrepareList->setCards(pastCards);
+    pastPrepareList->showWindow();
 }
 
 void AddPresenter::setPastPrepareList(IPastRepairList *value)

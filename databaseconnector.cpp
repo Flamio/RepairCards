@@ -84,13 +84,14 @@ bool DatabaseConnector::addCard(const RepairCard &card)
 {
     QSqlQuery query;
     auto queryString = QString("insert into repair_cards values"
-                               " (%1,%2,%3,%4,'%5','%6','%7',%8,'%9','%10','%11','%12',%13,%14,'%15','%16')")
+                               " (%1,%2,%3,%4,'%5','%6','%7',%8,'%9','%10','%11','%12',%13,%14,'%15','%16', %17, %18, %19)")
             .arg(card.id).arg(card.repairerId).arg(card.productId).arg(card.clientId)
             .arg(card.receiveFromClientDate.toString("dd.MM.yyyy")).arg(card.readyDate.toString("dd.MM.yyyy")).arg(card.returnDate.toString("dd.MM.yyyy"))
             .arg(card.stateId)
             .arg(card.complaints).arg(card.reason).arg(card.note).arg(card.barCode)
             .arg(card.costForClient).arg(card.costRepair)
-            .arg(card.receiveFromFactoryDate.toString("dd.MM.yyyy")).arg(card.sendDate.toString("dd.MM.yyyy"));
+            .arg(card.receiveFromFactoryDate.toString("dd.MM.yyyy")).arg(card.sendDate.toString("dd.MM.yyyy"))
+            .arg(card.isOwen).arg(card.isOwen ?  "NULL" : card.year).arg(card.isOwen ?  "NULL" : card.month);
 
     auto result = query.exec(queryString);
     if (!result)
@@ -166,7 +167,9 @@ void DatabaseConnector::deleteCard(int id)
 {
     db.transaction();
     QSqlQuery query;
-    auto queryString = QString("delete from repair_cards where id=%1").arg(id);
+
+
+    auto queryString = QString("delete from cards_methods where id_card=%1").arg(id);
 
     auto result = query.exec(queryString);
     if (!result)
@@ -175,14 +178,17 @@ void DatabaseConnector::deleteCard(int id)
         return;
     }
 
-    queryString = QString("delete from cards_methods where id_card=%1").arg(id);
+    queryString = QString("delete from repair_cards where id=%1").arg(id);
 
     result = query.exec(queryString);
     if (!result)
     {
+        lastError = query.lastError().text();
         db.rollback();
         return;
     }
+
+
 
     db.commit();
 
@@ -196,14 +202,15 @@ bool DatabaseConnector::updateCard(const RepairCard &card)
     QSqlQuery query;
     auto queryString = QString("update repair_cards"
                                " set repairer_id=%1,product_id=%2,client_id=%3,receive_date='%4',ready_date='%5',return='%6',state_id=%7,complaints='%8',reason='%9',note='%10',bar_code='%11',"
-                               " cost_for_client=%12,cost_repair=%13,receive_date2='%14',sendDate='%15'"
-                               " where id=%17")
+                               " cost_for_client=%12,cost_repair=%13,receive_date2='%14',sendDate='%15', isOwen=%16, createYear=%17, createMonth=%18"
+                               " where id=%19")
             .arg(card.repairerId).arg(card.productId).arg(card.clientId)
             .arg(card.receiveFromClientDate.toString("dd.MM.yyyy")).arg(card.readyDate.toString("dd.MM.yyyy")).arg(card.returnDate.toString("dd.MM.yyyy"))
             .arg(card.stateId)
             .arg(card.complaints).arg(card.reason).arg(card.note).arg(card.barCode)
             .arg(card.costForClient).arg(card.costRepair)
             .arg(card.receiveFromFactoryDate.toString("dd.MM.yyyy")).arg(card.sendDate.toString("dd.MM.yyyy"))
+            .arg(card.isOwen).arg(card.isOwen ? "NULL" : card.year).arg(card.isOwen ? "NULL" : card.month)
             .arg(card.id);
 
     auto result = query.exec(queryString);
@@ -244,13 +251,16 @@ void DatabaseConnector::fillCard(RepairCard& card, QSqlQuery& query)
     card.costRepair = query.value(13).toInt();
     card.receiveFromFactoryDate = QDate::fromString(query.value(14).toString(), "dd.MM.yyyy");
     card.sendDate = QDate::fromString(query.value(15).toString(), "dd.MM.yyyy");
-    card.productName = query.value(16).toString();
-    card.client.phone = query.value(17).toString();
-    card.client.person = query.value(18).toString();
-    card.client.address = query.value(19).toString();
-    card.state = query.value(20).toString();
-    card.repairer = query.value(21).toString();
-    card.client.name = query.value(22).toString();
+    card.isOwen = query.value(16).toBool();
+    card.year = query.value(17).toString();
+    card.month = query.value(18).toString();
+    card.productName = query.value(19).toString();
+    card.client.phone = query.value(20).toString();
+    card.client.person = query.value(21).toString();
+    card.client.address = query.value(22).toString();
+    card.state = query.value(23).toString();
+    card.repairer = query.value(24).toString();
+    card.client.name = query.value(25).toString();
     card.allIndexes = ids.count();
     card.currentIndex = currentIndex+1;
 }
@@ -316,8 +326,19 @@ void DatabaseConnector::convert()
             continue;
         runFile(fileName);
         query.exec(QString("update convert set number=%1 where id=0").arg(v));
+
         int a = 0;
     }
+}
+
+QSqlTableModel *DatabaseConnector::getTableModel(const QString &table)
+{
+    QSqlTableModel * model = new QSqlTableModel(nullptr,db);
+    model->setTable(table);
+    model->select();
+    while(model->canFetchMore())
+        model->fetchMore();
+    return model;
 }
 
 RepairCard DatabaseConnector::getCardById(int id)

@@ -16,6 +16,7 @@ AddForm::AddForm(QWidget *parent) :
     dateOnSendDate = new DateOnDoubleClick(ui->sendDate);
 
     ui->barCode->setValidator(new QRegExpValidator(QRegExp("^\\d{17}$"),this));
+    ui->createMonth->setValidator(new QRegExpValidator(QRegExp("^\\d{2}$"),this));
 }
 
 AddForm::~AddForm()
@@ -80,7 +81,6 @@ void AddForm::setCard(const RepairCard &card, QVector<CardMethod>* methods)
         creatingCard = card;
 
     ui->cardNumber->setText(QString::number(creatingCard.id));
-    ui->barCode->setText(creatingCard.barCode);
     ui->client->setCurrentIndex(ui->client->findData(creatingCard.clientId));
     auto client = getClientById(ui->client->currentData().toInt());
     auto address = client == nullptr ? "" : client->address;
@@ -99,6 +99,14 @@ void AddForm::setCard(const RepairCard &card, QVector<CardMethod>* methods)
     ui->clientCost->setValue(creatingCard.costForClient);
     ui->sendDate->setText(creatingCard.sendDate.toString("dd.MM.yyyy"));
     ui->receiveDate2->setText(creatingCard.receiveFromFactoryDate.toString("dd.MM.yyyy"));
+    ui->checkBox->setChecked(creatingCard.isOwen);
+    ui->barCode->setText(creatingCard.barCode);
+    on_checkBox_clicked(creatingCard.isOwen);
+    if (!card.isOwen)
+    {
+        ui->createYear->setText(creatingCard.year);
+        ui->createMonth->setText(creatingCard.month);
+    }
     updateState();
 
     foreach (MethodGui item, combos) {
@@ -191,6 +199,13 @@ void AddForm::setClient(int id)
     auto index = ui->client->findData(id);
     ui->client->setCurrentIndex(index);
     on_client_activated(index);
+}
+
+void AddForm::setProductCompleter(QCompleter *completer)
+{
+    this->productCompleter = completer;
+    ui->product->setCompleter(productCompleter);
+    connect(productCompleter, SIGNAL(activated(const QModelIndex&)), this, SLOT(onProductCompleteActivated(const QModelIndex&)));
 }
 
 void AddForm::showWindow()
@@ -288,6 +303,18 @@ void AddForm::on_pushButton_11_clicked()
         return;
     }
 
+    if (!ui->checkBox->checkState() && ui->createYear->text() == "")
+    {
+        showInfo("Не заполнен год выпуска!");
+        return;
+    }
+
+    if (!ui->checkBox->checkState() && ui->createMonth->text() == "")
+    {
+        showInfo("Не заполнен месяц выпуска!");
+        return;
+    }
+
     creatingCard.barCode = ui->barCode->text();
     creatingCard.clientId = ui->client->currentData().toInt();
     creatingCard.complaints = ui->complains->toPlainText();
@@ -302,6 +329,12 @@ void AddForm::on_pushButton_11_clicked()
     creatingCard.costRepair = ui->repairCost->value();
     creatingCard.sendDate = QDate::fromString(ui->sendDate->text(), "dd.MM.yyyy");
     creatingCard.receiveFromFactoryDate = QDate::fromString(ui->receiveDate2->text(), "dd.MM.yyyy");
+    creatingCard.isOwen = ui->checkBox->checkState();
+    if (!creatingCard.isOwen)
+    {
+        creatingCard.year = ui->createYear->text();
+        creatingCard.month = ui->createMonth->text();
+    }
 
     QVector<CardMethod> cardMethods;
     foreach (MethodGui element, combos)
@@ -324,9 +357,16 @@ void AddForm::on_pushButton_11_clicked()
 
 void AddForm::on_barCode_textChanged(const QString &arg1)
 {
-    if (arg1.count() != barCodeLenght)
-
+    if (!ui->checkBox->checkState())
         return;
+    if (arg1.count() != barCodeLenght)
+    {
+        ui->product->clear();
+        ui->createYear->clear();
+        ui->createMonth->clear();
+        creatingCard.productId = 0;
+        return;
+    }
 
     emit barCodeFinish(arg1);
 
@@ -396,6 +436,14 @@ Client *AddForm::getClientById(int id)
     return nullptr;
 }
 
+void AddForm::onProductCompleteActivated(const QModelIndex &index)
+{
+    int row = index.row();
+    int id = productCompleter->completionModel()->index(row, 0).data().toInt();
+    creatingCard.productId = id;
+    checkProduct(id);
+}
+
 void AddForm::setMode(const FormMode &value)
 {
     mode = value;
@@ -438,8 +486,8 @@ void AddForm::on_receiveDate2_textChanged(const QString &arg1)
     }
     else
     {
-            ui->returnDate->setEnabled(true);
-            ui->readyDate->setEnabled(true);
+        ui->returnDate->setEnabled(true);
+        ui->readyDate->setEnabled(true);
     }
     updateState();
 }
@@ -511,4 +559,27 @@ void AddForm::on_client_activated(int index)
     auto client = getClientById(ui->client->itemData(index).toInt());
     auto address = client == nullptr ? "" : client->address;
     ui->clientAddress->setText(address);
+}
+
+void AddForm::on_checkBox_clicked(bool checked)
+{
+    ui->product->setReadOnly(checked);
+    ui->createYear->setReadOnly(checked);
+    ui->createMonth->setReadOnly(checked);
+    if (checked)
+        on_barCode_textChanged(ui->barCode->text());
+}
+
+void AddForm::on_product_textChanged(const QString &)
+{
+
+}
+
+void AddForm::on_product_editingFinished()
+{
+}
+
+void AddForm::on_checkBox_stateChanged(int arg1)
+{
+
 }

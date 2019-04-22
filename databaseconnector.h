@@ -9,6 +9,7 @@
 #include "repaircard.h"
 #include "cardmethod.h"
 #include "product.h"
+#include <QSqlTableModel>
 
 class DatabaseConnector
 {
@@ -52,6 +53,10 @@ public:
 
     void createTables();
     void convert();
+
+    QSqlTableModel* getTableModel(const QString& table);
+
+
 
 private:
     QSqlDatabase db;

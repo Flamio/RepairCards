@@ -28,6 +28,9 @@ struct RepairCard
     QString repairer;
     int currentIndex = 0;
     int allIndexes = 0;
+    bool isOwen = true;
+    QString year;
+    QString month;
 };
 
 #endif // REPAIRCARD_H

@@ -60,6 +60,7 @@ public:
     virtual void setRepairer(int id);
     virtual void barCodeFinishEmit();
     virtual void setClient(int id);
+    virtual void setProductCompleter(QCompleter *completer);
 
     void setMode(const FormMode &value);
 
@@ -71,6 +72,7 @@ signals:
     void editMethods();
     void editClients();
     void editProducts();
+    void checkProduct(int id);
 
 private slots:
 
@@ -86,7 +88,7 @@ private slots:
 
     void on_pushButton_12_clicked();
 
-    void on_sendDate_textChanged(const QString &arg1);    
+    void on_sendDate_textChanged(const QString &arg1);
 
     void on_receiveDate_textChanged(const QString &arg1);
 
@@ -105,6 +107,17 @@ private slots:
     void on_pushButton_2_clicked();
 
     void on_client_activated(int index);
+
+    void on_checkBox_clicked(bool checked);
+
+    void on_product_textChanged(const QString &arg1);
+
+    void on_product_editingFinished();
+
+private slots:
+    void onProductCompleteActivated(const QModelIndex &index);
+
+    void on_checkBox_stateChanged(int arg1);
 
 private:
     const int sendStateId = 4;
@@ -127,13 +140,14 @@ private:
     DateOnDoubleClick* dateOnReceive2Date = nullptr;
     DateOnDoubleClick* dateOnReceiveDate = nullptr;
 
+    QCompleter *productCompleter;
+
     FormMode mode = Adding;
 
     void showState(int id);
     void updateState();
 
     Client* getClientById(int id);
-
 };
 
 #endif // MAINWINDOW_H

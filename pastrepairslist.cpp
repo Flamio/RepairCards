@@ -26,6 +26,7 @@ void PastRepairsList::closeWindow()
 void PastRepairsList::setCards(QVector<RepairCard> &cards)
 {
     this->cards = cards;
+    ui->listWidget->clear();
 
     for (auto card : cards)
         ui->listWidget->addItem(card.receiveFromClientDate.toString("dd.MM.yyyy"));
