@@ -17,7 +17,7 @@ public:
 
     IProductSearchView *getView() const;
 
-    Handbook* getProduct();
+    Product* getProduct();
 
 signals:
     void done();
@@ -31,7 +31,7 @@ private slots:
 private:
     IProductSearchView* view = nullptr;
     DatabaseConnector* db = nullptr;
-    Handbook product;
+    Product product;
 };
 
 #endif // PRODUCTSEARCHPRESENTER_H

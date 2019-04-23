@@ -42,7 +42,6 @@ void AddPresenter::start()
     repairerEditView->setHandbooks(repairers);
     methodEditView->setHandbooks(methods);
     clientEditView->setHandbooks(clients);
-    productEditView->setHandbooks(products);
 }
 
 void AddPresenter::onBarCodeFinish(QString code)
@@ -224,15 +223,20 @@ void AddPresenter::onProductAdd(Handbook *h)
     }
 
     h->id = addedId;
-    auto products = databaseConnector.getProducts();
     productEditView->setMode(Editing);
-    productEditView->setHandbooks(products);
     productEditView->closeWindow();
+    addView->setProduct(*product);
     addView->barCodeFinishEmit();
 }
 
 void AddPresenter::onProductEdit(Handbook *h)
 {
+    if (h->id == 0)
+    {
+        addView->showInfo("Нет такого изделия!");
+        return;
+    }
+
     auto entries = databaseConnector.getEntries(h->id, "product_id", "repair_cards");
     if (entries != 0)
     {
@@ -242,16 +246,19 @@ void AddPresenter::onProductEdit(Handbook *h)
 
     auto product = (Product*)h;
     databaseConnector.updateProduct(*product);
-    auto products= databaseConnector.getProducts();
-
-    productEditView->setHandbooks(products);
-    productEditView->setHandbook(h->id);
     productEditView->closeWindow();
+    addView->setProduct(*product);
     addView->barCodeFinishEmit();
 }
 
 void AddPresenter::onDeleteProduct(int id)
 {
+    if (id == 0)
+    {
+        addView->showInfo("Нет такого изделия!");
+        return;
+    }
+
     auto entries = databaseConnector.getEntries(id, "product_id", "repair_cards");
     if (entries != 0)
     {
@@ -259,9 +266,10 @@ void AddPresenter::onDeleteProduct(int id)
         return;
     }
     databaseConnector.deleteProduct(id);
-    auto products = databaseConnector.getProducts();
-    productEditView->setHandbooks(products);
+    Product dum;
+    addView->setProduct(dum);
     addView->barCodeFinishEmit();
+    productEditView->closeWindow();
 }
 
 void AddPresenter::onClientAdd(Handbook *h)

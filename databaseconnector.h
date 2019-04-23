@@ -23,7 +23,7 @@ public:
     QVector<Handbook*> getClients();
 
     RepairCard getLastCard();
-    Handbook getProductByCode(const QString& code);
+    Product getProductByCode(const QString& code);
     bool addCard(const RepairCard& card);
     bool addMethods(const QVector<CardMethod> cardMethods);
     QVector<CardMethod> getMethods(int cardId);

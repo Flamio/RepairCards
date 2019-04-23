@@ -25,10 +25,11 @@ void ProductSearchPresenter::onSearchProduct(const QString &number)
 
 void ProductSearchPresenter::onDone()
 {
+    onSearchProduct(product.code);
     emit done();
 }
 
-Handbook* ProductSearchPresenter::getProduct()
+Product* ProductSearchPresenter::getProduct()
 {
     return &product;
 }

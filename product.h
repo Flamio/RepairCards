@@ -5,7 +5,7 @@
 
 struct Product : Handbook
 {
-    QString code;
+    QString code = "-1";
 };
 
 #endif // PRODUCT_H

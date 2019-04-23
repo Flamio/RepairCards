@@ -66,16 +66,17 @@ RepairCard DatabaseConnector::getLastCard()
     return card;
 }
 
-Handbook DatabaseConnector::getProductByCode(const QString &code)
+Product DatabaseConnector::getProductByCode(const QString &code)
 {
-    Handbook product;
+    Product product;
     QSqlQuery query;
     int codeInt = code.toInt();
-    query.exec(QString("SELECT id, name FROM products where code = '%1'").arg(codeInt));
+    query.exec(QString("SELECT id, name, code FROM products where code = '%1'").arg(codeInt));
     if (query.first())
     {
         product.id = query.value(0).toInt();
         product.name = query.value(1).toString();
+        product.code = query.value(2).toString();
     }
     return product;
 }

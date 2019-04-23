@@ -189,6 +189,8 @@ void AddForm::setRepairer(int id)
 
 void AddForm::barCodeFinishEmit()
 {
+    if (!ui->checkBox->checkState())
+        return;
     if (ui->barCode->text().count() != barCodeLenght)
         return;
 

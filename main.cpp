@@ -31,18 +31,20 @@ int main(int argc, char *argv[])
 
     AddPresenter addPresenter(&a);
 
-    MainForm mainForm;    
+    MainForm mainForm;
 
     AddForm w;
     EditHandbookForm editRepairerForm(&w);
     EditHandbookForm editMethodForm(&w);
     ClientEditForm clientEditForm(&w);
-    ProductEditForm productEditForm(&w);
+
     PastRepairsList prl(&w);
 
     ProductSearchForm psf(&w);
     ProductSearchPresenter psp(&a);
     psp.setView(&psf);
+
+    ProductEditForm productEditForm(&w);
 
     addPresenter.setAddView(&w);
     addPresenter.setDatabaseConnector(dbConnector);

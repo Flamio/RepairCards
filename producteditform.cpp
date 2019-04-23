@@ -4,23 +4,35 @@
 
 ProductEditForm::ProductEditForm(QWidget *parent) : EditHandbookForm(parent)
 {
+    productSearch = new ProductSearchPresenter(this);
+    searchForm = new ProductSearchForm(this);
+    productSearch->setView(searchForm);
+    connect(productSearch, &ProductSearchPresenter::done, this, &ProductEditForm::onSearchDone);
+
+    searchProductButton.setText("Найти изделие");
+    connect (&searchProductButton, &QPushButton::clicked, this, &ProductEditForm::onProductSearch);
     codeLabel.setText("Код изделия");
     getUi()->verticalLayout->addWidget(&codeLabel);
     getUi()->verticalLayout->addWidget(&code);
-    getUi()->handbook->setEditable(true);
+    getUi()->handbook->setVisible(false);
+    getUi()->horizontalLayout_3->addWidget(&searchProductButton);
+
 }
 
-void ProductEditForm::on_handbook_currentIndexChanged(int index)
+void ProductEditForm::setMode(FormMode mode)
 {
-    if (index == -1)
+    EditHandbookForm::setMode(mode);
+    getUi()->handbook->setVisible(false);
+    if (mode == Adding)
+    {
+        searchProductButton.setVisible(false);
         return;
-
-    EditHandbookForm::on_handbook_currentIndexChanged(index);
-
-    auto handbooks = getHandbooks();
-    auto product = (Product*)(*handbooks)[index];
-    code.setText(product->code);
+    }
+    searchProductButton.setVisible(true);
+    clearFieldsOnAdd();
+    getUi()->id->clear();
 }
+
 
 void ProductEditForm::fillHandbookFields(Handbook** h)
 {
@@ -45,4 +57,21 @@ void ProductEditForm::fillFieldsOnEdit(int index)
     auto hb = getHandbooks();
     auto product = (Product*)hb->at(index);
     code.setText(product->code);
+}
+
+void ProductEditForm::onProductSearch()
+{
+    productSearch->getView()->showWindow();
+}
+
+void ProductEditForm::onSearchDone()
+{
+    auto product = productSearch->getProduct();
+    if (product->id  == 0)
+        return;
+
+    getUi()->id->setText(QString::number(product->id));
+    getUi()->name->setText(product->name);
+    code.setText(product->code);
+    productSearch->getView()->closeWindow();
 }

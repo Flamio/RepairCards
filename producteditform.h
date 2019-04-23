@@ -4,14 +4,15 @@
 #include "edithandbookform.h"
 #include <QLabel>
 #include <QLineEdit>
+#include <QPushButton>
+#include "productsearchpresenter.h"
+#include "productsearchform.h"
 
 class ProductEditForm : public EditHandbookForm
 {
 public:
     ProductEditForm(QWidget *parent = 0);
-
-protected slots:
-    virtual void on_handbook_currentIndexChanged(int index);
+    virtual void setMode(FormMode mode);
 
 protected:
     virtual void fillHandbookFields(Handbook** h);
@@ -21,6 +22,12 @@ protected:
 private:
     QLabel codeLabel;
     QLineEdit code;
+    QPushButton searchProductButton;
+    ProductSearchPresenter* productSearch;
+    ProductSearchForm* searchForm;
+
+    void onProductSearch();
+    void onSearchDone();
 };
 
 #endif // PRODUCTEDITFORM_H
