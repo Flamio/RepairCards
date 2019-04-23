@@ -124,7 +124,11 @@ void EditHandbookForm::on_del_clicked()
     reply = QMessageBox::question(this, "Удаление", QString("Вы действительно хотите удалить \"%1\"?").arg(ui->name->text()),
                                   QMessageBox::Yes|QMessageBox::No);
     if (reply == QMessageBox::Yes)
+    {
         emit deleteHandbook(ui->id->text().toInt());
+        ui->id->clear();
+        clearFieldsOnAdd();
+    }
 }
 
 Ui::EditHandbookForm *EditHandbookForm::getUi() const
