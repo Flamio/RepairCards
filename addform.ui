@@ -310,15 +310,18 @@
       </item>
       <item>
        <layout class="QGridLayout" name="gridLayout_5">
-        <item row="0" column="1">
-         <widget class="QLabel" name="label_9">
+        <item row="1" column="2">
+         <widget class="QLineEdit" name="barCode">
           <property name="font">
            <font>
             <pointsize>10</pointsize>
            </font>
           </property>
-          <property name="text">
-           <string>Штрих код</string>
+          <property name="inputMask">
+           <string notr="true"/>
+          </property>
+          <property name="maxLength">
+           <number>17</number>
           </property>
          </widget>
         </item>
@@ -334,76 +337,19 @@
           </property>
          </widget>
         </item>
-        <item row="1" column="1">
-         <widget class="QLineEdit" name="barCode">
-          <property name="font">
-           <font>
-            <pointsize>10</pointsize>
-           </font>
-          </property>
-          <property name="inputMask">
-           <string notr="true"/>
-          </property>
-          <property name="maxLength">
-           <number>17</number>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="4">
-         <widget class="QPushButton" name="pushButton_2">
-          <property name="font">
-           <font>
-            <pointsize>10</pointsize>
-           </font>
-          </property>
-          <property name="text">
-           <string>Редактор</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="3">
-         <widget class="QLabel" name="label_12">
-          <property name="font">
-           <font>
-            <pointsize>10</pointsize>
-           </font>
-          </property>
-          <property name="text">
-           <string>Месяц</string>
-          </property>
-         </widget>
-        </item>
         <item row="0" column="2">
-         <widget class="QLabel" name="label_11">
+         <widget class="QLabel" name="label_9">
           <property name="font">
            <font>
             <pointsize>10</pointsize>
            </font>
           </property>
           <property name="text">
-           <string>Год выпуска</string>
+           <string>Штрих код</string>
           </property>
          </widget>
         </item>
         <item row="1" column="3">
-         <widget class="QLineEdit" name="createMonth">
-          <property name="maximumSize">
-           <size>
-            <width>16777215</width>
-            <height>16777215</height>
-           </size>
-          </property>
-          <property name="font">
-           <font>
-            <pointsize>10</pointsize>
-           </font>
-          </property>
-          <property name="readOnly">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="2">
          <widget class="QLineEdit" name="createYear">
           <property name="maximumSize">
            <size>
@@ -433,6 +379,67 @@
           </property>
           <property name="text">
            <string>Изделие</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="5">
+         <widget class="QPushButton" name="pushButton_2">
+          <property name="font">
+           <font>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>Редактор</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="4">
+         <widget class="QLineEdit" name="createMonth">
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="4">
+         <widget class="QLabel" name="label_12">
+          <property name="font">
+           <font>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>Месяц</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="3">
+         <widget class="QLabel" name="label_11">
+          <property name="font">
+           <font>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>Год выпуска</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QPushButton" name="selectProductButton">
+          <property name="text">
+           <string>Выбрать</string>
           </property>
          </widget>
         </item>

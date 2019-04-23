@@ -60,7 +60,6 @@ public:
     virtual void setRepairer(int id);
     virtual void barCodeFinishEmit();
     virtual void setClient(int id);
-    virtual void setProductCompleter(QCompleter *completer);
 
     void setMode(const FormMode &value);
 
@@ -72,7 +71,7 @@ signals:
     void editMethods();
     void editClients();
     void editProducts();
-    void checkProduct(int id);
+    void showProdictSearch();
 
 private slots:
 
@@ -110,14 +109,7 @@ private slots:
 
     void on_checkBox_clicked(bool checked);
 
-    void on_product_textChanged(const QString &arg1);
-
-    void on_product_editingFinished();
-
-private slots:
-    void onProductCompleteActivated(const QModelIndex &index);
-
-    void on_checkBox_stateChanged(int arg1);
+    void on_selectProductButton_clicked();
 
 private:
     const int sendStateId = 4;
@@ -139,8 +131,6 @@ private:
     DateOnDoubleClick* dateOnReadyDate = nullptr;
     DateOnDoubleClick* dateOnReceive2Date = nullptr;
     DateOnDoubleClick* dateOnReceiveDate = nullptr;
-
-    QCompleter *productCompleter;
 
     FormMode mode = Adding;
 

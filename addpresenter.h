@@ -7,6 +7,7 @@
 #include "cardmethod.h"
 #include "ihandbookeditview.h"
 #include "ipastrepairlist.h"
+#include "productsearchpresenter.h"
 
 class AddPresenter : public QObject
 {
@@ -29,6 +30,8 @@ public:
     void setProductEditView(IHandbookEditView *value);
 
     void setPastPrepareList(IPastRepairList *value);
+
+    void setProductSearch(ProductSearchPresenter *value);
 
 signals:
     void addComplete();
@@ -60,6 +63,8 @@ private slots:
     void onClientEdit(Handbook*);
     void onDeleteClient(int id);
     void checkPastRepairs(int productId);
+    void onShowProdictSearch();
+    void onProductSearchDone();
 
 private:
     IAddView* addView = nullptr;
@@ -69,6 +74,7 @@ private:
     IHandbookEditView* productEditView = nullptr;
     IPastRepairList* pastPrepareList = nullptr;
     DatabaseConnector databaseConnector;
+    ProductSearchPresenter* productSearch = nullptr;
 };
 
 #endif // ADDPRESENTER_H

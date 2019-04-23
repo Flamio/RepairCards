@@ -29,13 +29,12 @@ public:
     virtual void editRepairers() = 0;
     virtual void editMethods() = 0;
     virtual void addMethod(const Handbook&) = 0;
-    virtual void barCodeFinishEmit() = 0;
-    virtual void setProductCompleter(QCompleter*) = 0;
+    virtual void barCodeFinishEmit() = 0;    
 
 signals:
     virtual void editClients() = 0;
     virtual void editProducts() = 0;
-    virtual void checkProduct(int) = 0;
+    virtual void showProdictSearch() = 0;
 };
 
 Q_DECLARE_INTERFACE(IAddView, "IAddView")

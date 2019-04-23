@@ -15,7 +15,7 @@ void AddPresenter::setAddView(IAddView *value)
     connect(dynamic_cast<QObject*>(addView), SIGNAL(editMethods()), this, SLOT(onEditMethods()));
     connect(dynamic_cast<QObject*>(addView), SIGNAL(editClients()), this, SLOT(onEditClients()));
     connect(dynamic_cast<QObject*>(addView), SIGNAL(editProducts()), this, SLOT(onEditProducts()));
-     connect(dynamic_cast<QObject*>(addView), SIGNAL(checkProduct(int)), this, SLOT(checkPastRepairs(int)));
+    connect(dynamic_cast<QObject*>(addView), SIGNAL(showProdictSearch()), this, SLOT(onShowProdictSearch()));
 }
 
 void AddPresenter::setDatabaseConnector(const DatabaseConnector &value)
@@ -28,7 +28,7 @@ void AddPresenter::start()
     auto methods = databaseConnector.getHandbook("methods");
     auto repairers = databaseConnector.getHandbook("repairers");
     auto states = databaseConnector.getHandbook("states");
-    auto clients = databaseConnector.getClients();    
+    auto clients = databaseConnector.getClients();
     auto products = databaseConnector.getProducts();
 
     if (addView == nullptr)
@@ -43,15 +43,6 @@ void AddPresenter::start()
     methodEditView->setHandbooks(methods);
     clientEditView->setHandbooks(clients);
     productEditView->setHandbooks(products);
-
-    auto productsTableModel = databaseConnector.getTableModel("products");
-
-    QCompleter *completer = new QCompleter(productsTableModel, this);
-    completer->setCompletionColumn(2);
-    completer->setCompletionMode(QCompleter::CompletionMode::PopupCompletion);
-    completer->setModelSorting(QCompleter::CaseInsensitivelySortedModel);
-    completer->setCaseSensitivity(Qt::CaseInsensitive);
-    addView->setProductCompleter(completer);
 }
 
 void AddPresenter::onBarCodeFinish(QString code)
@@ -304,7 +295,7 @@ void AddPresenter::onClientEdit(Handbook *h)
     }
 
     databaseConnector.updateClient(*client);
-    auto clients = databaseConnector.getClients();    
+    auto clients = databaseConnector.getClients();
     addView->setClients(clients);
     addView->setClient(client->id);
     clientEditView->setHandbooks(clients);
@@ -334,6 +325,32 @@ void AddPresenter::checkPastRepairs(int productId)
 
     pastPrepareList->setCards(pastCards);
     pastPrepareList->showWindow();
+}
+
+void AddPresenter::onShowProdictSearch()
+{
+    productSearch->getView()->showWindow();
+}
+
+void AddPresenter::onProductSearchDone()
+{
+    auto product = productSearch->getProduct();
+    if (product->id == 0)
+    {
+        addView->showInfo("Изделие не найдено!");
+        return;
+    }
+
+    addView->setProduct(*product);
+    productSearch->getView()->closeWindow();
+
+    checkPastRepairs(product->id);
+}
+
+void AddPresenter::setProductSearch(ProductSearchPresenter *value)
+{
+    productSearch = value;
+    connect(productSearch, &ProductSearchPresenter::done, this, &AddPresenter::onProductSearchDone);
 }
 
 void AddPresenter::setPastPrepareList(IPastRepairList *value)

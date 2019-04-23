@@ -9,6 +9,8 @@
 #include "clienteditform.h"
 #include "producteditform.h"
 #include "pastrepairslist.h"
+#include "productsearchform.h"
+#include "productsearchpresenter.h"
 
 int main(int argc, char *argv[])
 {
@@ -25,6 +27,8 @@ int main(int argc, char *argv[])
     dbConnector.createTables();
     dbConnector.convert();
 
+
+
     AddPresenter addPresenter(&a);
 
     MainForm mainForm;    
@@ -36,6 +40,10 @@ int main(int argc, char *argv[])
     ProductEditForm productEditForm(&w);
     PastRepairsList prl(&w);
 
+    ProductSearchForm psf(&w);
+    ProductSearchPresenter psp(&a);
+    psp.setView(&psf);
+
     addPresenter.setAddView(&w);
     addPresenter.setDatabaseConnector(dbConnector);
     addPresenter.setRepairerEditView(&editRepairerForm);
@@ -43,6 +51,7 @@ int main(int argc, char *argv[])
     addPresenter.setClientEditView(&clientEditForm);
     addPresenter.setProductEditView(&productEditForm);
     addPresenter.setPastPrepareList(&prl);
+    addPresenter.setProductSearch(&psp);
     addPresenter.start();
 
 

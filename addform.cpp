@@ -17,6 +17,7 @@ AddForm::AddForm(QWidget *parent) :
 
     ui->barCode->setValidator(new QRegExpValidator(QRegExp("^\\d{17}$"),this));
     ui->createMonth->setValidator(new QRegExpValidator(QRegExp("^\\d{2}$"),this));
+    ui->selectProductButton->setVisible(false);
 }
 
 AddForm::~AddForm()
@@ -199,13 +200,6 @@ void AddForm::setClient(int id)
     auto index = ui->client->findData(id);
     ui->client->setCurrentIndex(index);
     on_client_activated(index);
-}
-
-void AddForm::setProductCompleter(QCompleter *completer)
-{
-    this->productCompleter = completer;
-    ui->product->setCompleter(productCompleter);
-    connect(productCompleter, SIGNAL(activated(const QModelIndex&)), this, SLOT(onProductCompleteActivated(const QModelIndex&)));
 }
 
 void AddForm::showWindow()
@@ -436,14 +430,6 @@ Client *AddForm::getClientById(int id)
     return nullptr;
 }
 
-void AddForm::onProductCompleteActivated(const QModelIndex &index)
-{
-    int row = index.row();
-    int id = productCompleter->completionModel()->index(row, 0).data().toInt();
-    creatingCard.productId = id;
-    checkProduct(id);
-}
-
 void AddForm::setMode(const FormMode &value)
 {
     mode = value;
@@ -563,23 +549,14 @@ void AddForm::on_client_activated(int index)
 
 void AddForm::on_checkBox_clicked(bool checked)
 {
-    ui->product->setReadOnly(checked);
+    ui->selectProductButton->setVisible(!checked);
     ui->createYear->setReadOnly(checked);
     ui->createMonth->setReadOnly(checked);
     if (checked)
         on_barCode_textChanged(ui->barCode->text());
 }
 
-void AddForm::on_product_textChanged(const QString &)
+void AddForm::on_selectProductButton_clicked()
 {
-
-}
-
-void AddForm::on_product_editingFinished()
-{
-}
-
-void AddForm::on_checkBox_stateChanged(int arg1)
-{
-
+    emit showProdictSearch();
 }

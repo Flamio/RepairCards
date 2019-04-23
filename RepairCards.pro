@@ -39,7 +39,9 @@ SOURCES += main.cpp\
     repaircardprinter.cpp \
     invoiceprinter.cpp \
     paidcardprinter.cpp \
-    warantyprinter.cpp
+    warantyprinter.cpp \
+    productsearchform.cpp \
+    productsearchpresenter.cpp
 
 HEADERS  += \
     databaseconnector.h \
@@ -69,13 +71,17 @@ HEADERS  += \
     repaircardprinter.h \
     invoiceprinter.h \
     paidcardprinter.h \
-    warantyprinter.h
+    warantyprinter.h \
+    productsearchform.h \
+    iproductsearchview.h \
+    productsearchpresenter.h
 
 FORMS    += \
     addform.ui \
     mainform.ui \
     edithandbookform.ui \
-    pastrepairslist.ui
+    pastrepairslist.ui \
+    productsearchform.ui
 
 RESOURCES += \
     resources.qrc
