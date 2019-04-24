@@ -27,8 +27,6 @@ int main(int argc, char *argv[])
     dbConnector.createTables();
     dbConnector.convert();
 
-
-
     AddPresenter addPresenter(&a);
 
     MainForm mainForm;

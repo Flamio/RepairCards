@@ -18,6 +18,9 @@ AddForm::AddForm(QWidget *parent) :
     ui->barCode->setValidator(new QRegExpValidator(QRegExp("^\\d{17}$"),this));
     ui->createMonth->setValidator(new QRegExpValidator(QRegExp("^\\d{2}$"),this));
     ui->selectProductButton->setVisible(false);
+
+    barcodeValidatorOwen = new QRegExpValidator(QRegExp("^\\d{17}$"),this);
+    barcodeValidator = new QRegExpValidator(QRegExp(".*"),this);
 }
 
 AddForm::~AddForm()
@@ -209,8 +212,10 @@ void AddForm::showWindow()
     show();
 }
 
-void AddForm::setProduct(const Handbook& product)
+void AddForm::setProduct(const Product& product)
 {
+    if (!ui->checkBox->checkState())
+        ui->barCode->setText(product.code);
     ui->product->setText(product.name);
     creatingCard.productId = product.id;
 }
@@ -258,13 +263,13 @@ void AddForm::on_pushButton_10_clicked()
 
 void AddForm::on_pushButton_11_clicked()
 {
-    if (ui->barCode->text().count() != barCodeLenght)
+    if (ui->barCode->text().count() != barCodeLenght && ui->checkBox->checkState())
     {
         showInfo("Неправильный штрихкод!");
         return;
     }
 
-    if (ui->createMonth->text().toInt() < 1 || ui->createMonth->text().toInt() > 12)
+    if (ui->createMonth->text().toInt() < 1 && ui->checkBox->checkState() || ui->createMonth->text().toInt() > 12)
     {
         showInfo("Неправильный месяц выпуска изделия!");
         return;
@@ -299,13 +304,13 @@ void AddForm::on_pushButton_11_clicked()
         return;
     }
 
-    if (!ui->checkBox->checkState() && ui->createYear->text() == "")
+    if (!ui->checkBox->checkState() && ui->createYear->text() == "" && ui->checkBox->checkState())
     {
         showInfo("Не заполнен год выпуска!");
         return;
     }
 
-    if (!ui->checkBox->checkState() && ui->createMonth->text() == "")
+    if (!ui->checkBox->checkState() && ui->createMonth->text() == "" && ui->checkBox->checkState())
     {
         showInfo("Не заполнен месяц выпуска!");
         return;
@@ -555,7 +560,16 @@ void AddForm::on_checkBox_clicked(bool checked)
     ui->createYear->setReadOnly(checked);
     ui->createMonth->setReadOnly(checked);
     if (checked)
+    {
+        ui->barCode->setValidator(barcodeValidatorOwen);
+        ui->barCode->setReadOnly(false);
         on_barCode_textChanged(ui->barCode->text());
+    }
+    else
+    {
+        ui->barCode->setValidator(barcodeValidator);
+        ui->barCode->setReadOnly(true);
+    }
 }
 
 void AddForm::on_selectProductButton_clicked()

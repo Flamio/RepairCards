@@ -83,6 +83,8 @@ Product DatabaseConnector::getProductByCode(const QString &code)
 
 bool DatabaseConnector::addCard(const RepairCard &card)
 {
+    QString year = card.year == "20" ? "NULL" : card.year;
+    QString month = card.month.trimmed() == "" ? "NULL" : card.month;
     QSqlQuery query;
     auto queryString = QString("insert into repair_cards values"
                                " (%1,%2,%3,%4,'%5','%6','%7',%8,'%9','%10','%11','%12',%13,%14,'%15','%16', %17, %18, %19)")
@@ -92,7 +94,7 @@ bool DatabaseConnector::addCard(const RepairCard &card)
             .arg(card.complaints).arg(card.reason).arg(card.note).arg(card.barCode)
             .arg(card.costForClient).arg(card.costRepair)
             .arg(card.receiveFromFactoryDate.toString("dd.MM.yyyy")).arg(card.sendDate.toString("dd.MM.yyyy"))
-            .arg(card.isOwen).arg(card.isOwen ?  "NULL" : card.year).arg(card.isOwen ?  "NULL" : card.month);
+            .arg(card.isOwen).arg(card.isOwen ?  "NULL" : year).arg(card.isOwen ?  "NULL" : month);
 
     auto result = query.exec(queryString);
     if (!result)
@@ -199,6 +201,9 @@ void DatabaseConnector::deleteCard(int id)
 
 bool DatabaseConnector::updateCard(const RepairCard &card)
 {
+    QString year = card.year == "20" ? "NULL" : card.year;
+    QString month = card.month.trimmed() == "" ? "NULL" : card.month;
+
     db.transaction();
     QSqlQuery query;
     auto queryString = QString("update repair_cards"
@@ -211,7 +216,7 @@ bool DatabaseConnector::updateCard(const RepairCard &card)
             .arg(card.complaints).arg(card.reason).arg(card.note).arg(card.barCode)
             .arg(card.costForClient).arg(card.costRepair)
             .arg(card.receiveFromFactoryDate.toString("dd.MM.yyyy")).arg(card.sendDate.toString("dd.MM.yyyy"))
-            .arg(card.isOwen).arg(card.isOwen ? "NULL" : card.year).arg(card.isOwen ? "NULL" : card.month)
+            .arg(card.isOwen).arg(card.isOwen ? "NULL" : year).arg(card.isOwen ? "NULL" : month)
             .arg(card.id);
 
     auto result = query.exec(queryString);

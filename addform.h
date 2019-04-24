@@ -7,7 +7,7 @@
 #include "iaddview.h"
 #include "cardmethod.h"
 #include <QEvent>
-
+#include "product.h"
 
 namespace Ui {
 class AddForm;
@@ -52,7 +52,7 @@ public:
     virtual void setRepairers(QVector<Handbook*>&);
     virtual void setClients(QVector<Handbook*>&);
     virtual void showInfo(QString);
-    virtual void setProduct(const Handbook& product);
+    virtual void setProduct(const Product& product);
     virtual void showWindow();
     virtual void setCard(const RepairCard &card, QVector<CardMethod>* methods=nullptr);
     virtual void closeWindow();
@@ -138,6 +138,8 @@ private:
     void updateState();
 
     Client* getClientById(int id);
+    QRegExpValidator* barcodeValidatorOwen;
+    QRegExpValidator* barcodeValidator;
 };
 
 #endif // MAINWINDOW_H

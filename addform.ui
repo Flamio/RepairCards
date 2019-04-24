@@ -321,7 +321,7 @@
            <string notr="true"/>
           </property>
           <property name="maxLength">
-           <number>17</number>
+           <number>255</number>
           </property>
          </widget>
         </item>

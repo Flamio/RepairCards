@@ -8,7 +8,7 @@
 #include "repaircard.h"
 #include "cardmethod.h"
 #include "iview.h"
-#include <QCompleter>
+#include "product.h"
 
 class IAddView : public IView
 {
@@ -21,7 +21,7 @@ public:
     virtual void barCodeFinish(QString barcode) = 0;
     virtual void addSignal(const RepairCard& card, const QVector<CardMethod>& methods) = 0;
     virtual void editSignal(const RepairCard& card, const QVector<CardMethod>& methods) = 0;
-    virtual void setProduct(const Handbook& product) = 0;
+    virtual void setProduct(const Product& product) = 0;
     virtual void setCard(const RepairCard &card, QVector<CardMethod>* methods=nullptr) = 0;
     virtual void setMode(const FormMode &value) = 0;
     virtual void setRepairer(int id) = 0;
