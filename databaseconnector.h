@@ -23,7 +23,10 @@ public:
     QVector<Handbook*> getClients();
 
     RepairCard getLastCard();
+    Product getLastProduct();
     Product getProductByCode(const QString& code);
+    QVector<Product> getProductsByName(const QString& name);
+    int getProductCountWithTheSameCode(const QString& code);
     bool addCard(const RepairCard& card);
     bool addMethods(const QVector<CardMethod> cardMethods);
     QVector<CardMethod> getMethods(int cardId);
@@ -55,6 +58,8 @@ public:
     void convert();
 
     QSqlTableModel* getTableModel(const QString& table);
+
+    static DatabaseConnector* getInstance();
 
 
 

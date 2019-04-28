@@ -17,25 +17,25 @@ MainForm::~MainForm()
 
 void MainForm::setCard(const RepairCard &card, const QVector<CardMethod> &methods)
 {
-    ui->barcode->setText(card.barCode);
-    if (card.isOwen)
-    {
+    ui->barcode->setText(card.barCode);    
+  //  if (card.isOwen)
+ //   {
         auto data = Helper::ParseBarcode(card.barCode);
         ui->createMonth->setText(data.month);
         ui->createYear->setText("20"+data.year);
-    }
-    else
-    {
-        ui->createMonth->setText(card.month);
-        ui->createYear->setText(card.year);
-    }
+//    }
+ //   else
+//    {
+       // ui->createMonth->setText(card.month);
+       // ui->createYear->setText(card.year);
+ //   }
     ui->client->setText(QString("%1 %2 %3 %4").arg(card.client.name).arg(card.client.phone).arg(card.client.person).arg(card.client.address));
     ui->clientCost->setText(QString::number(card.costForClient));
     ui->complains->setPlainText(card.complaints);
     ui->id->setText(QString::number(card.id));
     ui->navigation->setText(QString("%1/%2").arg(card.currentIndex).arg(card.allIndexes));
     ui->note->setPlainText(card.note);
-    ui->product->setText(card.productName);
+    ui->product->setText(card.product.name);
     ui->ready->setText(card.readyDate.toString("dd.MM.yyyy"));
     ui->returnDate->setText(card.returnDate.toString("dd.MM.yyyy"));
     ui->receive->setText(card.receiveFromClientDate.toString("dd.MM.yyyy"));

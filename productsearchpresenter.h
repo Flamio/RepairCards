@@ -13,9 +13,8 @@ public:
 
     void setView(IProductSearchView *value);
 
-    void setDb(DatabaseConnector *value);
-
-    IProductSearchView *getView() const;
+    void showView();
+    void closeView();
 
     Product* getProduct();
 
@@ -25,12 +24,11 @@ signals:
 public slots:
 
 private slots:
-    void onSearchProduct(const QString& number);
-    void onDone();
+    void onSearchProduct(const QString& name);
+    void onDone(Product);
 
 private:
     IProductSearchView* view = nullptr;
-    DatabaseConnector* db = nullptr;
     Product product;
 };
 

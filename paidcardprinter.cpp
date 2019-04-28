@@ -133,19 +133,19 @@ void PaidCardPrinter::drawContent(int id, QPainter &painter)
 
     painter.drawText(1187, 974, card.client.name);
     painter.drawText(1187, 1111, card.client.address);
-    painter.drawText(1187, 1248, card.productName);
+    painter.drawText(1187, 1248, card.product.name);
 
-    if (card.isOwen)
-    {
+    //if (card.isOwen)
+    //{
         auto createDate = Helper::ParseBarcode(card.barCode);
         painter.drawText(1187, 1385, "20" + createDate.year);
         painter.drawText(1742, 1385, createDate.month);
-    }
-    else
-    {
-        painter.drawText(1187, 1385, card.year);
-        painter.drawText(1742, 1385, card.month);
-    }
+   // }
+   // else
+   // {
+    //    painter.drawText(1187, 1385, card.year);
+    //    painter.drawText(1742, 1385, card.month);
+    //}
 
     painter.drawText(3453, 1385, card.barCode);
     painter.drawText(620, 1713, "Жалобы");

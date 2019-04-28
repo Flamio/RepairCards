@@ -1,5 +1,5 @@
 #include "addpresenter.h"
-
+#include "producteditform.h"
 
 AddPresenter::AddPresenter(QObject *parent) : QObject(parent)
 {
@@ -159,6 +159,9 @@ void AddPresenter::onEditClients()
 
 void AddPresenter::onEditProducts()
 {
+    auto product = databaseConnector.getLastProduct();
+    auto view =  (ProductEditForm*)productEditView;
+    view->setProduct(product);
     productEditView->showWindow();
 }
 
@@ -215,6 +218,20 @@ void AddPresenter::onDeleteRepairer(int id)
 void AddPresenter::onProductAdd(Handbook *h)
 {
     auto product = (Product*)h;
+
+    if (product->isOwen && product->code.isEmpty())
+    {
+        addView->showInfo("Пустой код изделия!");
+        return;
+    }
+
+    auto productsEntries = databaseConnector.getProductCountWithTheSameCode(product->code);
+    if (productsEntries > 0)
+    {
+        addView->showInfo("Изделие с таким номером уже существует!");
+        return;
+    }
+
     auto addedId = databaseConnector.addProduct(*product);
     if (addedId == -1)
     {
@@ -245,6 +262,20 @@ void AddPresenter::onProductEdit(Handbook *h)
     }
 
     auto product = (Product*)h;
+
+    if (product->isOwen && product->code.isEmpty())
+    {
+        addView->showInfo("Пустой код изделия!");
+        return;
+    }
+
+    auto productsEntries = databaseConnector.getProductCountWithTheSameCode(product->code);
+    if (productsEntries > 0)
+    {
+        addView->showInfo("Изделие с таким номером уже существует!");
+        return;
+    }
+
     databaseConnector.updateProduct(*product);
     productEditView->closeWindow();
     addView->setProduct(*product);
@@ -337,7 +368,7 @@ void AddPresenter::checkPastRepairs(int productId)
 
 void AddPresenter::onShowProdictSearch()
 {
-    productSearch->getView()->showWindow();
+    productSearch->showView();
 }
 
 void AddPresenter::onProductSearchDone()
@@ -350,7 +381,7 @@ void AddPresenter::onProductSearchDone()
     }
 
     addView->setProduct(*product);
-    productSearch->getView()->closeWindow();
+    productSearch->closeView();
 
     checkPastRepairs(product->id);
 }

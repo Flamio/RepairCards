@@ -69,7 +69,7 @@ void WarantyPrinter::drawContent(int id, QPainter &painter)
 
     int y = 320;
 
-    drawText("Изделие", QString("%1 зав.№ %2").arg(card.productName).arg(card.barCode), y);
+    drawText("Изделие", QString("%1 зав.№ %2").arg(card.product.name).arg(card.barCode), y);
     drawText("было принято в ремонт", card.receiveFromClientDate.toString("dd.MM.yyyy"), y);
     drawText("от", QString("%1 %2").arg(card.client.name).arg(card.client.address), y);
     drawText("с жалобой", card.complaints, y);

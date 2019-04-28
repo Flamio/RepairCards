@@ -12,4 +12,4 @@ alter table repair_cards
 update repair_cards
     set isOwen=1;
 
-commit transaction;
+commit;

@@ -3,12 +3,12 @@
 
 #include <QDate>
 #include "client.h"
+#include "product.h"
 
 struct RepairCard
 {
     int id = 0;
     int repairerId = 1;
-    int productId = 0;
     int clientId = 0;
     int stateId = 0;
     int costForClient = 0;
@@ -21,14 +21,13 @@ struct RepairCard
     QString complaints = "";
     QString reason = "";
     QString note = "";
-    QString productName = "";
     QString barCode = "";
     Client client;
+    Product product;
     QString state;
     QString repairer;
     int currentIndex = 0;
     int allIndexes = 0;
-    bool isOwen = true;
     QString year;
     QString month;
 };

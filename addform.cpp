@@ -93,7 +93,7 @@ void AddForm::setCard(const RepairCard &card, QVector<CardMethod>* methods)
     ui->complains->setText(creatingCard.complaints);
     ui->note->setText(creatingCard.note);
     ui->reason->setText(creatingCard.reason);
-    ui->product->setText(creatingCard.productName);
+    ui->product->setText(creatingCard.product.name);
     ui->receiveDate->setText(creatingCard.receiveFromClientDate.toString("dd.MM.yyyy"));
     ui->returnDate->setText(creatingCard.returnDate.toString("dd.MM.yyyy"));
     ui->repairer->setCurrentIndex(ui->repairer->findData(creatingCard.repairerId));
@@ -103,14 +103,7 @@ void AddForm::setCard(const RepairCard &card, QVector<CardMethod>* methods)
     ui->clientCost->setValue(creatingCard.costForClient);
     ui->sendDate->setText(creatingCard.sendDate.toString("dd.MM.yyyy"));
     ui->receiveDate2->setText(creatingCard.receiveFromFactoryDate.toString("dd.MM.yyyy"));
-    ui->checkBox->setChecked(creatingCard.isOwen);
     ui->barCode->setText(creatingCard.barCode);
-    on_checkBox_clicked(creatingCard.isOwen);
-    if (!card.isOwen)
-    {
-        ui->createYear->setText(creatingCard.year);
-        ui->createMonth->setText(creatingCard.month);
-    }
     updateState();
 
     foreach (MethodGui item, combos) {
@@ -217,7 +210,7 @@ void AddForm::setProduct(const Product& product)
     if (!ui->checkBox->checkState())
         ui->barCode->setText(product.code);
     ui->product->setText(product.name);
-    creatingCard.productId = product.id;
+    creatingCard.product.id = product.id;
 }
 
 void AddForm::on_pushButton_4_clicked()
@@ -281,7 +274,7 @@ void AddForm::on_pushButton_11_clicked()
         return;
     }
 
-    if (creatingCard.productId == 0)
+    if (creatingCard.product.id == 0)
     {
         showInfo("Не найдено изделие!");
         return;
@@ -330,12 +323,6 @@ void AddForm::on_pushButton_11_clicked()
     creatingCard.costRepair = ui->repairCost->value();
     creatingCard.sendDate = QDate::fromString(ui->sendDate->text(), "dd.MM.yyyy");
     creatingCard.receiveFromFactoryDate = QDate::fromString(ui->receiveDate2->text(), "dd.MM.yyyy");
-    creatingCard.isOwen = ui->checkBox->checkState();
-    if (!creatingCard.isOwen)
-    {
-        creatingCard.year = ui->createYear->text();
-        creatingCard.month = ui->createMonth->text();
-    }
 
     QVector<CardMethod> cardMethods;
     foreach (MethodGui element, combos)
@@ -365,7 +352,7 @@ void AddForm::on_barCode_textChanged(const QString &arg1)
         ui->product->clear();
         ui->createYear->clear();
         ui->createMonth->clear();
-        creatingCard.productId = 0;
+        creatingCard.product.id = 0;
         return;
     }
 
