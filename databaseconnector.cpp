@@ -38,7 +38,7 @@ QVector<Handbook*> DatabaseConnector::getHandbook(const QString& handbookName)
 QVector<Handbook*> DatabaseConnector::getClients()
 {
     QSqlQuery query;
-    query.exec("SELECT id, name, address, phone, person FROM clients");
+    query.exec("SELECT id, name, address, phone, person FROM clients ORDER BY name");
     QVector<Handbook*> clients;
 
     while (query.next())
@@ -105,9 +105,9 @@ QVector<Product> DatabaseConnector::getProductsByName(const QString &name, bool 
             .arg(name);
 
     if (isNotOwenOnly)
-        q += " and isOwen=0  LIMIT 300";
+        q += " and isOwen=0 ORDER BY name  LIMIT 300";
     else
-        q += " LIMIT 300";
+        q += " ORDER BY name LIMIT 300";
 
     query.exec(q);
     while (query.next())
