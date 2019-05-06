@@ -225,7 +225,7 @@ void AddPresenter::onProductAdd(Handbook *h)
         return;
     }
 
-    auto productsEntries = databaseConnector.getProductCountWithTheSameCode(product->code);
+    auto productsEntries = databaseConnector.getProductCountWithTheSameCode(product->code, -1);
     if (productsEntries > 0)
     {
         addView->showInfo("Изделие с таким номером уже существует!");
@@ -242,8 +242,10 @@ void AddPresenter::onProductAdd(Handbook *h)
     h->id = addedId;
     productEditView->setMode(Editing);
     productEditView->closeWindow();
-    addView->setProduct(*product);
-    addView->barCodeFinishEmit();
+    if (product->isOwen)
+        addView->barCodeFinishEmit();
+    else
+        addView->setProduct(*product);
 }
 
 void AddPresenter::onProductEdit(Handbook *h)
@@ -269,7 +271,7 @@ void AddPresenter::onProductEdit(Handbook *h)
         return;
     }
 
-    auto productsEntries = databaseConnector.getProductCountWithTheSameCode(product->code);
+    auto productsEntries = databaseConnector.getProductCountWithTheSameCode(product->code, product->id);
     if (productsEntries > 0)
     {
         addView->showInfo("Изделие с таким номером уже существует!");

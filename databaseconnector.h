@@ -25,8 +25,8 @@ public:
     RepairCard getLastCard();
     Product getLastProduct();
     Product getProductByCode(const QString& code);
-    QVector<Product> getProductsByName(const QString& name);
-    int getProductCountWithTheSameCode(const QString& code);
+    QVector<Product> getProductsByName(const QString& name, bool isNotOwenOnly = false);
+    int getProductCountWithTheSameCode(const QString& code, int id);
     bool addCard(const RepairCard& card);
     bool addMethods(const QVector<CardMethod> cardMethods);
     QVector<CardMethod> getMethods(int cardId);

@@ -89,11 +89,9 @@ void AddForm::setCard(const RepairCard &card, QVector<CardMethod>* methods)
     auto client = getClientById(ui->client->currentData().toInt());
     auto address = client == nullptr ? "" : client->address;
     ui->clientAddress->setText(address);
-
     ui->complains->setText(creatingCard.complaints);
     ui->note->setText(creatingCard.note);
     ui->reason->setText(creatingCard.reason);
-    ui->product->setText(creatingCard.product.name);
     ui->receiveDate->setText(creatingCard.receiveFromClientDate.toString("dd.MM.yyyy"));
     ui->returnDate->setText(creatingCard.returnDate.toString("dd.MM.yyyy"));
     ui->repairer->setCurrentIndex(ui->repairer->findData(creatingCard.repairerId));
@@ -103,8 +101,19 @@ void AddForm::setCard(const RepairCard &card, QVector<CardMethod>* methods)
     ui->clientCost->setValue(creatingCard.costForClient);
     ui->sendDate->setText(creatingCard.sendDate.toString("dd.MM.yyyy"));
     ui->receiveDate2->setText(creatingCard.receiveFromFactoryDate.toString("dd.MM.yyyy"));
-    ui->barCode->setText(creatingCard.barCode);
     updateState();
+    ui->checkBox->setChecked(creatingCard.product.isOwen);
+    on_checkBox_clicked(ui->checkBox->checkState());
+    on_barCode_textChanged(ui->barCode->text());
+    ui->barCode->setText(creatingCard.barCode);
+    ui->product->setText(creatingCard.product.name);
+
+    if (!card.product.isOwen)
+    {
+        creatingCard.product.id = card.product.id;
+        ui->createYear->setText(creatingCard.year);
+        ui->createMonth->setText(creatingCard.month);
+    }
 
     foreach (MethodGui item, combos) {
         delete item.combo;
@@ -207,10 +216,17 @@ void AddForm::showWindow()
 
 void AddForm::setProduct(const Product& product)
 {
-    if (!ui->checkBox->checkState())
-        ui->barCode->setText(product.code);
-    ui->product->setText(product.name);
-    creatingCard.product.id = product.id;
+    bool isOwenChecked = ui->checkBox->checkState();
+    if (product.isOwen == isOwenChecked)
+    {
+        ui->product->setText(product.name);
+        creatingCard.product.id = product.id;
+    }
+    else
+    {
+        creatingCard.product.id = 0;
+        ui->product->clear();
+    }
 }
 
 void AddForm::on_pushButton_4_clicked()
@@ -323,6 +339,12 @@ void AddForm::on_pushButton_11_clicked()
     creatingCard.costRepair = ui->repairCost->value();
     creatingCard.sendDate = QDate::fromString(ui->sendDate->text(), "dd.MM.yyyy");
     creatingCard.receiveFromFactoryDate = QDate::fromString(ui->receiveDate2->text(), "dd.MM.yyyy");
+
+    if (!ui->checkBox->checkState())
+    {
+        creatingCard.year = ui->createYear->text();
+        creatingCard.month = ui->createMonth->text();
+    }
 
     QVector<CardMethod> cardMethods;
     foreach (MethodGui element, combos)
@@ -546,16 +568,19 @@ void AddForm::on_checkBox_clicked(bool checked)
     ui->selectProductButton->setVisible(!checked);
     ui->createYear->setReadOnly(checked);
     ui->createMonth->setReadOnly(checked);
+    ui->barCode->clear();
+    ui->createYear->clear();
+    ui->createMonth->clear();
+    ui->product->clear();
+    creatingCard.product.id = 0;
     if (checked)
     {
         ui->barCode->setValidator(barcodeValidatorOwen);
-        ui->barCode->setReadOnly(false);
         on_barCode_textChanged(ui->barCode->text());
     }
     else
     {
         ui->barCode->setValidator(barcodeValidator);
-        ui->barCode->setReadOnly(true);
     }
 }
 

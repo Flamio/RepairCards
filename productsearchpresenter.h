@@ -9,7 +9,7 @@ class ProductSearchPresenter : public QObject
 {
     Q_OBJECT
 public:
-    explicit ProductSearchPresenter(QObject *parent = 0);
+    explicit ProductSearchPresenter(bool isNotOwenOnly = false, QObject *parent = 0);
 
     void setView(IProductSearchView *value);
 
@@ -30,6 +30,7 @@ private slots:
 private:
     IProductSearchView* view = nullptr;
     Product product;
+    bool isNotOwenOnly;
 };
 
 #endif // PRODUCTSEARCHPRESENTER_H

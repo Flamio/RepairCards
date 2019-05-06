@@ -1,7 +1,8 @@
 #include "productsearchpresenter.h"
 
-ProductSearchPresenter::ProductSearchPresenter(QObject *parent) : QObject(parent)
+ProductSearchPresenter::ProductSearchPresenter(bool isNotOwenOnly, QObject *parent) : QObject(parent)
 {
+    this->isNotOwenOnly = isNotOwenOnly;
 }
 
 void ProductSearchPresenter::setView(IProductSearchView *value)
@@ -24,7 +25,7 @@ void ProductSearchPresenter::closeView()
 void ProductSearchPresenter::onSearchProduct(const QString &name)
 {
     auto db = DatabaseConnector::getInstance();
-    auto products = db->getProductsByName(name);
+    auto products = db->getProductsByName(name, isNotOwenOnly);
     view->setProducts(products);
 }
 

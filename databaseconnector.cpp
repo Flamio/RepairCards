@@ -97,11 +97,18 @@ Product DatabaseConnector::getProductByCode(const QString &code)
     return product;
 }
 
-QVector<Product> DatabaseConnector::getProductsByName(const QString &name)
+QVector<Product> DatabaseConnector::getProductsByName(const QString &name, bool isNotOwenOnly)
 {
     QVector<Product> products;
     QSqlQuery query;
-    auto q = QString("SELECT id, name, code, isOwen FROM products where lower(name) like lower('%%1%') LIMIT 300").arg(name);
+    auto q = QString("SELECT id, name, code, isOwen FROM products where lower(name) like lower('%%1%')")
+            .arg(name);
+
+    if (isNotOwenOnly)
+        q += " and isOwen=0  LIMIT 300";
+    else
+        q += " LIMIT 300";
+
     query.exec(q);
     while (query.next())
     {
@@ -115,13 +122,13 @@ QVector<Product> DatabaseConnector::getProductsByName(const QString &name)
     return products;
 }
 
-int DatabaseConnector::getProductCountWithTheSameCode(const QString &code)
+int DatabaseConnector::getProductCountWithTheSameCode(const QString &code, int id)
 {
     if (code.isEmpty())
         return 0;
     QSqlQuery query;
     int codeInt = code.toInt();
-    query.exec(QString("SELECT count(*) FROM products where code = '%1'").arg(codeInt));
+    query.exec(QString("SELECT count(*) FROM products where code = '%1' and id != %2").arg(codeInt).arg(id));
     if (query.first())
         return query.value(0).toInt();
     return 0;
@@ -129,7 +136,7 @@ int DatabaseConnector::getProductCountWithTheSameCode(const QString &code)
 
 bool DatabaseConnector::addCard(const RepairCard &card)
 {
-    QString year = card.year == "20" ? "NULL" : card.year;
+    QString year = card.year.trimmed() == "20" || card.year.trimmed().isEmpty() ? "NULL" : card.year;
     QString month = card.month.trimmed() == "" ? "NULL" : card.month;
     QSqlQuery query;
     auto queryString = QString("insert into repair_cards values"
@@ -247,7 +254,7 @@ void DatabaseConnector::deleteCard(int id)
 
 bool DatabaseConnector::updateCard(const RepairCard &card)
 {
-    QString year = card.year == "20" ? "NULL" : card.year;
+    QString year = card.year == "20" || card.year.trimmed().isEmpty() ? "NULL" : card.year;
     QString month = card.month.trimmed() == "" ? "NULL" : card.month;
 
     db.transaction();

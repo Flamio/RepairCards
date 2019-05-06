@@ -126,8 +126,6 @@ void EditHandbookForm::on_del_clicked()
     if (reply == QMessageBox::Yes)
     {
         emit deleteHandbook(ui->id->text().toInt());
-        ui->id->clear();
-        clearFieldsOnAdd();
     }
 }
 

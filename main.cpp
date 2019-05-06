@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
     PastRepairsList prl(&w);
 
     ProductSearchForm psf(&w);
-    ProductSearchPresenter psp(&a);
+    ProductSearchPresenter psp(true,&a);
     psp.setView(&psf);
 
     ProductEditForm productEditForm(&w);

@@ -4,7 +4,7 @@
 
 ProductEditForm::ProductEditForm(QWidget *parent) : EditHandbookForm(parent)
 {
-    productSearch = new ProductSearchPresenter(this);
+    productSearch = new ProductSearchPresenter(false,this);
     searchForm = new ProductSearchForm(this);
     productSearch->setView(searchForm);
     connect(productSearch, &ProductSearchPresenter::done, this, &ProductEditForm::onSearchDone);
