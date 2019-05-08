@@ -40,7 +40,7 @@ signals:
 public slots:
 
 private slots:
-    void onBarCodeFinish(QString);
+    void onBarCodeFinish(QString, bool);
     void onAdd(const RepairCard&, const QVector<CardMethod>&);
     void onEdit(const RepairCard&, const QVector<CardMethod>&);
     void onEditRepairers();
@@ -62,7 +62,7 @@ private slots:
     void onClientAdd(Handbook*);
     void onClientEdit(Handbook*);
     void onDeleteClient(int id);
-    void checkPastRepairs(int productId);
+    void checkPastRepairs(int productId, const QString& barcode);
     void onShowProdictSearch();
     void onProductSearchDone();
 
@@ -75,6 +75,8 @@ private:
     IPastRepairList* pastPrepareList = nullptr;
     DatabaseConnector databaseConnector;
     ProductSearchPresenter* productSearch = nullptr;
+
+    Product notOwenProduct;
 };
 
 #endif // ADDPRESENTER_H

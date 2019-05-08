@@ -423,10 +423,10 @@ RepairCard DatabaseConnector::getCardById(int id)
     return card;
 }
 
-QVector<RepairCard> DatabaseConnector::getCardsByProductId(int id)
+QVector<RepairCard> DatabaseConnector::getCardsByProductIdAndBarcode(int id, const QString& barcode)
 {
     QSqlQuery query;
-    query.exec(QString("SELECT * FROM repair_cards WHERE product_id=%1 ORDER BY receive_date").arg(id));
+    query.exec(QString("SELECT * FROM repair_cards WHERE product_id=%1 AND bar_code='%2' ORDER BY receive_date").arg(id).arg(barcode));
     QVector<RepairCard> cards;
 
     while (query.next())

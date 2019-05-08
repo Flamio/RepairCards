@@ -63,8 +63,10 @@ public:
 
     void setMode(const FormMode &value);
 
+    FormMode getMode();
+
 signals:
-    void barCodeFinish(QString barcode);
+    void barCodeFinish(QString barcode, bool isOwen);
     void addSignal(const RepairCard& card, const QVector<CardMethod>& methods);
     void editSignal(const RepairCard& card, const QVector<CardMethod>& methods);
     void editRepairers();

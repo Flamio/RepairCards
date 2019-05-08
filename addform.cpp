@@ -195,11 +195,14 @@ void AddForm::setRepairer(int id)
 void AddForm::barCodeFinishEmit()
 {
     if (!ui->checkBox->checkState())
+    {
+         emit barCodeFinish(ui->barCode->text(), true);
         return;
+    }
     if (ui->barCode->text().count() != barCodeLenght)
         return;
 
-    emit barCodeFinish(ui->barCode->text());
+    emit barCodeFinish(ui->barCode->text(), true);
 }
 
 void AddForm::setClient(int id)
@@ -227,6 +230,9 @@ void AddForm::setProduct(const Product& product)
         creatingCard.product.id = 0;
         ui->product->clear();
     }
+
+    if(! product.isOwen)
+        barCodeFinish(ui->barCode->text(), false);
 }
 
 void AddForm::on_pushButton_4_clicked()
@@ -368,7 +374,10 @@ void AddForm::on_pushButton_11_clicked()
 void AddForm::on_barCode_textChanged(const QString &arg1)
 {
     if (!ui->checkBox->checkState())
+    {
+        emit barCodeFinish(arg1, false);
         return;
+    }
     if (arg1.count() != barCodeLenght)
     {
         ui->product->clear();
@@ -378,7 +387,7 @@ void AddForm::on_barCode_textChanged(const QString &arg1)
         return;
     }
 
-    emit barCodeFinish(arg1);
+    emit barCodeFinish(arg1, true);
 
     auto data = Helper::ParseBarcode(arg1);
 
@@ -587,4 +596,9 @@ void AddForm::on_checkBox_clicked(bool checked)
 void AddForm::on_selectProductButton_clicked()
 {
     emit showProdictSearch();
+}
+
+FormMode AddForm::getMode()
+{
+    return mode;
 }
