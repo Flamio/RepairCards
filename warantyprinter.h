@@ -18,7 +18,7 @@ protected:
     virtual void drawContent(int id, QPainter&);
 
 private:
-    void drawText(QString bold, QString text, int& y);
+    void drawText(QString bold, QString text, int& y, int interval = 40);
 
     QPainter* painter = nullptr;
     QFont boldTextFont;

@@ -29,7 +29,7 @@ void MainForm::setCard(const RepairCard &card, const QVector<CardMethod> &method
         ui->createMonth->setText(card.month);
         ui->createYear->setText(card.year);
     }
-    ui->client->setText(QString("%1 %2 %3 %4").arg(card.client.name).arg(card.client.phone).arg(card.client.person).arg(card.client.address));
+    ui->client->setText(QString("%1; %2; %3").arg(card.client.name).arg(card.client.phone).arg(card.client.person));
     ui->clientCost->setText(QString::number(card.costForClient));
     ui->complains->setPlainText(card.complaints);
     ui->id->setText(QString::number(card.id));
