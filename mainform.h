@@ -6,6 +6,7 @@
 #include <QLineEdit>
 #include <QVector>
 #include <QTableWidgetItem>
+#include "analyzeform.h"
 
 namespace Ui {
 class MainForm;
@@ -52,11 +53,14 @@ private slots:
 
     void on_pushButton_6_clicked();
 
+    void on_pushButton_2_clicked();
+
 private:
     Ui::MainForm *ui;
 
     bool isDialog = false;
     MainForm* dialog = nullptr;
+    AnalyzeForm af;
 };
 
 #endif // MAINFORM_H

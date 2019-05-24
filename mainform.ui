@@ -606,6 +606,13 @@
            </widget>
           </item>
           <item>
+           <widget class="QPushButton" name="pushButton_2">
+            <property name="text">
+             <string>Анализ</string>
+            </property>
+           </widget>
+          </item>
+          <item>
            <spacer name="horizontalSpacer_4">
             <property name="font">
              <font>

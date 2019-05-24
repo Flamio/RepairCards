@@ -41,7 +41,10 @@ SOURCES += main.cpp\
     paidcardprinter.cpp \
     warantyprinter.cpp \
     productsearchform.cpp \
-    productsearchpresenter.cpp
+    productsearchpresenter.cpp \
+    analyze.cpp \
+    MultilayerPerceptron.cc \
+    analyzeform.cpp
 
 HEADERS  += \
     databaseconnector.h \
@@ -74,14 +77,19 @@ HEADERS  += \
     warantyprinter.h \
     productsearchform.h \
     iproductsearchview.h \
-    productsearchpresenter.h
+    productsearchpresenter.h \
+    analyze.h \
+    MultilayerPerceptron.h \
+    weights.h \
+    analyzeform.h
 
 FORMS    += \
     addform.ui \
     mainform.ui \
     edithandbookform.ui \
     pastrepairslist.ui \
-    productsearchform.ui
+    productsearchform.ui \
+    analyzeform.ui
 
 RESOURCES += \
     resources.qrc
