@@ -102,7 +102,7 @@ void EditHandbookForm::setMode(FormMode mode)
         ui->pushButton->setVisible(true);
         ui->id->setVisible(true);
         ui->idLabel->setVisible(true);
-        ui->pushButton_2->setText("Редактировать");
+        ui->pushButton_2->setText("Сохранить");
         if (handbooks.count() > 0)
             fillFieldsOnEdit(ui->handbook->currentIndex());
     }
@@ -126,8 +126,6 @@ void EditHandbookForm::on_del_clicked()
     if (reply == QMessageBox::Yes)
     {
         emit deleteHandbook(ui->id->text().toInt());
-        ui->id->clear();
-        clearFieldsOnAdd();
     }
 }
 

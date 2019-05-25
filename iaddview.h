@@ -18,7 +18,7 @@ public:
     virtual void setRepairers(QVector<Handbook*>&) = 0;
     virtual void setClients(QVector<Handbook*>&) = 0;
     virtual void showInfo(QString) = 0;
-    virtual void barCodeFinish(QString barcode) = 0;
+    virtual void barCodeFinish(QString barcode, bool) = 0;
     virtual void addSignal(const RepairCard& card, const QVector<CardMethod>& methods) = 0;
     virtual void editSignal(const RepairCard& card, const QVector<CardMethod>& methods) = 0;
     virtual void setProduct(const Product& product) = 0;
@@ -29,7 +29,8 @@ public:
     virtual void editRepairers() = 0;
     virtual void editMethods() = 0;
     virtual void addMethod(const Handbook&) = 0;
-    virtual void barCodeFinishEmit() = 0;    
+    virtual void barCodeFinishEmit() = 0;
+    virtual FormMode getMode()=0;
 
 signals:
     virtual void editClients() = 0;

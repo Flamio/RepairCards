@@ -133,9 +133,9 @@ void PaidCardPrinter::drawContent(int id, QPainter &painter)
 
     painter.drawText(1187, 974, card.client.name);
     painter.drawText(1187, 1111, card.client.address);
-    painter.drawText(1187, 1248, card.productName);
+    painter.drawText(1187, 1248, card.product.name);
 
-    if (card.isOwen)
+    if (card.product.isOwen)
     {
         auto createDate = Helper::ParseBarcode(card.barCode);
         painter.drawText(1187, 1385, "20" + createDate.year);

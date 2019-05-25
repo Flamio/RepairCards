@@ -15,8 +15,8 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    DatabaseConnector dbConnector;
-    if (!dbConnector.open())
+    auto dbConnector = DatabaseConnector::getInstance();
+    if (!dbConnector->open())
     {
         QMessageBox msg;
         msg.setText("Не могу открыть базу данных!");
@@ -24,8 +24,8 @@ int main(int argc, char *argv[])
         return 0;
     }
 
-    dbConnector.createTables();
-    dbConnector.convert();
+    dbConnector->createTables();
+    dbConnector->convert();
 
     AddPresenter addPresenter(&a);
 
@@ -39,13 +39,13 @@ int main(int argc, char *argv[])
     PastRepairsList prl(&w);
 
     ProductSearchForm psf(&w);
-    ProductSearchPresenter psp(&a);
+    ProductSearchPresenter psp(true,&a);
     psp.setView(&psf);
 
     ProductEditForm productEditForm(&w);
 
     addPresenter.setAddView(&w);
-    addPresenter.setDatabaseConnector(dbConnector);
+    addPresenter.setDatabaseConnector(*dbConnector);
     addPresenter.setRepairerEditView(&editRepairerForm);
     addPresenter.setMethodEditView(&editMethodForm);
     addPresenter.setClientEditView(&clientEditForm);
@@ -58,7 +58,7 @@ int main(int argc, char *argv[])
     MainPresenter mainPresenter;
     mainPresenter.setPastPrepareList(&prl);
     mainPresenter.setAddPresenter(&addPresenter);
-    mainPresenter.setDbConnector(dbConnector);
+    mainPresenter.setDbConnector(*dbConnector);
     mainPresenter.setMainView(&mainForm);
     mainPresenter.start();
 

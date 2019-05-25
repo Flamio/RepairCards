@@ -1,45 +1,41 @@
 #include "productsearchpresenter.h"
 
-ProductSearchPresenter::ProductSearchPresenter(QObject *parent) : QObject(parent)
+ProductSearchPresenter::ProductSearchPresenter(bool isNotOwenOnly, QObject *parent) : QObject(parent)
 {
-
+    this->isNotOwenOnly = isNotOwenOnly;
 }
 
 void ProductSearchPresenter::setView(IProductSearchView *value)
 {
     view = value;
     connect(dynamic_cast<QObject*>(view), SIGNAL(searchProduct(const QString&)), this, SLOT(onSearchProduct(const QString&)));
-    connect(dynamic_cast<QObject*>(view), SIGNAL(done()), this, SLOT(onDone()));
+    connect(dynamic_cast<QObject*>(view), SIGNAL(done(Product)), this, SLOT(onDone(Product)));
 }
 
-void ProductSearchPresenter::onSearchProduct(const QString &number)
+void ProductSearchPresenter::showView()
 {
-    product = db->getProductByCode(number);
-    if (product.id == 0)
-    {
-        view->setName("");
-        return;
-    }
-    view->setName(product.name);
+    this->view->showWindow();
 }
 
-void ProductSearchPresenter::onDone()
+void ProductSearchPresenter::closeView()
 {
-    onSearchProduct(product.code);
+    this->view->closeWindow();
+}
+
+void ProductSearchPresenter::onSearchProduct(const QString &name)
+{
+    auto db = DatabaseConnector::getInstance();
+    auto products = db->getProductsByName(name, isNotOwenOnly);
+    view->setProducts(products);
+}
+
+void ProductSearchPresenter::onDone(Product p)
+{
+    product = p;
     emit done();
 }
 
 Product* ProductSearchPresenter::getProduct()
 {
     return &product;
-}
-
-IProductSearchView *ProductSearchPresenter::getView() const
-{
-    return view;
-}
-
-void ProductSearchPresenter::setDb(DatabaseConnector *value)
-{
-    db = value;
 }

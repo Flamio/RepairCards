@@ -1,5 +1,5 @@
 #include "addpresenter.h"
-
+#include "producteditform.h"
 
 AddPresenter::AddPresenter(QObject *parent) : QObject(parent)
 {
@@ -8,7 +8,7 @@ AddPresenter::AddPresenter(QObject *parent) : QObject(parent)
 void AddPresenter::setAddView(IAddView *value)
 {
     addView = value;
-    connect(dynamic_cast<QObject*>(addView), SIGNAL(barCodeFinish(QString)), this, SLOT(onBarCodeFinish(QString)));
+    connect(dynamic_cast<QObject*>(addView), SIGNAL(barCodeFinish(QString, bool)), this, SLOT(onBarCodeFinish(QString, bool)));
     connect(dynamic_cast<QObject*>(addView), SIGNAL(addSignal(const RepairCard&, const QVector<CardMethod>&)), this, SLOT(onAdd(const RepairCard&, const QVector<CardMethod>&)));
     connect(dynamic_cast<QObject*>(addView), SIGNAL(editSignal(const RepairCard&, const QVector<CardMethod>&)), this, SLOT(onEdit(const RepairCard&, const QVector<CardMethod>&)));
     connect(dynamic_cast<QObject*>(addView), SIGNAL(editRepairers()), this, SLOT(onEditRepairers()));
@@ -44,13 +44,17 @@ void AddPresenter::start()
     clientEditView->setHandbooks(clients);
 }
 
-void AddPresenter::onBarCodeFinish(QString code)
+void AddPresenter::onBarCodeFinish(QString code, bool isOwen)
 {
-    auto productCode = code.left(5);
-    auto product = databaseConnector.getProductByCode(productCode);
-    addView->setProduct(product);
-
-    checkPastRepairs(product.id);
+    if (isOwen)
+    {
+        auto productCode = code.left(5);
+        auto product = databaseConnector.getProductByCode(productCode);
+        addView->setProduct(product);
+        checkPastRepairs(product.id, code);
+        return;
+    }
+    checkPastRepairs(notOwenProduct.id, code);
 }
 
 void AddPresenter::onAdd(const RepairCard &card, const QVector<CardMethod> &methods)
@@ -159,6 +163,9 @@ void AddPresenter::onEditClients()
 
 void AddPresenter::onEditProducts()
 {
+    auto product = databaseConnector.getLastProduct();
+    auto view =  (ProductEditForm*)productEditView;
+    view->setProduct(product);
     productEditView->showWindow();
 }
 
@@ -215,6 +222,20 @@ void AddPresenter::onDeleteRepairer(int id)
 void AddPresenter::onProductAdd(Handbook *h)
 {
     auto product = (Product*)h;
+
+    if (product->isOwen && product->code.isEmpty())
+    {
+        addView->showInfo("Пустой код изделия!");
+        return;
+    }
+
+    auto productsEntries = databaseConnector.getProductCountWithTheSameCode(product->code, -1);
+    if (productsEntries > 0)
+    {
+        addView->showInfo("Изделие с таким номером уже существует!");
+        return;
+    }
+
     auto addedId = databaseConnector.addProduct(*product);
     if (addedId == -1)
     {
@@ -225,8 +246,13 @@ void AddPresenter::onProductAdd(Handbook *h)
     h->id = addedId;
     productEditView->setMode(Editing);
     productEditView->closeWindow();
-    addView->setProduct(*product);
-    addView->barCodeFinishEmit();
+    if (product->isOwen)
+        addView->barCodeFinishEmit();
+    else
+    {
+        notOwenProduct = *product;
+        addView->setProduct(*product);
+    }
 }
 
 void AddPresenter::onProductEdit(Handbook *h)
@@ -245,6 +271,20 @@ void AddPresenter::onProductEdit(Handbook *h)
     }
 
     auto product = (Product*)h;
+
+    if (product->isOwen && product->code.isEmpty())
+    {
+        addView->showInfo("Пустой код изделия!");
+        return;
+    }
+
+    auto productsEntries = databaseConnector.getProductCountWithTheSameCode(product->code, product->id);
+    if (productsEntries > 0)
+    {
+        addView->showInfo("Изделие с таким номером уже существует!");
+        return;
+    }
+
     databaseConnector.updateProduct(*product);
     productEditView->closeWindow();
     addView->setProduct(*product);
@@ -325,9 +365,11 @@ void AddPresenter::onDeleteClient(int id)
     addView->setClients(clients);
 }
 
-void AddPresenter::checkPastRepairs(int productId)
+void AddPresenter::checkPastRepairs(int productId, const QString& barcode)
 {
-    auto pastCards = databaseConnector.getCardsByProductId(productId);
+    if (addView->getMode() == Editing)
+        return;
+    auto pastCards = databaseConnector.getCardsByProductIdAndBarcode(productId, barcode.trimmed());
     if (pastCards.count() == 0)
         return;
 
@@ -337,7 +379,7 @@ void AddPresenter::checkPastRepairs(int productId)
 
 void AddPresenter::onShowProdictSearch()
 {
-    productSearch->getView()->showWindow();
+    productSearch->showView();
 }
 
 void AddPresenter::onProductSearchDone()
@@ -348,11 +390,9 @@ void AddPresenter::onProductSearchDone()
         addView->showInfo("Изделие не найдено!");
         return;
     }
-
+    notOwenProduct = *product;
     addView->setProduct(*product);
-    productSearch->getView()->closeWindow();
-
-    checkPastRepairs(product->id);
+    productSearch->closeView();
 }
 
 void AddPresenter::setProductSearch(ProductSearchPresenter *value)

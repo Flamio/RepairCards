@@ -89,11 +89,9 @@ void AddForm::setCard(const RepairCard &card, QVector<CardMethod>* methods)
     auto client = getClientById(ui->client->currentData().toInt());
     auto address = client == nullptr ? "" : client->address;
     ui->clientAddress->setText(address);
-
     ui->complains->setText(creatingCard.complaints);
     ui->note->setText(creatingCard.note);
     ui->reason->setText(creatingCard.reason);
-    ui->product->setText(creatingCard.productName);
     ui->receiveDate->setText(creatingCard.receiveFromClientDate.toString("dd.MM.yyyy"));
     ui->returnDate->setText(creatingCard.returnDate.toString("dd.MM.yyyy"));
     ui->repairer->setCurrentIndex(ui->repairer->findData(creatingCard.repairerId));
@@ -103,15 +101,19 @@ void AddForm::setCard(const RepairCard &card, QVector<CardMethod>* methods)
     ui->clientCost->setValue(creatingCard.costForClient);
     ui->sendDate->setText(creatingCard.sendDate.toString("dd.MM.yyyy"));
     ui->receiveDate2->setText(creatingCard.receiveFromFactoryDate.toString("dd.MM.yyyy"));
-    ui->checkBox->setChecked(creatingCard.isOwen);
+    updateState();
+    ui->checkBox->setChecked(creatingCard.product.isOwen);
+    on_checkBox_clicked(ui->checkBox->checkState());
+    on_barCode_textChanged(ui->barCode->text());
     ui->barCode->setText(creatingCard.barCode);
-    on_checkBox_clicked(creatingCard.isOwen);
-    if (!card.isOwen)
+    ui->product->setText(creatingCard.product.name);
+
+    if (!card.product.isOwen)
     {
+        creatingCard.product.id = card.product.id;
         ui->createYear->setText(creatingCard.year);
         ui->createMonth->setText(creatingCard.month);
     }
-    updateState();
 
     foreach (MethodGui item, combos) {
         delete item.combo;
@@ -193,11 +195,14 @@ void AddForm::setRepairer(int id)
 void AddForm::barCodeFinishEmit()
 {
     if (!ui->checkBox->checkState())
+    {
+         emit barCodeFinish(ui->barCode->text(), true);
         return;
+    }
     if (ui->barCode->text().count() != barCodeLenght)
         return;
 
-    emit barCodeFinish(ui->barCode->text());
+    emit barCodeFinish(ui->barCode->text(), true);
 }
 
 void AddForm::setClient(int id)
@@ -214,10 +219,20 @@ void AddForm::showWindow()
 
 void AddForm::setProduct(const Product& product)
 {
-    if (!ui->checkBox->checkState())
-        ui->barCode->setText(product.code);
-    ui->product->setText(product.name);
-    creatingCard.productId = product.id;
+    bool isOwenChecked = ui->checkBox->checkState();
+    if (product.isOwen == isOwenChecked)
+    {
+        ui->product->setText(product.name);
+        creatingCard.product.id = product.id;
+    }
+    else
+    {
+        creatingCard.product.id = 0;
+        ui->product->clear();
+    }
+
+    if(! product.isOwen)
+        barCodeFinish(ui->barCode->text(), false);
 }
 
 void AddForm::on_pushButton_4_clicked()
@@ -281,7 +296,7 @@ void AddForm::on_pushButton_11_clicked()
         return;
     }
 
-    if (creatingCard.productId == 0)
+    if (creatingCard.product.id == 0)
     {
         showInfo("Не найдено изделие!");
         return;
@@ -330,8 +345,8 @@ void AddForm::on_pushButton_11_clicked()
     creatingCard.costRepair = ui->repairCost->value();
     creatingCard.sendDate = QDate::fromString(ui->sendDate->text(), "dd.MM.yyyy");
     creatingCard.receiveFromFactoryDate = QDate::fromString(ui->receiveDate2->text(), "dd.MM.yyyy");
-    creatingCard.isOwen = ui->checkBox->checkState();
-    if (!creatingCard.isOwen)
+
+    if (!ui->checkBox->checkState())
     {
         creatingCard.year = ui->createYear->text();
         creatingCard.month = ui->createMonth->text();
@@ -359,17 +374,20 @@ void AddForm::on_pushButton_11_clicked()
 void AddForm::on_barCode_textChanged(const QString &arg1)
 {
     if (!ui->checkBox->checkState())
+    {
+        emit barCodeFinish(arg1, false);
         return;
+    }
     if (arg1.count() != barCodeLenght)
     {
         ui->product->clear();
         ui->createYear->clear();
         ui->createMonth->clear();
-        creatingCard.productId = 0;
+        creatingCard.product.id = 0;
         return;
     }
 
-    emit barCodeFinish(arg1);
+    emit barCodeFinish(arg1, true);
 
     auto data = Helper::ParseBarcode(arg1);
 
@@ -559,20 +577,28 @@ void AddForm::on_checkBox_clicked(bool checked)
     ui->selectProductButton->setVisible(!checked);
     ui->createYear->setReadOnly(checked);
     ui->createMonth->setReadOnly(checked);
+    ui->barCode->clear();
+    ui->createYear->clear();
+    ui->createMonth->clear();
+    ui->product->clear();
+    creatingCard.product.id = 0;
     if (checked)
     {
         ui->barCode->setValidator(barcodeValidatorOwen);
-        ui->barCode->setReadOnly(false);
         on_barCode_textChanged(ui->barCode->text());
     }
     else
     {
         ui->barCode->setValidator(barcodeValidator);
-        ui->barCode->setReadOnly(true);
     }
 }
 
 void AddForm::on_selectProductButton_clicked()
 {
     emit showProdictSearch();
+}
+
+FormMode AddForm::getMode()
+{
+    return mode;
 }

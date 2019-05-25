@@ -69,7 +69,7 @@ void WarantyPrinter::drawContent(int id, QPainter &painter)
 
     int y = 320;
 
-    drawText("Изделие", QString("%1 зав.№ %2").arg(card.productName).arg(card.barCode), y);
+    drawText("Изделие", QString("%1 зав.№ %2").arg(card.product.name).arg(card.barCode), y);
     drawText("было принято в ремонт", card.receiveFromClientDate.toString("dd.MM.yyyy"), y);
     drawText("от", QString("%1 %2").arg(card.client.name).arg(card.client.address), y);
     drawText("с жалобой", card.complaints, y);
@@ -79,10 +79,8 @@ void WarantyPrinter::drawContent(int id, QPainter &painter)
     auto methods = dbConnector->getMethods(card.id);
 
     for (auto method : methods)
-    {
-        painter.drawText(100,y, method.methodName);
-        y+=20;
-    }
+        drawText("", QString("%1%2 %3").arg(method.methodName).arg(method.description.isEmpty() ? "" : ":")
+                 .arg(method.description), y, 10);
 
     y+=20;
 
@@ -91,13 +89,13 @@ void WarantyPrinter::drawContent(int id, QPainter &painter)
     painter.drawText(100, y, QDate::currentDate().toString("dd.MM.yyyy"));
 }
 
-void WarantyPrinter::drawText(QString bold, QString text, int &y)
+void WarantyPrinter::drawText(QString bold, QString text, int &y, int interval)
 {
-    auto textBegin = fmBold->width(bold) + 110;
+    auto textBegin = bold.isEmpty() ? 100 : fmBold->width(bold) + 110;
     painter->setFont(boldTextFont);
     painter->drawText(100, y, fmBold->width(bold) , fmBold->height(), Qt::AlignLeft, bold);
     painter->setFont(textFont);
     auto height = (int)qCeil(fm->width(text) / (float)(610 - textBegin+110)) * fm->height();
     painter->drawText(textBegin, y, 610 - textBegin+110,  40 +height, Qt::TextWordWrap, text);
-    y+=40 + height;
+    y+=interval + height;
 }

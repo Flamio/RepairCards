@@ -59,8 +59,8 @@ void InvoicePrinter::drawContent(int id, QPainter &painter)
     fm = new QFontMetrics(font);
 
     for (auto c : cards)
-        if (fm->width(c.productName) > nameWidth)
-            nameWidth = fm->width(c.productName);
+        if (fm->width(c.product.name) > nameWidth)
+            nameWidth = fm->width(c.product.name);
 
     if (nameWidth < fm->width("Наименование"))
         nameWidth = fm->width("Наименование");
@@ -95,7 +95,7 @@ void InvoicePrinter::drawContent(int id, QPainter &painter)
             painter.drawText(r3, Qt::AlignCenter, "Примечание");
         }
         else {
-            painter.drawText(r1, Qt::AlignLeft | Qt::AlignVCenter, cards[i].productName);
+            painter.drawText(r1, Qt::AlignLeft | Qt::AlignVCenter, cards[i].product.name);
             painter.drawText(r2, Qt::AlignLeft | Qt::AlignVCenter, cards[i].barCode);
             painter.drawText(r3, Qt::AlignLeft | Qt::AlignVCenter, cards[i].note);
         }

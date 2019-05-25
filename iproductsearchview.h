@@ -3,6 +3,8 @@
 
 #include "iview.h"
 #include <QString>
+#include <QVector>
+#include "product.h"
 
 class IProductSearchView : public IView
 {
@@ -11,7 +13,8 @@ public:
 
 signals:
     virtual void searchProduct(const QString& number) = 0;
-    virtual void done() = 0;
+    virtual void done(Product) = 0;
+    virtual void setProducts(QVector<Product>&) = 0;
 };
 
 

@@ -23,7 +23,10 @@ public:
     QVector<Handbook*> getClients();
 
     RepairCard getLastCard();
+    Product getLastProduct();
     Product getProductByCode(const QString& code);
+    QVector<Product> getProductsByName(const QString& name, bool isNotOwenOnly = false);
+    int getProductCountWithTheSameCode(const QString& code, int id);
     bool addCard(const RepairCard& card);
     bool addMethods(const QVector<CardMethod> cardMethods);
     QVector<CardMethod> getMethods(int cardId);
@@ -32,7 +35,7 @@ public:
     void deleteCard(int id);
     bool updateCard(const RepairCard& card);
     RepairCard getCardById(int id);
-    QVector<RepairCard> getCardsByProductId(int id);
+    QVector<RepairCard> getCardsByProductIdAndBarcode(int id, const QString& barcode);
     int addHandbook(const Handbook& handbook, const QString& tableName);
     bool updateHandbook(const Handbook& handbook, const QString& tableName);
     void deleteHandbook(int id, const QString& tableName);
@@ -55,6 +58,8 @@ public:
     void convert();
 
     QSqlTableModel* getTableModel(const QString& table);
+
+    static DatabaseConnector* getInstance();
 
 
 
