@@ -75,9 +75,19 @@ void InvoicePrinter::drawContent(int id, QPainter &painter)
         pen.setWidth(5);
         painter.setPen(pen);
         const int heightP = 100;
-        QRect r1(345, y, nameWidth, fm->height()+heightP);
-        QRect r2(345 + nameWidth, y, barcodeWidth, fm->height()+heightP);
-        QRect r3(345 + nameWidth + barcodeWidth, y, noteWidth, fm->height()+heightP);
+
+        int height = 0;
+        if (i != -1)
+            height = (int)qCeil(fm->width(cards[i].note) / noteWidth) * fm->height();
+        else
+            height = fm->height();
+
+        if (height == 0)
+            height = fm->height();
+
+        QRect r1(345, y, nameWidth, height+heightP);
+        QRect r2(345 + nameWidth, y, barcodeWidth, height+heightP);
+        QRect r3(345 + nameWidth + barcodeWidth, y, noteWidth, height+heightP);
         painter.drawRect(r1);
         painter.drawRect(r2);
         painter.drawRect(r3);
@@ -94,12 +104,14 @@ void InvoicePrinter::drawContent(int id, QPainter &painter)
             painter.drawText(r2, Qt::AlignCenter, "Штрихкод");
             painter.drawText(r3, Qt::AlignCenter, "Примечание");
         }
-        else {
+        else
+        {
+
             painter.drawText(r1, Qt::AlignLeft | Qt::AlignVCenter, cards[i].product.name);
             painter.drawText(r2, Qt::AlignLeft | Qt::AlignVCenter, cards[i].barCode);
-            painter.drawText(r3, Qt::AlignLeft | Qt::AlignVCenter, cards[i].note);
+            painter.drawText(r3, Qt::AlignLeft | Qt::AlignVCenter | Qt::TextWordWrap, cards[i].note);
         }
-        y+=fm->height()+heightP;
+        y+=height+heightP;
     }
 
     y+=fm->height()*2;
@@ -107,11 +119,13 @@ void InvoicePrinter::drawContent(int id, QPainter &painter)
     painter.setFont(font);
     painter.drawText(QRect(345, y,400,fm->height()),  QString("Итого: %1").arg(cards.count()));
     y+=fm->height()*2;
-    painter.drawText(QRect(1692, y,400,fm->height()),  "Сдал:");
-     painter.drawLine(2039, y + fm->height()+10, 4033, y + fm->height()+10);
-    y+=fm->height()*3;
     painter.drawText(QRect(1692, y,400,fm->height()),  "Принял:");
-    painter.drawLine(2182, y + fm->height()+10, 4033, y + fm->height()+10);
+     painter.drawLine(2045, y + fm->height()+10, 4033, y + fm->height()+10);
+    y+=fm->height()*4;
+    painter.drawText(QRect(2700, y,400,fm->height()),  "Дата:");
+    painter.drawLine(2950, y + fm->height()+10, 4033, y + fm->height()+10);
+    painter.drawText(QRect(500, y, 400,fm->height()),  "Получил:");
+    painter.drawLine(900, y + fm->height()+10, 2550, y + fm->height()+10);
 
     delete fm;
 }

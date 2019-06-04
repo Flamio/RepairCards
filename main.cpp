@@ -54,7 +54,6 @@ int main(int argc, char *argv[])
     addPresenter.setProductSearch(&psp);
     addPresenter.start();
 
-
     MainPresenter mainPresenter;
     mainPresenter.setPastPrepareList(&prl);
     mainPresenter.setAddPresenter(&addPresenter);
