@@ -17,6 +17,8 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 
 #include "MultilayerPerceptron.h"
+#include <math.h>
+
 
 using namespace std;
 
