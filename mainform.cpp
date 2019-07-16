@@ -70,7 +70,7 @@ IMainView *MainForm::newDialog()
     if (dialog != nullptr)
         delete dialog;
 
-    dialog = new MainForm();
+    dialog = new MainForm(this);
     dialog->setIsDialog(true);
     dialog->hideNavigationPanel();
     return dialog;
