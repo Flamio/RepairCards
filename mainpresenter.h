@@ -39,6 +39,7 @@ private slots:
     void onEditComplete(int);
     void onCardClicked(int);
     void onPrint(int id,PrintType::PrintType&);
+    void onShowSendedProducts();
 
 private:
     IMainView* mainView = nullptr;

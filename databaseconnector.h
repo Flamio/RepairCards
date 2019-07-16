@@ -51,6 +51,7 @@ public:
     int getEntries(int id, const QString& column, const QString& table);
     QVector<Handbook*> getProducts();
     QVector<RepairCard> getCardsByDateAndClient(QDate,int clientId);
+    QVector<RepairCard> getSendedCards();
 
     QString getLastError() const;
 

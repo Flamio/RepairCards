@@ -374,7 +374,7 @@ void AddPresenter::checkPastRepairs(int productId, const QString& barcode)
         return;
 
     pastPrepareList->setCards(pastCards);
-    pastPrepareList->showWindow();
+    pastPrepareList->showWindow("Это изделие уже было в ремонте:");
 }
 
 void AddPresenter::onShowProdictSearch()

@@ -18,6 +18,7 @@ void MainPresenter::setMainView(IMainView *value)
     connect(dynamic_cast<QObject*>(mainView), SIGNAL(deleteSignal(int)), this, SLOT(onDelete(int)));
     connect(dynamic_cast<QObject*>(mainView), SIGNAL(edit(int)), this, SLOT(onEdit(int)));
     connect(dynamic_cast<QObject*>(mainView), SIGNAL(print(int, PrintType::PrintType&)), this, SLOT(onPrint(int, PrintType::PrintType&)));
+    connect(dynamic_cast<QObject*>(mainView), SIGNAL(showSendedProducts()), this, SLOT(onShowSendedProducts()));
 }
 
 void MainPresenter::setAddPresenter(AddPresenter *value)
@@ -71,7 +72,7 @@ void MainPresenter::onDelete(int id)
 
     auto card = dbConnector.getNextCard();
 
-    if (card.state == 0)
+    if (card.state == "")
     {
         showLastCard();
         return;
@@ -114,6 +115,19 @@ void MainPresenter::onPrint(int id, PrintType::PrintType& type)
     if (printer == nullptr)
         return;
     printer->print(id);
+}
+
+void MainPresenter::onShowSendedProducts()
+{
+    auto cards = dbConnector.getSendedCards();
+    if (cards.size() == 0)
+    {
+        addPresenter->getAddView()->showInfo("Нет отправленных изделий!");
+        return;
+    }
+
+    pastPrepareList->setCards(cards);
+    pastPrepareList->showWindow("Эти изделия были отправлены:");
 }
 
 void MainPresenter::setPastPrepareList(IPastRepairList *value)

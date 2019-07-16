@@ -7,6 +7,7 @@ class IPastRepairList : public IView
 {
 public:
     virtual void setCards(QVector<RepairCard>&) = 0;
+    virtual void showWindow(const QString& title) = 0;
 };
 
 #endif // IPASTREPAIRLIST_H

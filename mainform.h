@@ -38,6 +38,7 @@ signals:
     void navigation(bool);
     void deleteSignal(int id);
     void print(int,PrintType::PrintType&);
+    void showSendedProducts();
 
 private slots:
     void on_pushButton_7_clicked();
@@ -51,6 +52,8 @@ private slots:
     void on_pushButton_clicked();
 
     void on_pushButton_6_clicked();
+
+    void on_showSendedProducts_clicked();
 
 private:
     Ui::MainForm *ui;

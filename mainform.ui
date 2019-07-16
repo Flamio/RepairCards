@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>989</width>
+    <width>1060</width>
     <height>758</height>
    </rect>
   </property>
@@ -622,6 +622,13 @@
              </size>
             </property>
            </spacer>
+          </item>
+          <item>
+           <widget class="QPushButton" name="showSendedProducts">
+            <property name="text">
+             <string>Показать оправленные изделия</string>
+            </property>
+           </widget>
           </item>
           <item>
            <widget class="QComboBox" name="print">

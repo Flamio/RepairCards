@@ -138,3 +138,8 @@ void MainForm::on_pushButton_6_clicked()
     auto cardId = ui->id->text().toInt();
     emit print(cardId,type);
 }
+
+void MainForm::on_showSendedProducts_clicked()
+{
+    emit showSendedProducts();
+}
