@@ -307,7 +307,7 @@ void DatabaseConnector::fillCard(RepairCard& card, QSqlQuery& query)
     card.barCode = query.value("bar_code").toString();
     card.costForClient = query.value("cost_for_client").toInt();
     card.costRepair = query.value("cost_repair").toInt();
-    card.receiveFromFactoryDate = QDate::fromString(query.value("receive_date").toString(), "dd.MM.yyyy");
+    card.receiveFromFactoryDate = QDate::fromString(query.value("receive_date2").toString(), "dd.MM.yyyy");
     card.sendDate = QDate::fromString(query.value("sendDate").toString(), "dd.MM.yyyy");
     card.year = query.value("createYear").toString();
     card.month = query.value("createMonth").toString();
@@ -576,7 +576,7 @@ QVector<RepairCard> DatabaseConnector::getCardsByDateAndClient(QDate date, int c
 QVector<RepairCard> DatabaseConnector::getSendedCards()
 {
     QSqlQuery query;
-    auto q = QString("select c.*, p.* FROM repair_cards c left join products p on c.product_id = p.id where c.sendDate != \"\"");
+    auto q = QString("select c.*, p.* FROM repair_cards c left join products p on c.product_id = p.id where c.sendDate != \"\" and c.receive_date2 = \"\"");
     query.exec(q);
     QVector<RepairCard> cards;
 
