@@ -341,7 +341,6 @@ bool DatabaseConnector::updateIds(bool currentChange)
 
 void DatabaseConnector::runFile(const QString &fileName)
 {
-
     QFile scriptFile(fileName);
     if (!scriptFile.open(QIODevice::ReadOnly))
         return;
@@ -387,9 +386,7 @@ void DatabaseConnector::convert()
         if (v.toInt() <= dbVersion)
             continue;
         runFile(fileName);
-        query.exec(QString("update convert set number=%1 where id=0").arg(v));
-
-        int a = 0;
+        query.exec(QString("update convert set number=%1 where id=0").arg(v));        
     }
 }
 

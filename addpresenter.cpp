@@ -335,12 +335,12 @@ void AddPresenter::onClientAdd(Handbook *h)
 void AddPresenter::onClientEdit(Handbook *h)
 {
     auto client = (Client*)h;
-    auto entries = databaseConnector.getEntries(h->id, "client_id", "repair_cards");
+    /*auto entries = databaseConnector.getEntries(h->id, "client_id", "repair_cards");
     if (entries != 0)
     {
         addView->showInfo("Нельзя редактировать! Этот клиент используется в других ремонтных картах!");
         return;
-    }
+    }*/
 
     databaseConnector.updateClient(*client);
     auto clients = databaseConnector.getClients();
