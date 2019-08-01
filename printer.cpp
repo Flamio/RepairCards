@@ -14,6 +14,11 @@ DatabaseConnector *Printer::getDbConnector() const
     return dbConnector;
 }
 
+QPrinter *Printer::getPrinter() const
+{
+    return printer;
+}
+
 void Printer::setDbConnector(DatabaseConnector *value)
 {
     dbConnector = value;
