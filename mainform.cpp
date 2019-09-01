@@ -143,3 +143,13 @@ void MainForm::on_showSendedProducts_clicked()
 {
     emit showSendedProducts();
 }
+
+void MainForm::on_pushButton_2_clicked()
+{
+    emit showExtremeCard(ExtremeCardType::Last);
+}
+
+void MainForm::on_pushButton_3_clicked()
+{
+    emit showExtremeCard(ExtremeCardType::First);
+}

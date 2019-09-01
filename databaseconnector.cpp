@@ -219,6 +219,12 @@ RepairCard DatabaseConnector::getNextCard()
     return getCardById(ids[currentIndex]);
 }
 
+RepairCard DatabaseConnector::getFirstCard()
+{
+    currentIndex = 0;
+    return getCardById(ids[currentIndex]);
+}
+
 void DatabaseConnector::deleteCard(int id)
 {
     db.transaction();

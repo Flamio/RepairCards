@@ -19,6 +19,7 @@ void MainPresenter::setMainView(IMainView *value)
     connect(dynamic_cast<QObject*>(mainView), SIGNAL(edit(int)), this, SLOT(onEdit(int)));
     connect(dynamic_cast<QObject*>(mainView), SIGNAL(print(int, PrintType::PrintType&)), this, SLOT(onPrint(int, PrintType::PrintType&)));
     connect(dynamic_cast<QObject*>(mainView), SIGNAL(showSendedProducts()), this, SLOT(onShowSendedProducts()));
+    connect(dynamic_cast<QObject*>(mainView), SIGNAL(showExtremeCard(ExtremeCardType::ExtremeCardType)), this, SLOT(onShowExtremeCard(ExtremeCardType::ExtremeCardType)));
 }
 
 void MainPresenter::setAddPresenter(AddPresenter *value)
@@ -128,6 +129,18 @@ void MainPresenter::onShowSendedProducts()
 
     pastPrepareList->setCards(cards);
     pastPrepareList->showWindow("Эти изделия были отправлены:");
+}
+
+void MainPresenter::onShowExtremeCard(ExtremeCardType::ExtremeCardType cardType)
+{
+    RepairCard card;
+    if (cardType == ExtremeCardType::Last)
+        card = dbConnector.getLastCard();
+    else
+        card = dbConnector.getFirstCard();
+
+    auto methods = dbConnector.getMethods(card.id);
+    mainView->setCard(card, methods);
 }
 
 void MainPresenter::setPastPrepareList(IPastRepairList *value)

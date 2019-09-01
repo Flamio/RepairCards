@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1060</width>
-    <height>758</height>
+    <width>1093</width>
+    <height>754</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -558,34 +558,78 @@
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_6">
           <item>
+           <widget class="QPushButton" name="pushButton_3">
+            <property name="maximumSize">
+             <size>
+              <width>30</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>&lt;&lt;</string>
+            </property>
+           </widget>
+          </item>
+          <item>
            <widget class="QPushButton" name="pushButton_7">
+            <property name="maximumSize">
+             <size>
+              <width>30</width>
+              <height>16777215</height>
+             </size>
+            </property>
             <property name="font">
              <font>
               <pointsize>10</pointsize>
              </font>
             </property>
             <property name="text">
-             <string>Назад</string>
+             <string>&lt;</string>
             </property>
            </widget>
           </item>
           <item>
            <widget class="QPushButton" name="pushButton_8">
+            <property name="maximumSize">
+             <size>
+              <width>30</width>
+              <height>16777215</height>
+             </size>
+            </property>
             <property name="font">
              <font>
               <pointsize>10</pointsize>
              </font>
             </property>
             <property name="text">
-             <string>Вперед</string>
+             <string>&gt;</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_2">
+            <property name="maximumSize">
+             <size>
+              <width>30</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>&gt;&gt;</string>
             </property>
            </widget>
           </item>
           <item>
            <widget class="QLineEdit" name="navigation">
-            <property name="maximumSize">
+            <property name="minimumSize">
              <size>
               <width>100</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
               <height>16777215</height>
              </size>
             </property>

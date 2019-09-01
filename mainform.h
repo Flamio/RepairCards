@@ -39,6 +39,7 @@ signals:
     void deleteSignal(int id);
     void print(int,PrintType::PrintType&);
     void showSendedProducts();
+    void showExtremeCard(ExtremeCardType::ExtremeCardType extremeCardType);
 
 private slots:
     void on_pushButton_7_clicked();
@@ -54,6 +55,10 @@ private slots:
     void on_pushButton_6_clicked();
 
     void on_showSendedProducts_clicked();
+
+    void on_pushButton_2_clicked();
+
+    void on_pushButton_3_clicked();
 
 private:
     Ui::MainForm *ui;

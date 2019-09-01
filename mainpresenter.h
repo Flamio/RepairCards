@@ -40,6 +40,7 @@ private slots:
     void onCardClicked(int);
     void onPrint(int id,PrintType::PrintType&);
     void onShowSendedProducts();
+    void onShowExtremeCard(ExtremeCardType::ExtremeCardType);
 
 private:
     IMainView* mainView = nullptr;

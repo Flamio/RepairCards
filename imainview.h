@@ -5,6 +5,15 @@
 #include "iview.h"
 #include "printtype.h"
 
+namespace ExtremeCardType
+{
+    enum ExtremeCardType
+    {
+        First,
+        Last,
+    };
+}
+
 class IMainView : public IView
 {
 public:
@@ -17,6 +26,7 @@ public:
     virtual IMainView* newDialog() = 0;
 signals:
     virtual void print(int ,PrintType::PrintType&) = 0;
+    virtual void showExtremeCard(ExtremeCardType::ExtremeCardType extremeCardType) = 0;
 };
 
 Q_DECLARE_INTERFACE(IMainView, "IMainView")

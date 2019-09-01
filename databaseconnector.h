@@ -32,6 +32,7 @@ public:
     QVector<CardMethod> getMethods(int cardId);
     RepairCard getPreviousCard();
     RepairCard getNextCard();
+    RepairCard getFirstCard();
     void deleteCard(int id);
     bool updateCard(const RepairCard& card);
     RepairCard getCardById(int id);
