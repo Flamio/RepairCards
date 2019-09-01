@@ -17,6 +17,11 @@ MainForm::~MainForm()
 
 void MainForm::setCard(const RepairCard &card, const QVector<CardMethod> &methods)
 {
+    if (card.returnDate.toString("dd.MM.yyyy") != "")
+        this->setStyleSheet("QLabel, QLineEdit, QTableWidget, QPlainTextEdit {color:gray}  QLineEdit#navigation {color:black}");
+    else
+        this->setStyleSheet("QLabel, QLineEdit, QTableWidget, QPlainTextEdit {color:black}");
+
     ui->barcode->setText(card.barCode);
     if (card.product.isOwen)
     {
