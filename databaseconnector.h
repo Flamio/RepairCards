@@ -36,6 +36,7 @@ public:
     void deleteCard(int id);
     bool updateCard(const RepairCard& card);
     RepairCard getCardById(int id);
+    RepairCard getCardByIndex(int index);
     QVector<RepairCard> getCardsByProductIdAndBarcode(int id, const QString& barcode);
     int addHandbook(const Handbook& handbook, const QString& tableName);
     bool updateHandbook(const Handbook& handbook, const QString& tableName);

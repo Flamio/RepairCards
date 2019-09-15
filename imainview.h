@@ -27,6 +27,7 @@ public:
 signals:
     virtual void print(int ,PrintType::PrintType&) = 0;
     virtual void showExtremeCard(ExtremeCardType::ExtremeCardType extremeCardType) = 0;
+    virtual void showCardByIndex(int index) = 0;
 };
 
 Q_DECLARE_INTERFACE(IMainView, "IMainView")

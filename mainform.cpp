@@ -8,6 +8,7 @@ MainForm::MainForm(QWidget *parent) :
     ui(new Ui::MainForm)
 {
     ui->setupUi(this);
+    ui->current_card_index->setValidator(new QIntValidator());
 }
 
 MainForm::~MainForm()
@@ -18,7 +19,7 @@ MainForm::~MainForm()
 void MainForm::setCard(const RepairCard &card, const QVector<CardMethod> &methods)
 {
     if (card.returnDate.toString("dd.MM.yyyy") != "")
-        this->setStyleSheet("QLabel, QLineEdit, QTableWidget, QPlainTextEdit {color:gray}  QLineEdit#navigation {color:black}");
+        this->setStyleSheet("QLabel, QLineEdit, QTableWidget, QPlainTextEdit {color:gray}  QLineEdit#current_card_index {color:black} QLineEdit#cards_count {color:black}");
     else
         this->setStyleSheet("QLabel, QLineEdit, QTableWidget, QPlainTextEdit {color:black}");
 
@@ -38,7 +39,8 @@ void MainForm::setCard(const RepairCard &card, const QVector<CardMethod> &method
     ui->clientCost->setText(QString::number(card.costForClient));
     ui->complains->setPlainText(card.complaints);
     ui->id->setText(QString::number(card.id));
-    ui->navigation->setText(QString("%1/%2").arg(card.currentIndex).arg(card.allIndexes));
+    ui->cards_count->setText(QString("%1").arg(card.allIndexes));
+    ui->current_card_index->setText(QString("%1").arg(card.currentIndex));
     ui->note->setPlainText(card.note);
     ui->product->setText(card.product.name);
     ui->ready->setText(card.readyDate.toString("dd.MM.yyyy"));
@@ -157,4 +159,9 @@ void MainForm::on_pushButton_2_clicked()
 void MainForm::on_pushButton_3_clicked()
 {
     emit showExtremeCard(ExtremeCardType::First);
+}
+
+void MainForm::on_current_card_index_editingFinished()
+{
+    emit showCardByIndex(ui->current_card_index->text().toInt());
 }

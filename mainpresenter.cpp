@@ -20,6 +20,7 @@ void MainPresenter::setMainView(IMainView *value)
     connect(dynamic_cast<QObject*>(mainView), SIGNAL(print(int, PrintType::PrintType&)), this, SLOT(onPrint(int, PrintType::PrintType&)));
     connect(dynamic_cast<QObject*>(mainView), SIGNAL(showSendedProducts()), this, SLOT(onShowSendedProducts()));
     connect(dynamic_cast<QObject*>(mainView), SIGNAL(showExtremeCard(ExtremeCardType::ExtremeCardType)), this, SLOT(onShowExtremeCard(ExtremeCardType::ExtremeCardType)));
+    connect(dynamic_cast<QObject*>(mainView), SIGNAL(showCardByIndex(int)), this, SLOT(onShowCardByIndex(int)));
 }
 
 void MainPresenter::setAddPresenter(AddPresenter *value)
@@ -141,6 +142,13 @@ void MainPresenter::onShowExtremeCard(ExtremeCardType::ExtremeCardType cardType)
 
     auto methods = dbConnector.getMethods(card.id);
     mainView->setCard(card, methods);
+}
+
+void MainPresenter::onShowCardByIndex(int index)
+{
+    auto card = dbConnector.getCardByIndex(index);
+    auto methods = dbConnector.getMethods(card.id);
+    mainView->setCard(card,methods);
 }
 
 void MainPresenter::setPastPrepareList(IPastRepairList *value)

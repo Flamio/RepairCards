@@ -392,7 +392,7 @@ void DatabaseConnector::convert()
         if (v.toInt() <= dbVersion)
             continue;
         runFile(fileName);
-        query.exec(QString("update convert set number=%1 where id=0").arg(v));        
+        query.exec(QString("update convert set number=%1 where id=0").arg(v));
     }
 }
 
@@ -424,6 +424,19 @@ RepairCard DatabaseConnector::getCardById(int id)
     if (query.first())
         fillCard(card, query);
     return card;
+}
+
+RepairCard DatabaseConnector::getCardByIndex(int index)
+{
+    index = index - 1;
+
+    if (index >= ids.count())
+        return getLastCard();
+    else if (index < 0)
+        return getFirstCard();
+
+    currentIndex = index;
+    return getCardById(ids[index]);
 }
 
 QVector<RepairCard> DatabaseConnector::getCardsByProductIdAndBarcode(int id, const QString& barcode)
