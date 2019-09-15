@@ -113,6 +113,20 @@ void PaidCardPrinter::drawContent(int id, QPainter &painter)
     y+=165;
     painter.drawText(x, y, repairCostString);
 
+    QString warantyText = "Гарантийный срок на ";
+    auto warantyTextWidth = metrics->width(warantyText);
+    auto doneText = "выполненную ";
+    painter.drawText(620,y, warantyText);
+    font.setBold(true);
+    painter.setFont(font);
+    auto boldMetrics = new QFontMetrics(font);
+    auto doneTextWidth = boldMetrics->width(doneText);
+    painter.drawText(620 + warantyTextWidth, y, doneText);
+    font.setBold(false);
+    delete  boldMetrics;
+    painter.setFont(font);
+    painter.drawText(620 + warantyTextWidth + doneTextWidth, y, "работу - 1 мес");
+
     y+=400;
     s = QString("Прибор выдал: ");
     painter.drawText(620, y, s);
