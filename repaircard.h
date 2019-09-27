@@ -5,9 +5,8 @@
 #include "client.h"
 #include "product.h"
 
-struct RepairCard
+struct RepairCard : Handbook
 {
-    int id = 0;
     int repairerId = 1;
     int clientId = 0;
     int stateId = 0;

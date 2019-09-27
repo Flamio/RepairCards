@@ -24,9 +24,9 @@ void MainPresenter::setMainView(IMainView *value)
 
     Callbacks callbacks;
     callbacks.searchCards = [=] (){
-
+        this->cardSearchView->showWindow();
     };
-    //mainView->setCallbacks()
+    mainView->setCallbacks(callbacks);
 }
 
 void MainPresenter::setAddPresenter(AddPresenter *value)
@@ -155,6 +155,33 @@ void MainPresenter::onShowCardByIndex(int index)
     auto card = dbConnector.getCardByIndex(index);
     auto methods = dbConnector.getMethods(card.id);
     mainView->setCard(card,methods);
+}
+
+void MainPresenter::setCardSearchView(IHandbookSearchView *value)
+{
+    cardSearchView = value;
+
+    HandbookSearchCallbacks c;
+    c.done = [=](int index)
+    {
+        auto card = (*cards)[index];
+        auto methods = dbConnector.getMethods(card.id);
+        mainView->setCard(card, methods);
+        cardSearchView->closeWindow();
+    };
+    c.searchHandbook = [=](const QString& name)
+    {
+        (*cards) = dbConnector.getRepairCardsByProductNameOrCode(name);
+
+        QVector<Handbook>h;
+
+        for (auto c : *cards)
+            h.append(c);
+
+        cardSearchView->setHandbooks(h);
+    };
+
+    cardSearchView->setCallbacks(c);
 }
 
 void MainPresenter::setPastPrepareList(IPastRepairList *value)

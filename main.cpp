@@ -60,6 +60,10 @@ int main(int argc, char *argv[])
     mainPresenter.setAddPresenter(&addPresenter);
     mainPresenter.setDbConnector(*dbConnector);
     mainPresenter.setMainView(&mainForm);
+
+    HandbookSearchForm cardSearchForm;
+    mainPresenter.setCardSearchView(&cardSearchForm);
+
     mainPresenter.start();
 
 

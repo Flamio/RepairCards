@@ -26,6 +26,8 @@ public:
 
     void setPastPrepareList(IPastRepairList *value);
 
+    void setCardSearchView(IHandbookSearchView *value);
+
 signals:
 
 public slots:
@@ -46,10 +48,13 @@ private slots:
 private:
     IMainView* mainView = nullptr;
     IPastRepairList* pastPrepareList = nullptr;
+    IHandbookSearchView* cardSearchView = nullptr;
 
     AddPresenter* addPresenter = nullptr;
     DatabaseConnector dbConnector;
     PrinterFactory* printerFactory = nullptr;
+
+    QVector<RepairCard>* cards = new QVector<RepairCard>();
 
     void showLastCard();
 };
