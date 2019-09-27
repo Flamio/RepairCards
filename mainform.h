@@ -29,6 +29,11 @@ public:
     void setIsDialog(bool value);
     void hideNavigationPanel();
 
+    virtual void setCallbacks(const Callbacks& c)
+    {
+        this->callbacks = c;
+    }
+
 protected:
     void closeEvent(QCloseEvent *);
 
@@ -63,11 +68,14 @@ private slots:
 
     void on_current_card_index_editingFinished();
 
+    void on_pushButton_4_clicked();
+
 private:
     Ui::MainForm *ui;
 
     bool isDialog = false;
     MainForm* dialog = nullptr;
+    Callbacks callbacks;
 };
 
 #endif // MAINFORM_H

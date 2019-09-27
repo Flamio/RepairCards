@@ -165,3 +165,8 @@ void MainForm::on_current_card_index_editingFinished()
 {
     emit showCardByIndex(ui->current_card_index->text().toInt());
 }
+
+void MainForm::on_pushButton_4_clicked()
+{
+    callbacks.searchCards();
+}

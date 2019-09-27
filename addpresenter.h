@@ -7,7 +7,7 @@
 #include "cardmethod.h"
 #include "ihandbookeditview.h"
 #include "ipastrepairlist.h"
-#include "productsearchpresenter.h"
+#include "ihandbooksearchview.h"
 
 class AddPresenter : public QObject
 {
@@ -31,7 +31,7 @@ public:
 
     void setPastPrepareList(IPastRepairList *value);
 
-    void setProductSearch(ProductSearchPresenter *value);
+    void setProductSearch(IHandbookSearchView *value);
 
 signals:
     void addComplete();
@@ -64,7 +64,6 @@ private slots:
     void onDeleteClient(int id);
     void checkPastRepairs(int productId, const QString& barcode);
     void onShowProdictSearch();
-    void onProductSearchDone();
 
 private:
     IAddView* addView = nullptr;
@@ -72,11 +71,13 @@ private:
     IHandbookEditView* methodEditView = nullptr;
     IHandbookEditView* clientEditView = nullptr;
     IHandbookEditView* productEditView = nullptr;
+    IHandbookSearchView* productSearch = nullptr;
     IPastRepairList* pastPrepareList = nullptr;
     DatabaseConnector databaseConnector;
-    ProductSearchPresenter* productSearch = nullptr;
 
     Product notOwenProduct;
+
+    QVector<Product>* products = new QVector<Product>();
 };
 
 #endif // ADDPRESENTER_H

@@ -21,6 +21,12 @@ void MainPresenter::setMainView(IMainView *value)
     connect(dynamic_cast<QObject*>(mainView), SIGNAL(showSendedProducts()), this, SLOT(onShowSendedProducts()));
     connect(dynamic_cast<QObject*>(mainView), SIGNAL(showExtremeCard(ExtremeCardType::ExtremeCardType)), this, SLOT(onShowExtremeCard(ExtremeCardType::ExtremeCardType)));
     connect(dynamic_cast<QObject*>(mainView), SIGNAL(showCardByIndex(int)), this, SLOT(onShowCardByIndex(int)));
+
+    Callbacks callbacks;
+    callbacks.searchCards = [=] (){
+
+    };
+    //mainView->setCallbacks()
 }
 
 void MainPresenter::setAddPresenter(AddPresenter *value)

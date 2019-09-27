@@ -379,31 +379,43 @@ void AddPresenter::checkPastRepairs(int productId, const QString& barcode)
 
 void AddPresenter::onShowProdictSearch()
 {
-    productSearch->showView();
-}
-
-void AddPresenter::onProductSearchDone()
-{
-    auto product = productSearch->getProduct();
-    if (product->id == 0)
-    {
-        addView->showInfo("Изделие не найдено!");
-        return;
-    }
-    notOwenProduct = *product;
-    addView->setProduct(*product);
-    productSearch->closeView();
-}
-
-void AddPresenter::setProductSearch(ProductSearchPresenter *value)
-{
-    productSearch = value;
-    connect(productSearch, &ProductSearchPresenter::done, this, &AddPresenter::onProductSearchDone);
+    productSearch->showWindow();
 }
 
 void AddPresenter::setPastPrepareList(IPastRepairList *value)
 {
     pastPrepareList = value;
+}
+
+void AddPresenter::setProductSearch(IHandbookSearchView *value)
+{
+    productSearch = value;
+
+    HandbookSearchCallbacks c;
+    c.searchHandbook = [=](const QString& name)
+    {
+        (*products) = databaseConnector.getProductsByName(name,true);
+        QVector<Handbook> ps;
+
+        for (auto p : *products)
+            ps.append(p);
+        productSearch->setHandbooks(ps);
+    };
+
+    c.done = [=] (int index)
+    {
+        auto product = (*products)[index];
+        if (product.id == 0)
+        {
+            addView->showInfo("Изделие не найдено!");
+            return;
+        }
+        notOwenProduct = product;
+        addView->setProduct(product);
+        productSearch->closeWindow();
+    };
+
+    productSearch->setCallbacks(c);
 }
 
 void AddPresenter::setProductEditView(IHandbookEditView *value)

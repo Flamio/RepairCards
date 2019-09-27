@@ -26,6 +26,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += main.cpp\
     databaseconnector.cpp \
     addform.cpp \
+    handbooksearchform.cpp \
     mainform.cpp \
     addpresenter.cpp \
     mainpresenter.cpp \
@@ -39,14 +40,14 @@ SOURCES += main.cpp\
     repaircardprinter.cpp \
     invoiceprinter.cpp \
     paidcardprinter.cpp \
-    warantyprinter.cpp \
-    productsearchform.cpp \
-    productsearchpresenter.cpp
+    warantyprinter.cpp
 
 HEADERS  += \
     databaseconnector.h \
     handbook.h \
     client.h \
+    handbooksearchform.h \
+    ihandbooksearchview.h \
     repaircard.h \
     cardmethod.h \
     addform.h \
@@ -71,17 +72,14 @@ HEADERS  += \
     repaircardprinter.h \
     invoiceprinter.h \
     paidcardprinter.h \
-    warantyprinter.h \
-    productsearchform.h \
-    iproductsearchview.h \
-    productsearchpresenter.h
+    warantyprinter.h
 
 FORMS    += \
     addform.ui \
+    handbooksearchform.ui \
     mainform.ui \
     edithandbookform.ui \
-    pastrepairslist.ui \
-    productsearchform.ui
+    pastrepairslist.ui
 
 RESOURCES += \
     resources.qrc
