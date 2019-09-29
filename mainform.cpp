@@ -19,7 +19,8 @@ MainForm::~MainForm()
 void MainForm::setCard(const RepairCard &card, const QVector<CardMethod> &methods)
 {
     if (card.returnDate.toString("dd.MM.yyyy") != "")
-        this->setStyleSheet("QLabel, QLineEdit, QTableWidget, QPlainTextEdit {color:gray}  QLineEdit#current_card_index {color:black} QLineEdit#cards_count {color:black}");
+        this->setStyleSheet("QLabel, QLineEdit, QTableWidget, QPlainTextEdit {color:gray} "
+                            " QLineEdit#current_card_index {color:black} QLineEdit#cards_count {color:black}");
     else
         this->setStyleSheet("QLabel, QLineEdit, QTableWidget, QPlainTextEdit {color:black}");
 

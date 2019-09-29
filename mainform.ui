@@ -635,7 +635,13 @@
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="current_card_index"/>
+           <widget class="QLineEdit" name="current_card_index">
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
+           </widget>
           </item>
           <item>
            <widget class="QLabel" name="label_18">
@@ -646,6 +652,11 @@
           </item>
           <item>
            <widget class="QLineEdit" name="cards_count">
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
             <property name="readOnly">
              <bool>true</bool>
             </property>
@@ -671,11 +682,16 @@
           </item>
           <item>
            <widget class="QPushButton" name="showSendedProducts">
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
             <property name="focusPolicy">
              <enum>Qt::NoFocus</enum>
             </property>
             <property name="text">
-             <string>Показать оправленные изделия</string>
+             <string>Отправленные</string>
             </property>
            </widget>
           </item>
@@ -727,6 +743,11 @@
           </item>
           <item>
            <widget class="QPushButton" name="pushButton_4">
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
             <property name="focusPolicy">
              <enum>Qt::NoFocus</enum>
             </property>
