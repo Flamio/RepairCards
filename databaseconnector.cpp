@@ -416,6 +416,11 @@ DatabaseConnector *DatabaseConnector::getInstance()
     return instance;
 }
 
+void DatabaseConnector::setCurrentIndex(int value)
+{
+    currentIndex = ids.indexOf(value);
+}
+
 RepairCard DatabaseConnector::getCardById(int id)
 {
     RepairCard card;
@@ -470,7 +475,8 @@ QVector<RepairCard> DatabaseConnector::getRepairCardsByProductNameOrCode(const Q
     {
         RepairCard card;
         fillCard(card, query);
-        card.name = QString("%1 %2 %3 %4").arg(card.receiveFromClientDate.toString("dd.MM.yyyy")).arg(card.product.name).arg(card.product.code).arg(card.barCode);
+        card.name = QString("%1 %2 %4").arg(card.receiveFromClientDate.toString("dd.MM.yyyy")).arg(card.product.name).arg(card.barCode);
+        card.currentIndex = ids.indexOf(card.id) + 1;
         cards.push_back(card);
     }
     return cards;

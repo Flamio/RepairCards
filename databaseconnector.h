@@ -67,6 +67,8 @@ public:
 
 
 
+    void setCurrentIndex(int value);
+
 private:
     QSqlDatabase db;
     QVector<int> ids;

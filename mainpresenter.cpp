@@ -167,6 +167,7 @@ void MainPresenter::setCardSearchView(IHandbookSearchView *value)
         auto card = (*cards)[index];
         auto methods = dbConnector.getMethods(card.id);
         mainView->setCard(card, methods);
+        dbConnector.setCurrentIndex(card.id);
         cardSearchView->closeWindow();
     };
     c.searchHandbook = [=](const QString& name)
