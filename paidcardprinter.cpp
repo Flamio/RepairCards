@@ -108,7 +108,7 @@ void PaidCardPrinter::drawContent(int id, QPainter &painter)
     metrics = new QFontMetrics(font);
     painter.setFont(font);
 
-    auto repairCostString = QString("Стоимость ремонта: %1 руб.").arg(card.costForClient);
+    auto repairCostString = QString("Стоимость : %1 руб.").arg(card.costForClient);
     auto x = 4958 - 620 - metrics->width(repairCostString);
     y+=165;
     painter.drawText(x, y, repairCostString);
@@ -125,7 +125,7 @@ void PaidCardPrinter::drawContent(int id, QPainter &painter)
     font.setBold(false);
     delete  boldMetrics;
     painter.setFont(font);
-    painter.drawText(620 + warantyTextWidth + doneTextWidth, y, "работу - 1 мес");
+    painter.drawText(620 + warantyTextWidth + doneTextWidth, y, "работу - ________");
 
     y+=400;
     s = QString("Прибор выдал: ");

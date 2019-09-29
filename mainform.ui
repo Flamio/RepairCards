@@ -727,6 +727,9 @@
           </item>
           <item>
            <widget class="QPushButton" name="pushButton_4">
+            <property name="focusPolicy">
+             <enum>Qt::NoFocus</enum>
+            </property>
             <property name="text">
              <string>Поиск</string>
             </property>
