@@ -468,14 +468,20 @@ QVector<RepairCard> DatabaseConnector::getRepairCardsByProductNameOrCode(const Q
                        "left join clients cl on c.client_id=cl.id"
                        " left join states st on c.state_id=st.id "
                        "left join repairers rep "
-                       "on c.repairer_id=rep.id where p.name like '%%1%' or p.code like '%%1%' or c.bar_code like '%%1%'").arg(nameOrCode));
+                       "on c.repairer_id=rep.id "
+                       "where p.name like '%%1%' "
+                       "or p.code like '%%1%' "
+                       "or c.bar_code like '%%1%'"
+                       "or (cl.name like '%%1%' and c.return = '')").arg(nameOrCode));
     QVector<RepairCard> cards;
 
     while (query.next())
     {
         RepairCard card;
         fillCard(card, query);
-        card.name = QString("%1 %2 %4").arg(card.receiveFromClientDate.toString("dd.MM.yyyy")).arg(card.product.name).arg(card.barCode);
+        card.name = QString("%1 %2 %4 %5")
+                .arg(card.receiveFromClientDate.toString("dd.MM.yyyy"))
+                .arg(card.product.name).arg(card.barCode).arg(card.client.name);
         card.currentIndex = ids.indexOf(card.id) + 1;
         cards.push_back(card);
     }
