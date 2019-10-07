@@ -9,8 +9,7 @@
 #include "clienteditform.h"
 #include "producteditform.h"
 #include "pastrepairslist.h"
-#include "productsearchform.h"
-#include "productsearchpresenter.h"
+#include "handbooksearchform.h"
 
 int main(int argc, char *argv[])
 {
@@ -38,11 +37,13 @@ int main(int argc, char *argv[])
 
     PastRepairsList prl(&w);
 
-    ProductSearchForm psf(&w);
-    ProductSearchPresenter psp(true,&a);
-    psp.setView(&psf);
+    HandbookSearchForm psf(&w);
 
     ProductEditForm productEditForm(&w);
+    productEditForm.setGetProductsByNameFunc([&dbConnector](const QString& name) -> QVector<Product>
+    {
+        return dbConnector->getProductsByName(name);
+    });
 
     addPresenter.setAddView(&w);
     addPresenter.setDatabaseConnector(*dbConnector);
@@ -51,7 +52,7 @@ int main(int argc, char *argv[])
     addPresenter.setClientEditView(&clientEditForm);
     addPresenter.setProductEditView(&productEditForm);
     addPresenter.setPastPrepareList(&prl);
-    addPresenter.setProductSearch(&psp);
+    addPresenter.setProductSearch(&psf);
     addPresenter.start();
 
     MainPresenter mainPresenter;
@@ -59,6 +60,10 @@ int main(int argc, char *argv[])
     mainPresenter.setAddPresenter(&addPresenter);
     mainPresenter.setDbConnector(*dbConnector);
     mainPresenter.setMainView(&mainForm);
+
+    HandbookSearchForm cardSearchForm;
+    mainPresenter.setCardSearchView(&cardSearchForm);
+
     mainPresenter.start();
 
 

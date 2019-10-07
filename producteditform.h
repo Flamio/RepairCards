@@ -6,8 +6,7 @@
 #include <QLineEdit>
 #include <QCheckBox>
 #include <QPushButton>
-#include "productsearchpresenter.h"
-#include "productsearchform.h"
+#include "handbooksearchform.h"
 
 class ProductEditForm : public EditHandbookForm
 {
@@ -15,6 +14,8 @@ public:
     ProductEditForm(QWidget *parent = 0);
     virtual void setMode(FormMode mode);
     virtual void setProduct(Product& p);
+
+    void setGetProductsByNameFunc(const std::function<QVector<Product> (const QString&)> &value);
 
 protected:
     virtual void fillHandbookFields(Handbook** h);
@@ -26,8 +27,11 @@ private:
     QLineEdit code;
     QCheckBox isOwenCheck;
     QPushButton searchProductButton;
-    ProductSearchPresenter* productSearch;
-    ProductSearchForm* searchForm;
+    HandbookSearchForm* searchForm;
+
+    QVector<Product>* products = new QVector<Product>();
+
+    std::function<QVector<Product>(const QString&)> getProductsByNameFunc = nullptr;
 
     void onProductSearch();
     void onSearchDone();

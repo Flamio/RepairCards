@@ -4,10 +4,31 @@
 
 ProductEditForm::ProductEditForm(QWidget *parent) : EditHandbookForm(parent)
 {
-    productSearch = new ProductSearchPresenter(false,this);
-    searchForm = new ProductSearchForm(this);
-    productSearch->setView(searchForm);
-    connect(productSearch, &ProductSearchPresenter::done, this, &ProductEditForm::onSearchDone);
+    searchForm = new HandbookSearchForm(this);
+
+    HandbookSearchCallbacks c;
+    c.searchHandbook = [=](const QString& name)
+    {
+        (*products) = this->getProductsByNameFunc(name);
+        QVector<Handbook> h;
+
+        for (auto p : *products)
+            h.append(p);
+
+        searchForm->setHandbooks(h);
+    };
+    c.done = [=] (int index)
+    {
+        auto product = (*products)[index];
+        getUi()->id->setText(QString::number(product.id));
+        getUi()->name->setText(product.name);
+        isOwenCheck.setChecked(product.isOwen);
+        code.setText(product.code);
+        searchForm->closeWindow();
+    };
+    searchForm->setCallbacks(c);
+
+
     connect(&isOwenCheck, &QCheckBox::stateChanged, this, &ProductEditForm::onOwenCheck);
 
     searchProductButton.setText("Найти изделие");
@@ -69,22 +90,14 @@ void ProductEditForm::fillFieldsOnEdit(int index)
     code.setText(product->code);
 }
 
-void ProductEditForm::onProductSearch()
+void ProductEditForm::setGetProductsByNameFunc(const std::function<QVector<Product>(const QString&)> &value)
 {
-    productSearch->showView();
+    getProductsByNameFunc = value;
 }
 
-void ProductEditForm::onSearchDone()
+void ProductEditForm::onProductSearch()
 {
-    auto product = productSearch->getProduct();
-    if (product->id  == 0)
-        return;
-
-    getUi()->id->setText(QString::number(product->id));
-    getUi()->name->setText(product->name);
-    isOwenCheck.setChecked(product->isOwen);
-    code.setText(product->code);
-    productSearch->closeView();
+    searchForm->showWindow();
 }
 
 void ProductEditForm::onOwenCheck(bool checked)

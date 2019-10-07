@@ -8,6 +8,7 @@ MainForm::MainForm(QWidget *parent) :
     ui(new Ui::MainForm)
 {
     ui->setupUi(this);
+    ui->current_card_index->setValidator(new QIntValidator());
 }
 
 MainForm::~MainForm()
@@ -17,6 +18,12 @@ MainForm::~MainForm()
 
 void MainForm::setCard(const RepairCard &card, const QVector<CardMethod> &methods)
 {
+    if (card.returnDate.toString("dd.MM.yyyy") != "")
+        this->setStyleSheet("QLabel, QLineEdit, QTableWidget, QPlainTextEdit {color:gray} "
+                            " QLineEdit#current_card_index {color:black} QLineEdit#cards_count {color:black}");
+    else
+        this->setStyleSheet("QLabel, QLineEdit, QTableWidget, QPlainTextEdit {color:black}");
+
     ui->barcode->setText(card.barCode);
     if (card.product.isOwen)
     {
@@ -33,7 +40,8 @@ void MainForm::setCard(const RepairCard &card, const QVector<CardMethod> &method
     ui->clientCost->setText(QString::number(card.costForClient));
     ui->complains->setPlainText(card.complaints);
     ui->id->setText(QString::number(card.id));
-    ui->navigation->setText(QString("%1/%2").arg(card.currentIndex).arg(card.allIndexes));
+    ui->cards_count->setText(QString("%1").arg(card.allIndexes));
+    ui->current_card_index->setText(QString("%1").arg(card.currentIndex));
     ui->note->setPlainText(card.note);
     ui->product->setText(card.product.name);
     ui->ready->setText(card.readyDate.toString("dd.MM.yyyy"));
@@ -70,7 +78,7 @@ IMainView *MainForm::newDialog()
     if (dialog != nullptr)
         delete dialog;
 
-    dialog = new MainForm();
+    dialog = new MainForm(this);
     dialog->setIsDialog(true);
     dialog->hideNavigationPanel();
     return dialog;
@@ -137,4 +145,29 @@ void MainForm::on_pushButton_6_clicked()
     auto type = (PrintType::PrintType)ui->print->currentIndex();
     auto cardId = ui->id->text().toInt();
     emit print(cardId,type);
+}
+
+void MainForm::on_showSendedProducts_clicked()
+{
+    emit showSendedProducts();
+}
+
+void MainForm::on_pushButton_2_clicked()
+{
+    emit showExtremeCard(ExtremeCardType::Last);
+}
+
+void MainForm::on_pushButton_3_clicked()
+{
+    emit showExtremeCard(ExtremeCardType::First);
+}
+
+void MainForm::on_current_card_index_editingFinished()
+{
+    emit showCardByIndex(ui->current_card_index->text().toInt());
+}
+
+void MainForm::on_pushButton_4_clicked()
+{
+    callbacks.searchCards();
 }

@@ -32,10 +32,13 @@ public:
     QVector<CardMethod> getMethods(int cardId);
     RepairCard getPreviousCard();
     RepairCard getNextCard();
+    RepairCard getFirstCard();
     void deleteCard(int id);
     bool updateCard(const RepairCard& card);
     RepairCard getCardById(int id);
+    RepairCard getCardByIndex(int index);
     QVector<RepairCard> getCardsByProductIdAndBarcode(int id, const QString& barcode);
+    QVector<RepairCard> getRepairCardsByProductNameOrCode(const QString& nameOrCode);
     int addHandbook(const Handbook& handbook, const QString& tableName);
     bool updateHandbook(const Handbook& handbook, const QString& tableName);
     void deleteHandbook(int id, const QString& tableName);
@@ -51,6 +54,7 @@ public:
     int getEntries(int id, const QString& column, const QString& table);
     QVector<Handbook*> getProducts();
     QVector<RepairCard> getCardsByDateAndClient(QDate,int clientId);
+    QVector<RepairCard> getSendedCards();
 
     QString getLastError() const;
 
@@ -62,6 +66,8 @@ public:
     static DatabaseConnector* getInstance();
 
 
+
+    void setCurrentIndex(int value);
 
 private:
     QSqlDatabase db;

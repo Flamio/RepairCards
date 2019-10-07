@@ -13,9 +13,15 @@ PastRepairsList::~PastRepairsList()
     delete ui;
 }
 
+void PastRepairsList::showWindow(const QString& title)
+{
+    this->ui->title->setText(title);
+    show();
+}
+
 void PastRepairsList::showWindow()
 {
-    show();
+    showWindow("");
 }
 
 void PastRepairsList::closeWindow()
@@ -29,7 +35,9 @@ void PastRepairsList::setCards(QVector<RepairCard> &cards)
     ui->listWidget->clear();
 
     for (auto card : cards)
-        ui->listWidget->addItem(card.receiveFromClientDate.toString("dd.MM.yyyy"));
+        ui->listWidget->addItem(QString("%1 %2 %3").arg(card.receiveFromClientDate.toString("dd.MM.yyyy"))
+                                .arg(card.product.name == "" ? "" : "-")
+                                .arg(card.product.name));
 }
 
 void PastRepairsList::on_pushButton_clicked()

@@ -17,6 +17,7 @@ public:
     explicit PastRepairsList(QWidget *parent = 0);
     ~PastRepairsList();
 
+    void showWindow(const QString& title);
     void showWindow();
     void closeWindow();
 

@@ -219,6 +219,12 @@ RepairCard DatabaseConnector::getNextCard()
     return getCardById(ids[currentIndex]);
 }
 
+RepairCard DatabaseConnector::getFirstCard()
+{
+    currentIndex = 0;
+    return getCardById(ids[currentIndex]);
+}
+
 void DatabaseConnector::deleteCard(int id)
 {
     db.transaction();
@@ -294,33 +300,33 @@ bool DatabaseConnector::updateCard(const RepairCard &card)
 
 void DatabaseConnector::fillCard(RepairCard& card, QSqlQuery& query)
 {
-    card.id = query.value(0).toInt();
-    card.repairerId = query.value(1).toInt();    
-    card.clientId = query.value(3).toInt();
-    card.receiveFromClientDate = QDate::fromString(query.value(4).toString(),"dd.MM.yyyy");
-    card.readyDate= QDate::fromString(query.value(5).toString(),"dd.MM.yyyy");
-    card.returnDate= QDate::fromString(query.value(6).toString(),"dd.MM.yyyy");
-    card.stateId = query.value(7).toInt();
-    card.complaints = query.value(8).toString();
-    card.reason = query.value(9).toString();
-    card.note = query.value(10).toString();
-    card.barCode = query.value(11).toString();
-    card.costForClient = query.value(12).toInt();
-    card.costRepair = query.value(13).toInt();
-    card.receiveFromFactoryDate = QDate::fromString(query.value(14).toString(), "dd.MM.yyyy");
-    card.sendDate = QDate::fromString(query.value(15).toString(), "dd.MM.yyyy");
-    card.year = query.value(16).toString();
-    card.month = query.value(17).toString();
-    card.client.phone = query.value(18).toString();
-    card.client.person = query.value(19).toString();
-    card.client.address = query.value(20).toString();
-    card.state = query.value(21).toString();
-    card.repairer = query.value(22).toString();
-    card.client.name = query.value(23).toString();
-    card.product.id = query.value(2).toInt();
-    card.product.code = query.value(25).toString();
-    card.product.name = query.value(26).toString();
-    card.product.isOwen = query.value(27).toInt();
+    card.id = query.value("id").toInt();
+    card.repairerId = query.value("repairer_id").toInt();
+    card.clientId = query.value("client_id").toInt();
+    card.receiveFromClientDate = QDate::fromString(query.value("receive_date").toString(),"dd.MM.yyyy");
+    card.readyDate= QDate::fromString(query.value("ready_date").toString(),"dd.MM.yyyy");
+    card.returnDate= QDate::fromString(query.value("return").toString(),"dd.MM.yyyy");
+    card.stateId = query.value("state_id").toInt();
+    card.complaints = query.value("complaints").toString();
+    card.reason = query.value("reason").toString();
+    card.note = query.value("note").toString();
+    card.barCode = query.value("bar_code").toString();
+    card.costForClient = query.value("cost_for_client").toInt();
+    card.costRepair = query.value("cost_repair").toInt();
+    card.receiveFromFactoryDate = QDate::fromString(query.value("receive_date2").toString(), "dd.MM.yyyy");
+    card.sendDate = QDate::fromString(query.value("sendDate").toString(), "dd.MM.yyyy");
+    card.year = query.value("createYear").toString();
+    card.month = query.value("createMonth").toString();
+    card.client.phone = query.value("phone").toString();
+    card.client.person = query.value("person").toString();
+    card.client.address = query.value("address").toString();
+    card.state = query.value("states.name").toString();
+    card.repairer = query.value("repairers.name").toString();
+    card.client.name = query.value("clients.name").toString();
+    card.product.id = query.value("products.id").toInt();
+    card.product.code = query.value("products.code").toString();
+    card.product.name = query.value("products.name").toString();
+    card.product.isOwen = query.value("isOwen").toInt();
     card.allIndexes = ids.count();
     card.currentIndex = currentIndex+1;
 }
@@ -341,7 +347,6 @@ bool DatabaseConnector::updateIds(bool currentChange)
 
 void DatabaseConnector::runFile(const QString &fileName)
 {
-
     QFile scriptFile(fileName);
     if (!scriptFile.open(QIODevice::ReadOnly))
         return;
@@ -388,8 +393,6 @@ void DatabaseConnector::convert()
             continue;
         runFile(fileName);
         query.exec(QString("update convert set number=%1 where id=0").arg(v));
-
-        int a = 0;
     }
 }
 
@@ -413,6 +416,11 @@ DatabaseConnector *DatabaseConnector::getInstance()
     return instance;
 }
 
+void DatabaseConnector::setCurrentIndex(int value)
+{
+    currentIndex = ids.indexOf(value);
+}
+
 RepairCard DatabaseConnector::getCardById(int id)
 {
     RepairCard card;
@@ -421,6 +429,19 @@ RepairCard DatabaseConnector::getCardById(int id)
     if (query.first())
         fillCard(card, query);
     return card;
+}
+
+RepairCard DatabaseConnector::getCardByIndex(int index)
+{
+    index = index - 1;
+
+    if (index >= ids.count())
+        return getLastCard();
+    else if (index < 0)
+        return getFirstCard();
+
+    currentIndex = index;
+    return getCardById(ids[index]);
 }
 
 QVector<RepairCard> DatabaseConnector::getCardsByProductIdAndBarcode(int id, const QString& barcode)
@@ -433,6 +454,35 @@ QVector<RepairCard> DatabaseConnector::getCardsByProductIdAndBarcode(int id, con
     {
         RepairCard card;
         fillCard(card, query);
+        cards.push_back(card);
+    }
+    return cards;
+}
+
+QVector<RepairCard> DatabaseConnector::getRepairCardsByProductNameOrCode(const QString &nameOrCode)
+{
+    QSqlQuery query;
+    query.exec(QString("SELECT c.*, cl.phone, cl.person, cl.address, st.name, rep.name, cl.name, p.* "
+                       " FROM repair_cards c "
+                       "left join products p on c.product_id=p.id "
+                       "left join clients cl on c.client_id=cl.id"
+                       " left join states st on c.state_id=st.id "
+                       "left join repairers rep "
+                       "on c.repairer_id=rep.id "
+                       "where p.name like '%%1%' "
+                       "or p.code like '%%1%' "
+                       "or c.bar_code like '%%1%'"
+                       "or (cl.name like '%%1%' and c.return = '')").arg(nameOrCode));
+    QVector<RepairCard> cards;
+
+    while (query.next())
+    {
+        RepairCard card;
+        fillCard(card, query);
+        card.name = QString("%1 %2 %4 %5")
+                .arg(card.receiveFromClientDate.toString("dd.MM.yyyy"))
+                .arg(card.product.name).arg(card.barCode).arg(card.client.name);
+        card.currentIndex = ids.indexOf(card.id) + 1;
         cards.push_back(card);
     }
     return cards;
@@ -564,6 +614,22 @@ QVector<RepairCard> DatabaseConnector::getCardsByDateAndClient(QDate date, int c
     QSqlQuery query;
     auto q = QString("SELECT c.*, cl.phone, cl.person, cl.address, st.name, rep.name, cl.name, p.* FROM repair_cards c left join products p on c.product_id=p.id left join clients cl on c.client_id=cl.id left join states st on c.state_id=st.id left join repairers rep on c.repairer_id=rep.id WHERE"
                      " receive_date='%1' and c.client_id=%2 ORDER BY receive_date").arg(date.toString("dd.MM.yyyy")).arg(clientId);
+    query.exec(q);
+    QVector<RepairCard> cards;
+
+    while (query.next())
+    {
+        RepairCard card;
+        fillCard(card, query);
+        cards.push_back(card);
+    }
+    return cards;
+}
+
+QVector<RepairCard> DatabaseConnector::getSendedCards()
+{
+    QSqlQuery query;
+    auto q = QString("select c.*, p.* FROM repair_cards c left join products p on c.product_id = p.id where c.sendDate != \"\" and c.receive_date2 = \"\"");
     query.exec(q);
     QVector<RepairCard> cards;
 

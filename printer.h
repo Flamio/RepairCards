@@ -18,6 +18,8 @@ public:
 
     void print(int id);
 
+
+
 signals:
 
 public slots:
@@ -26,6 +28,7 @@ protected:
     virtual void drawContent(int id, QPainter&) = 0;
 
     DatabaseConnector *getDbConnector() const;
+    QPrinter *getPrinter() const;
 
 private:
     QPrinter* printer = nullptr;

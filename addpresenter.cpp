@@ -335,12 +335,12 @@ void AddPresenter::onClientAdd(Handbook *h)
 void AddPresenter::onClientEdit(Handbook *h)
 {
     auto client = (Client*)h;
-    auto entries = databaseConnector.getEntries(h->id, "client_id", "repair_cards");
+    /*auto entries = databaseConnector.getEntries(h->id, "client_id", "repair_cards");
     if (entries != 0)
     {
         addView->showInfo("Нельзя редактировать! Этот клиент используется в других ремонтных картах!");
         return;
-    }
+    }*/
 
     databaseConnector.updateClient(*client);
     auto clients = databaseConnector.getClients();
@@ -374,36 +374,48 @@ void AddPresenter::checkPastRepairs(int productId, const QString& barcode)
         return;
 
     pastPrepareList->setCards(pastCards);
-    pastPrepareList->showWindow();
+    pastPrepareList->showWindow("Это изделие уже было в ремонте:");
 }
 
 void AddPresenter::onShowProdictSearch()
 {
-    productSearch->showView();
-}
-
-void AddPresenter::onProductSearchDone()
-{
-    auto product = productSearch->getProduct();
-    if (product->id == 0)
-    {
-        addView->showInfo("Изделие не найдено!");
-        return;
-    }
-    notOwenProduct = *product;
-    addView->setProduct(*product);
-    productSearch->closeView();
-}
-
-void AddPresenter::setProductSearch(ProductSearchPresenter *value)
-{
-    productSearch = value;
-    connect(productSearch, &ProductSearchPresenter::done, this, &AddPresenter::onProductSearchDone);
+    productSearch->showWindow();
 }
 
 void AddPresenter::setPastPrepareList(IPastRepairList *value)
 {
     pastPrepareList = value;
+}
+
+void AddPresenter::setProductSearch(IHandbookSearchView *value)
+{
+    productSearch = value;
+
+    HandbookSearchCallbacks c;
+    c.searchHandbook = [=](const QString& name)
+    {
+        (*products) = databaseConnector.getProductsByName(name,true);
+        QVector<Handbook> ps;
+
+        for (auto p : *products)
+            ps.append(p);
+        productSearch->setHandbooks(ps);
+    };
+
+    c.done = [=] (int index)
+    {
+        auto product = (*products)[index];
+        if (product.id == 0)
+        {
+            addView->showInfo("Изделие не найдено!");
+            return;
+        }
+        notOwenProduct = product;
+        addView->setProduct(product);
+        productSearch->closeWindow();
+    };
+
+    productSearch->setCallbacks(c);
 }
 
 void AddPresenter::setProductEditView(IHandbookEditView *value)

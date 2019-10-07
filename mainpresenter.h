@@ -26,6 +26,8 @@ public:
 
     void setPastPrepareList(IPastRepairList *value);
 
+    void setCardSearchView(IHandbookSearchView *value);
+
 signals:
 
 public slots:
@@ -39,14 +41,20 @@ private slots:
     void onEditComplete(int);
     void onCardClicked(int);
     void onPrint(int id,PrintType::PrintType&);
+    void onShowSendedProducts();
+    void onShowExtremeCard(ExtremeCardType::ExtremeCardType);
+    void onShowCardByIndex(int index);
 
 private:
     IMainView* mainView = nullptr;
     IPastRepairList* pastPrepareList = nullptr;
+    IHandbookSearchView* cardSearchView = nullptr;
 
     AddPresenter* addPresenter = nullptr;
     DatabaseConnector dbConnector;
     PrinterFactory* printerFactory = nullptr;
+
+    QVector<RepairCard>* cards = new QVector<RepairCard>();
 
     void showLastCard();
 };

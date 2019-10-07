@@ -17,7 +17,7 @@
    <item>
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
-      <widget class="QLabel" name="label">
+      <widget class="QLabel" name="title">
        <property name="text">
         <string>Это изделие уже было в ремонте:</string>
        </property>
