@@ -64,9 +64,6 @@ public:
     QSqlTableModel* getTableModel(const QString& table);
 
     static DatabaseConnector* getInstance();
-
-
-
     void setCurrentIndex(int value);
 
 private:

@@ -470,10 +470,10 @@ QVector<RepairCard> DatabaseConnector::getRepairCardsByProductNameOrCode(const Q
                            " left join states st on c.state_id=st.id "
                            "left join repairers rep "
                            "on c.repairer_id=rep.id "
-                           "where (p.name like '\%%1%' "
-                           "or p.code like '\%%1%' "
-                           "or c.bar_code like '\%%1%'"
-                           "or cl.name like '\%%1%') and c.return %2 ''").arg(nameOrCode, issuedProducts ? "<>" : "=" ));
+                           "where (p.name like '%%1%' "
+                           "or p.code like '%%1%' "
+                           "or c.bar_code like '%%1%'"
+                           "or cl.name like '%%1%') and c.return %2 ''").arg(nameOrCode, issuedProducts ? "<>" : "=" ));
     query.exec(txt);
 
     QVector<RepairCard> cards;
