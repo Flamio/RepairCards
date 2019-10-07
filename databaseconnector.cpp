@@ -6,6 +6,7 @@
 #include <QFile>
 #include <QTextStream>
 #include <QDirIterator>
+#include <QDebug>
 
 bool DatabaseConnector::open()
 {
@@ -459,20 +460,22 @@ QVector<RepairCard> DatabaseConnector::getCardsByProductIdAndBarcode(int id, con
     return cards;
 }
 
-QVector<RepairCard> DatabaseConnector::getRepairCardsByProductNameOrCode(const QString &nameOrCode)
+QVector<RepairCard> DatabaseConnector::getRepairCardsByProductNameOrCode(const QString &nameOrCode, bool issuedProducts)
 {
     QSqlQuery query;
-    query.exec(QString("SELECT c.*, cl.phone, cl.person, cl.address, st.name, rep.name, cl.name, p.* "
-                       " FROM repair_cards c "
-                       "left join products p on c.product_id=p.id "
-                       "left join clients cl on c.client_id=cl.id"
-                       " left join states st on c.state_id=st.id "
-                       "left join repairers rep "
-                       "on c.repairer_id=rep.id "
-                       "where p.name like '%%1%' "
-                       "or p.code like '%%1%' "
-                       "or c.bar_code like '%%1%'"
-                       "or (cl.name like '%%1%' and c.return = '')").arg(nameOrCode));
+    QString txt(QString("SELECT c.*, cl.phone, cl.person, cl.address, st.name, rep.name, cl.name, p.* "
+                           " FROM repair_cards c "
+                           "left join products p on c.product_id=p.id "
+                           "left join clients cl on c.client_id=cl.id"
+                           " left join states st on c.state_id=st.id "
+                           "left join repairers rep "
+                           "on c.repairer_id=rep.id "
+                           "where (p.name like '\%%1%' "
+                           "or p.code like '\%%1%' "
+                           "or c.bar_code like '\%%1%'"
+                           "or cl.name like '\%%1%') and c.return %2 ''").arg(nameOrCode, issuedProducts ? "<>" : "=" ));
+    query.exec(txt);
+
     QVector<RepairCard> cards;
 
     while (query.next())

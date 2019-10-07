@@ -392,7 +392,7 @@ void AddPresenter::setProductSearch(IHandbookSearchView *value)
     productSearch = value;
 
     HandbookSearchCallbacks c;
-    c.searchHandbook = [=](const QString& name)
+    c.searchHandbook = [=](const QString& name, QMap<QString, QVariant>)
     {
         (*products) = databaseConnector.getProductsByName(name,true);
         QVector<Handbook> ps;

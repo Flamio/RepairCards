@@ -7,7 +7,7 @@ ProductEditForm::ProductEditForm(QWidget *parent) : EditHandbookForm(parent)
     searchForm = new HandbookSearchForm(this);
 
     HandbookSearchCallbacks c;
-    c.searchHandbook = [=](const QString& name)
+    c.searchHandbook = [=](const QString& name, QMap<QString, QVariant>)
     {
         (*products) = this->getProductsByNameFunc(name);
         QVector<Handbook> h;

@@ -170,9 +170,11 @@ void MainPresenter::setCardSearchView(IHandbookSearchView *value)
         dbConnector.setCurrentIndex(card.id);
         cardSearchView->closeWindow();
     };
-    c.searchHandbook = [=](const QString& name)
-    {
-        (*cards) = dbConnector.getRepairCardsByProductNameOrCode(name);
+
+    c.searchHandbook = [=](const QString& name, QMap<QString, QVariant>& options)
+    {        
+        bool issuedProducts = options["issued_products"].toBool();
+        (*cards) = dbConnector.getRepairCardsByProductNameOrCode(name, issuedProducts);
 
         QVector<Handbook>h;
 
@@ -183,6 +185,8 @@ void MainPresenter::setCardSearchView(IHandbookSearchView *value)
     };
 
     cardSearchView->setCallbacks(c);
+    cardSearchView->setOption("check", "issued_products", "Выданные изделия");
+    cardSearchView->setQueryTitle("Строка поиска");
 }
 
 void MainPresenter::setPastPrepareList(IPastRepairList *value)

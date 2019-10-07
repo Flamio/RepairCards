@@ -27,6 +27,12 @@ void HandbookSearchForm::setHandbooks(QVector<Handbook> &h)
         ui->listWidget->addItem(h_.name);
 }
 
+void HandbookSearchForm::setOption(const QString &type, const QString &name, const QString& label)
+{
+    auto createOptionFunc = optionsMap[type];
+    createOptionFunc(name, label);
+}
+
 void HandbookSearchForm::on_pushButton_2_clicked()
 {
     this->close();
@@ -50,7 +56,13 @@ void HandbookSearchForm::on_name_textChanged(const QString &arg1)
         ui->listWidget->clear();
         return;
     }
-    callbacks.searchHandbook(arg1);
+
+    QMap<QString, QVariant> options;
+
+    for (auto c : checkboxes)
+        options[c->objectName()] = c->checkState() == Qt::Checked;
+
+    callbacks.searchHandbook(arg1, options);
 }
 
 void HandbookSearchForm::on_listWidget_itemDoubleClicked(QListWidgetItem *item)
