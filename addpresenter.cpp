@@ -263,13 +263,6 @@ void AddPresenter::onProductEdit(Handbook *h)
         return;
     }
 
-    auto entries = databaseConnector.getEntries(h->id, "product_id", "repair_cards");
-    if (entries != 0)
-    {
-        addView->showInfo("Нельзя редактировать! Это изделие используется в других ремонтных картах!");
-        return;
-    }
-
     auto product = (Product*)h;
 
     if (product->isOwen && product->code.isEmpty())
