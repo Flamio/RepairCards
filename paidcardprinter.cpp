@@ -74,7 +74,7 @@ void PaidCardPrinter::drawContent(int id, QPainter &painter)
             painter.drawRect(rect);
             painter.fillRect(rect2, Qt::gray);
             painter.drawRect(rect2);
-            painter.drawText(rect, Qt::AlignCenter, "Способ устранения");
+            painter.drawText(rect, Qt::AlignCenter, "Выполненные работы");
             painter.drawText(rect2, Qt::AlignCenter, "Описание");
             y+=174;
             continue;

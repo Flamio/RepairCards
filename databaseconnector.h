@@ -38,7 +38,7 @@ public:
     RepairCard getCardById(int id);
     RepairCard getCardByIndex(int index);
     QVector<RepairCard> getCardsByProductIdAndBarcode(int id, const QString& barcode);
-    QVector<RepairCard> getRepairCardsByProductNameOrCode(const QString& nameOrCode);
+    QVector<RepairCard> getRepairCardsByProductNameOrCode(const QString& nameOrCode, bool issuedProducts);
     int addHandbook(const Handbook& handbook, const QString& tableName);
     bool updateHandbook(const Handbook& handbook, const QString& tableName);
     void deleteHandbook(int id, const QString& tableName);
@@ -64,9 +64,6 @@ public:
     QSqlTableModel* getTableModel(const QString& table);
 
     static DatabaseConnector* getInstance();
-
-
-
     void setCurrentIndex(int value);
 
 private:
